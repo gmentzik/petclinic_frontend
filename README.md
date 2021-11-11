@@ -1,2 +1,2 @@
 # petclinic_frontend
-Petclinic frontend to interact with petclinic_backend project
+A React, Typescript, React-Bootstrap project to interact with petclinic_backend project
