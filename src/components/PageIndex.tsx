@@ -5,12 +5,17 @@ import { Pagination } from "react-bootstrap";
 interface Props {
   active: number;
   total: number;
+  goToFirstPage?: () => void;
+  goToLastPage?: () => void;
+  goToPreviousPage?: () => void;
+  goToNextPage?: () => void;
+  goToPage?: (page:number) => void;
 }
 
 const PageIndex = (props: Props) => {
 
-  let active = props.active;
-  let items = [];
+  const active = props.active;
+  const items = [];
   const displayNumbers = 3;
   const startIndex = props.active;
   const endIndex = (startIndex + displayNumbers < props.total) ? startIndex + displayNumbers : props.total - 1;

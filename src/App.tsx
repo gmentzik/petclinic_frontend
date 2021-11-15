@@ -134,7 +134,13 @@ function App() {
             <div className="d-flex justify-content-start">
               <Button variant="primary">ΝΕΟΣ ΠΕΛΑΤΗΣ</Button>
             </div>
-            <PageIndex active={2} total={10} />
+            <PageIndex active={2} total={10} 
+            // goToFirstPage={null} 
+            // goToLastPage={null} 
+            // goToPreviousPage={null}
+            // goToNextPage={null}
+            // goToPage={null} 
+            />
           </Row>
 
         </Container>
