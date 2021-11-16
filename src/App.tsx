@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 // import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -6,6 +6,11 @@ import { Accordion, Button, Col, Container, Form, Nav, Navbar, NavDropdown, Row,
 import PageIndex from './components/PageIndex';
 
 function App() {
+
+  const [selectedPage, setSelectedPage] = useState(5);
+  // eslint-disable-next-line
+  const [totalPages, setTotalPages] = useState(10);
+
   return (
     <div className="App">
       <header className="App-header">
@@ -134,12 +139,8 @@ function App() {
             <div className="d-flex justify-content-start">
               <Button variant="primary">ΝΕΟΣ ΠΕΛΑΤΗΣ</Button>
             </div>
-            <PageIndex active={2} total={10} 
-            // goToFirstPage={null} 
-            // goToLastPage={null} 
-            // goToPreviousPage={null}
-            // goToNextPage={null}
-            // goToPage={null} 
+            <PageIndex active={selectedPage} total={totalPages} 
+               goToPage={(page:number)=> setSelectedPage(page)} 
             />
           </Row>
 
