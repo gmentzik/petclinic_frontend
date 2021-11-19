@@ -1,3 +1,7 @@
+# petclinic_frontend
+A React, Typescript, React-Bootstrap project to interact with petclinic_backend project
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

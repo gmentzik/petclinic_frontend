@@ -1,5 +1,6 @@
 import React from "react";
-import {  Container, Nav, Navbar, NavDropdown, } from 'react-bootstrap';
+import { Container, Nav, Navbar, NavDropdown, } from 'react-bootstrap';
+import { Link } from "react-router-dom";
 import logo from '../images/logo.svg';
 
 
@@ -8,22 +9,24 @@ const Header = () => {
         <>
             <Navbar bg="dark" variant="dark">
                 <Container>
-                    <Navbar.Brand href="#home">
-                        <img
-                            alt=""
-                            src={logo}
-                            width="30"
-                            height="30"
-                            className="d-inline-block align-top"
-                        />{' '}
-                        Pet Clinic
-                    </Navbar.Brand>
+                    <Link to="/">
+                        <Navbar.Brand href="#home">
+                            <img
+                                alt=""
+                                src={logo}
+                                width="30"
+                                height="30"
+                                className="d-inline-block align-top"
+                            />{' '}
+                            Pet Clinic
+                        </Navbar.Brand>
+                    </Link>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="me-auto">
                             <NavDropdown title="ΠΕΛΑΤΕΣ" id="collasible-nav-dropdown">
-                                <NavDropdown.Item href="#action/3.1">ΛΙΣΤΑ ΠΕΛΑΤΩΝ</NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.2">ΝΕΟΣ ΠΕΛΑΤΗΣ</NavDropdown.Item>
+                                <NavDropdown.Item ><Link to="/customers">ΛΙΣΤΑ ΠΕΛΑΤΩΝ</Link></NavDropdown.Item>
+                                <NavDropdown.Item ><Link to="/customers/form">ΝΕΟΣ ΠΕΛΑΤΗΣ</Link></NavDropdown.Item>
                             </NavDropdown>
                         </Nav>
                         <Nav>

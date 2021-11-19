@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Accordion, Button, Col, Form, Row, Table } from "react-bootstrap";
-import PageIndex from "../components/PageIndex";
+import PageIndex from "../../components/PageIndex";
 
 
 const CustomerList = () => {
