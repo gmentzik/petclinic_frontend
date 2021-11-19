@@ -1,6 +1,11 @@
 # petclinic_frontend
 A React, Typescript, React-Bootstrap project to interact with petclinic_backend project
 
+# Use: 
+- Build project with: npx create-react-app my-app --template typescript 
+- React-Bootstrap 2 (Bootstrap 5) No JQuery any more. For starters I am using bootstrap css.
+- React Router 6. (Uses Routes instead of switch and other new stuff)
+
 
 # Getting Started with Create React App
 
