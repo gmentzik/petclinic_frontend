@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Nav, Navbar, NavDropdown, } from 'react-bootstrap';
 import { Link } from "react-router-dom";
-import logo from '../images/logo.svg';
+import logo from '../../images/logo.svg';
 
 // Magic of interconnecting React-Router 5 Link and React-Bootstrap comes from this link:
 // https://stackoverflow.com/questions/54843302/reactjs-bootstrap-navbar-and-routing-not-working-together
@@ -27,6 +27,7 @@ const Header = () => {
                             <NavDropdown title="ΠΕΛΑΤΕΣ" id="collasible-nav-dropdown">
                                 <NavDropdown.Item as={Link} to="customers"> ΛΙΣΤΑ ΠΕΛΑΤΩΝ </NavDropdown.Item>
                                 <NavDropdown.Item as={Link} to="customers/form">ΝΕΟΣ ΠΕΛΑΤΗΣ</NavDropdown.Item>
+                                <NavDropdown.Item as={Link} to="customers/form/24">ΠΡΟΒΟΛΗ ΠΕΛΑΤΗ</NavDropdown.Item>
                             </NavDropdown>
                         </Nav>
                         <Nav>
