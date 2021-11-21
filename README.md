@@ -5,7 +5,15 @@ A React, Typescript, React-Bootstrap project to interact with petclinic_backend 
 - Build project with: npx create-react-app my-app --template typescript 
 - React-Bootstrap 2 (Bootstrap 5) No JQuery any more. For starters I am using bootstrap css.
 - React Router 6. (Uses Routes instead of switch and other new stuff) More info at: https://reactrouter.com/docs/en/v6/getting-started/tutorial
-- 
+- Add axios dependency ("axios": "^0.24.0").
+Useful links so far: 
+- - How To Use Axios With React: The Definitive Guide (2021). https://www.freecodecamp.org/news/how-to-use-axios-with-react/ 
+- - Handling Async Errors With Axios in React. https://betterprogramming.pub/handling-async-errors-with-axios-in-react-1e25c058a8c9
+- - https://stackabuse.com/making-asynchronous-http-requests-in-javascript-with-axios/
+- - Official documentation https://axios-http.com/docs/intro
+- - Information on Async-Await: https://betterprogramming.pub/should-i-use-promises-or-async-await-126ab5c98789
+
+
 
 
 # Getting Started with Create React App

@@ -20,7 +20,6 @@ const CustomerForm = () => {
         console.log(query.get('sort'));
         console.log(query.get('order'));
         console.log(query.get('myparam'));
-        // console.log( query.get('myParam') );
     }
 
 

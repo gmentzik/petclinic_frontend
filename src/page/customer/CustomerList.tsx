@@ -1,13 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Accordion, Button, Col, Form, Row, Table } from "react-bootstrap";
 import PageIndex from "../../components/PageIndex";
-
+import { sendGetHelloRequest } from '../../api/customersApi'
 
 const CustomerList = () => {
 
   const [selectedPage, setSelectedPage] = useState(5);
   // eslint-disable-next-line
   const [totalPages, setTotalPages] = useState(10);
+
+
+  const responseHanderMethod = (data: any) => {
+     console.log(`responseHanderMethod: ${data}`);
+  }
+
+  useEffect(() => {
+    console.log("Effect has been called");
+    sendGetHelloRequest(responseHanderMethod);
+  }, []);
+
+
 
   return (
     <>
@@ -115,3 +127,4 @@ const CustomerList = () => {
 };
 
 export default CustomerList;
+
