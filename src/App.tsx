@@ -4,6 +4,7 @@ import { Container } from 'react-bootstrap';
 import { CustomerList, CustomerForm } from './page/customer';
 import Header from './page/common/Header';
 import HomePage from './page/home/HomePage';
+import Login from './page/login/Login';
 import { Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
             <Route path="customers/form" element={<CustomerForm />} >
               <Route path=":customerId" element={<CustomerForm />} />
             </Route>
+            <Route path="login" element={<Login />} />
             <Route
               path="*"
               element={

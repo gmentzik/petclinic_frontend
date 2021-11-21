@@ -40,8 +40,8 @@ const Header = () => {
                             </NavDropdown>
                         </Nav>
                         <Nav>
-                            <Nav.Link href="#logine">Login</Nav.Link>
-                            <Nav.Link eventKey={2} href="#help">Help</Nav.Link>
+                            <Nav.Link as={Link} to="login">Login</Nav.Link>
+                            <Nav.Link as={Link} eventKey={2} to="help">Help</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
