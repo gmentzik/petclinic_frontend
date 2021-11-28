@@ -19,7 +19,8 @@ export const authenticateUserRequest = async (uname: string, upassword: string) 
 
     try {
         const resp = await axios.post(authenticateUserUrl, user);
-        console.log(resp.data);
+        console.log(resp.data.token);
+        localStorage.setItem('mykey', resp.data.token);
     } catch (err) {
         // Handle Error Here
         console.error(err);
