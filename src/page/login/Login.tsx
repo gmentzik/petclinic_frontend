@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
-import { Alert, Button, Form } from "react-bootstrap";
+import { Alert, Button, Form, Toast, ToastContainer } from "react-bootstrap";
 import { authenticateUserRequest } from '../../api/userApi';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 // type HTMLElementEvent<T extends HTMLElement> = Event & {
 //     target: T,
@@ -11,10 +11,11 @@ const Login = () => {
 
     const [userName, setUserName] = useState('');
     const [userPassword, setUserPassword] = useState('');
-    const [signInSuccess, setSignInSuccess] = useState(false);
     const [signInFailedError, setSignInFailedError] = useState(null);
+    const [showA, setShowA] = useState(false);
     const navigate = useNavigate();
 
+    const toggleShowA = () => setShowA(!showA);
 
     const handleChange = (event: ChangeEvent) => {
         const target = event.target as HTMLFormElement;
@@ -32,7 +33,7 @@ const Login = () => {
     }
 
     const loginSuccess = () => {
-        setSignInSuccess(true);
+        toggleShowA();
         setSignInFailedError(null);
         navigate('/customers');
 
@@ -40,11 +41,18 @@ const Login = () => {
 
     const loginFailed = (err: any) => {
         setSignInFailedError(err);
-        setSignInSuccess(false);
     }
 
     return (
         <>
+            <ToastContainer className="p-3" position={'top-center'}>
+                <Toast show={showA} bg={'info'} onClose={toggleShowA} delay={3000} autohide className={'marginTop32px'}>
+                    {/* <Toast.Header>
+                        <strong className="me-auto">Sign In</strong>
+                    </Toast.Header> */}
+                    <Toast.Body>You have signed in successfuly!</Toast.Body>
+                </Toast>
+            </ToastContainer>
             <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Username</Form.Label>
@@ -60,10 +68,6 @@ const Login = () => {
                 </Button>
             </Form>
 
-            {signInSuccess && <Alert className={'marginTop10px'} variant={'primary'}>
-                You are successfuly signed in
-            </Alert>}
-            
             {signInFailedError && <Alert className={'marginTop10px'} variant={'danger'}>
                 Sign in failed ( {signInFailedError} )
             </Alert>}

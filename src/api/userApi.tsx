@@ -1,10 +1,7 @@
 import axios from "axios";
 import { authenticateUserUrl } from '../constants';
+import { ErrorData } from '../api/models'
 
-interface ErrorData {
-    message: string,
-    details: string[],
-}
 
 export const authenticateUserRequest = async (uname: string, upassword: string, loginSuccess: Function,  loginFail: Function) => {
 
