@@ -6,8 +6,30 @@ import Header from './page/common/Header';
 import HomePage from './page/home/HomePage';
 import Login from './page/login/Login';
 import { Route, Routes } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { State } from './reducers';
+import { decreaseCount, increaseCount, resetCount } from './actions/counterActions';
 
-function App() {
+const mapStateToProps = (state: State) => {
+  console.log(state) // state
+  return ({
+    counterState: state.counterReducer,
+    anotherState: state.anotherReducer
+  })
+}
+
+const mapDispatchToProps = (dispatch:any) => {
+  return ({
+    increaseStoreCounter: () => {
+      dispatch(increaseCount());
+    },
+    decreaseStoreCounter: () => dispatch(decreaseCount()),
+    resetStoreCounter: () => dispatch(resetCount()),
+  })
+}
+
+const App = (props:any) => {
+ 
   return (
     <div className="App">
       <header className="App-header">
@@ -16,7 +38,17 @@ function App() {
       <body>
         <Container fluid="md">
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={
+            <HomePage 
+             counterMessage={props.counterState.message} 
+             anotherMessage={props.anotherState.message}
+             counterValue={props.counterState.count} 
+             anotherValue={props.anotherState.count} 
+             increaseStoreCounter={props.increaseStoreCounter}
+             decreaseStoreCounter={props.decreaseStoreCounter}
+             resetStoreCounter={props.resetStoreCounter}
+             />
+             } />
             <Route path="customers" element={<CustomerList />} />
             <Route path="customers/form" element={<CustomerForm />} >
               <Route path=":customerId" element={<CustomerForm />} />
@@ -37,4 +69,4 @@ function App() {
   );
 }
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);
