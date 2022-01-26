@@ -7,9 +7,9 @@ import PageIndex from "../../components/pageIndex";
 
 const CustomerList = () => {
 
-  const [selectedPage, setSelectedPage] = useState(5);
+  const [selectedPage, setSelectedPage] = useState(0);
   // eslint-disable-next-line
-  const [totalPages, setTotalPages] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
 
   const [customers, setCustomers] = useState<Customer[]>([]);
 
@@ -26,11 +26,23 @@ const CustomerList = () => {
   }
 
   useEffect(() => {
-    console.log("Effect has been called");
+    console.log("Effect has been called at load");
     sendGetHelloRequest(responseHanderMethod);
     sendGetAllCustomers(customerList); // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    console.log("Effect has been called at page change");
+    sendGetAllCustomers(customerList, selectedPage); // eslint-disable-next-line
+  }, [selectedPage]);
+
+  const activePage = (page: number):number => {
+    return page + 1;
+  }
+
+  const selectPage = (page:number) => {
+    setSelectedPage(page - 1);
+  }
 
   const createCustomerRows = (): any => {
     console.log("createCustomerRows");
@@ -39,6 +51,7 @@ const CustomerList = () => {
         <CustomerTableRow customer={customer} />
       ))
   };
+
 
   return (
     <>
@@ -98,8 +111,8 @@ const CustomerList = () => {
         <div className="d-flex justify-content-start">
           <Button variant="primary">ΝΕΟΣ ΠΕΛΑΤΗΣ</Button>
         </div>
-        <PageIndex active={selectedPage} total={totalPages}
-          goToPage={(page: number) => setSelectedPage(page)}
+        <PageIndex active={activePage(selectedPage)} total={totalPages}
+          goToPage={(page: number) => selectPage(page)}
         />
       </Row>
 

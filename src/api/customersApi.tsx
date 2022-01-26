@@ -29,7 +29,7 @@ const sendGetHelloRequest = async ( responseHander:Function ) => {
 
 };
 
-const sendGetAllCustomers = async ( responseHander:Function ) => {
+const sendGetAllCustomers = async ( responseHander:Function, page?:number, size?:number ) => {
     
       const storedToken = localStorage.getItem('mykey');
       
@@ -37,12 +37,18 @@ const sendGetAllCustomers = async ( responseHander:Function ) => {
       const token = tokenPrefix + storedToken;
       console.log('Authorization Token: ' + token);
    
+      
+
        try {
            const resp = await axios.get(customerUrl,{
                withCredentials: false,
                headers: {
                  'Authorization': token,
                },
+               params: { 
+                 page: page ? page : 0,
+                 size: size ? size : 3 
+                } 
              });
            const customersList: CustomersList = resp.data;
            console.log(customersList);
