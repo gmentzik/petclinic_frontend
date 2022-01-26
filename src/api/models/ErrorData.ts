@@ -1,4 +1,4 @@
 export interface ErrorData {
-    message: string,
-    details: string[],
+    message: string;
+    details: string[];
 }

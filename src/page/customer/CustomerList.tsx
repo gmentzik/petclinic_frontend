@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Accordion, Button, Col, Form, Row, Table } from "react-bootstrap";
-import { sendGetHelloRequest } from '../../api/customersApi'
+import { CustomerTableRow } from ".";
+import { sendGetAllCustomers, sendGetHelloRequest } from '../../api/customersApi'
+import { CustomersList, Customer } from "../../api/models";
 import PageIndex from "../../components/pageIndex";
 
 const CustomerList = () => {
@@ -9,20 +11,38 @@ const CustomerList = () => {
   // eslint-disable-next-line
   const [totalPages, setTotalPages] = useState(10);
 
+  const [customers, setCustomers] = useState<Customer[]>([]);
+
 
   const responseHanderMethod = (data: any) => {
-     console.log(`responseHanderMethod: ${data}`);
+    console.log(`responseHanderMethod: ${data}`);
+  }
+
+  const customerList = (data: CustomersList) => {
+    console.log(`customerList: ${data}`);
+    setCustomers(data.customers);
+    setSelectedPage(data.currentPage);
+    setTotalPages(data.totalPages);
   }
 
   useEffect(() => {
     console.log("Effect has been called");
     sendGetHelloRequest(responseHanderMethod);
+    sendGetAllCustomers(customerList); // eslint-disable-next-line
   }, []);
 
 
+  const createCustomerRows = (): any => {
+    console.log("createCustomerRows");
+    return (
+      customers.map((customer: Customer) =>
+        <CustomerTableRow customer={customer} />
+      ))
+  };
 
   return (
     <>
+      {console.log(customers)}
       <Row>
         <Accordion>
           <Accordion.Item eventKey="0">
@@ -72,46 +92,7 @@ const CustomerList = () => {
               <td>ΚΑΙΣΑΡΙΑΝΗ/ΑΤΤΙΚΗ</td>
               <td><Button variant="info">Info</Button></td>
             </tr>
-            <tr>
-              <td>2</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td><Button variant="info">Info</Button></td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td><Button variant="info">Info</Button></td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td><Button variant="info">Info</Button></td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td><Button variant="info">Info</Button></td>
-            </tr>
+            {createCustomerRows()}
           </tbody>
         </Table>
         <div className="d-flex justify-content-start">
