@@ -14,6 +14,8 @@ Useful links so far:
 - - Information on Async-Await: https://betterprogramming.pub/should-i-use-promises-or-async-await-126ab5c98789
 
 
+# Project dashboard:
+- https://trello.com/b/HHetOkCY/pet-clinic-project
 
 
 # Getting Started with Create React App
