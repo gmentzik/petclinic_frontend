@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { Customer } from "../../api/models/Customer";
 
 interface Props {
@@ -15,11 +15,18 @@ const CustomerTableRow = (props: Props) => {
                 <td>{customer.id}</td>
                 <td>{customer.surname}</td>
                 <td>{customer.name}</td>
+                <td>{customer.address}</td>
+                <td>{customer.area}</td>
+                <td>{customer.pobox}</td>
+                <td>{customer.country}</td>
+                <td>{customer.email}</td>
                 <td>{customer.phone}</td>
                 <td>{customer.mobilephone}</td>
-                <td>email@mail.com(pending)</td>
-                <td>area (pending)</td>
-                <td><Button variant="info">Info</Button></td>
+                <td>{customer.note1}</td>
+                <td>{customer.note2}</td>
+                <td>{customer.note3}</td>
+                {/* <td> <Button variant="light"><i className="bi bi-pen"></i></Button><Button variant="light"><i className="bi bi-clipboard-pulse"></i></Button></td> */}
+                <td><Link to={""}><i className="bi bi-pen"></i></Link ><Link to={""}><i className="bi bi-clipboard-pulse"></i></Link ></td>
             </tr>
     );
 }

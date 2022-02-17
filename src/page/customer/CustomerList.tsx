@@ -87,24 +87,20 @@ const CustomerList = () => {
               <th>#</th>
               <th>ΕΠΩΝΥΜΟ</th>
               <th>ΟΝΟΜΑ</th>
-              <th>ΤΗΛΕΦΩΝΟ</th>
-              <th>ΚΙΝΗΤΟ ΤΗΛΕΦΩΝΟ</th>
-              <th>EMAIL</th>
+              <th>ΔΙΕ/ΣΗ</th>
               <th>ΠΕΡΙΟΧΗ</th>
+              <th>ΤΚ</th>
+              <th>ΧΩΡΑ</th>
+              <th>EMAIL</th>
+              <th>ΣΤΑΘΕΡΟ</th>
+              <th>ΚΙΝΗΤΟ</th>
+              <th>NOTES 1</th>
+              <th>NOTES 2</th>
+              <th>NOTES 3</th>
               <th>ΕΝΕΡΓΕΙΕΣ</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>ΜΕΝΤΖΙΚΩΦ</td>
-              <td>ΓΙΩΡΓΟΣ</td>
-              <td>2111234567</td>
-              <td>6974123456</td>
-              <td>email@mail.com</td>
-              <td>ΚΑΙΣΑΡΙΑΝΗ/ΑΤΤΙΚΗ</td>
-              <td><Button variant="info">Info</Button></td>
-            </tr>
             {createCustomerRows()}
           </tbody>
         </Table>
