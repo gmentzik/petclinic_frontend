@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Accordion, Button, Col, Form, Row, Table } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { CustomerTableRow } from ".";
 import { sendGetAllCustomers, sendGetHelloRequest } from '../../api/customersApi'
 import { CustomersList, Customer } from "../../api/models";
@@ -13,6 +14,7 @@ const CustomerList = () => {
 
   const [customers, setCustomers] = useState<Customer[]>([]);
 
+  let navigate = useNavigate();
 
   const responseHanderMethod = (data: any) => {
     console.log(`responseHanderMethod: ${data}`);
@@ -48,7 +50,7 @@ const CustomerList = () => {
     console.log("createCustomerRows");
     return (
       customers.map((customer: Customer) =>
-        <CustomerTableRow customer={customer} />
+        <CustomerTableRow key={customer.id} customer={customer} />
       ))
   };
 
@@ -81,22 +83,22 @@ const CustomerList = () => {
         </Accordion>
       </Row>
       <Row>
-        <Table responsive="sm">
+        <Table striped bordered responsive="lg" >
           <thead>
             <tr>
               <th>#</th>
               <th>ΕΠΩΝΥΜΟ</th>
               <th>ΟΝΟΜΑ</th>
-              <th>ΔΙΕ/ΣΗ</th>
+              <th style={{width: '200px'}}>ΔΙΕΥΘΥΝΣΗ</th>
               <th>ΠΕΡΙΟΧΗ</th>
               <th>ΤΚ</th>
               <th>ΧΩΡΑ</th>
               <th>EMAIL</th>
               <th>ΣΤΑΘΕΡΟ</th>
               <th>ΚΙΝΗΤΟ</th>
-              <th>NOTES 1</th>
-              <th>NOTES 2</th>
-              <th>NOTES 3</th>
+              <th style={{width: '110px'}}>NOTES 1</th>
+              <th style={{width: '110px'}}>NOTES 2</th>
+              <th style={{width: '110px'}}>NOTES 3</th>
               <th>ΕΝΕΡΓΕΙΕΣ</th>
             </tr>
           </thead>
@@ -105,7 +107,7 @@ const CustomerList = () => {
           </tbody>
         </Table>
         <div className="d-flex justify-content-start">
-          <Button variant="primary">ΝΕΟΣ ΠΕΛΑΤΗΣ</Button>
+          <Button variant="primary" onClick={() => navigate("form")}>ΝΕΟΣ ΠΕΛΑΤΗΣ</Button>
         </div>
         <PageIndex active={activePage(selectedPage)} total={totalPages}
           goToPage={(page: number) => selectPage(page)}
