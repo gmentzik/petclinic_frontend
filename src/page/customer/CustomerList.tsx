@@ -82,8 +82,8 @@ const CustomerList = () => {
           </Accordion.Item>
         </Accordion>
       </Row>
-      <Row>
-        <Table striped bordered responsive="lg" >
+      <Row className="mb-3">
+        <Table striped bordered responsive="xl" style={{display: "block", overflowX: "scroll"}}>
           <thead>
             <tr>
               <th>#</th>
@@ -96,9 +96,9 @@ const CustomerList = () => {
               <th>EMAIL</th>
               <th>ΣΤΑΘΕΡΟ</th>
               <th>ΚΙΝΗΤΟ</th>
-              <th style={{width: '110px'}}>NOTES 1</th>
-              <th style={{width: '110px'}}>NOTES 2</th>
-              <th style={{width: '110px'}}>NOTES 3</th>
+              <th style={{minWidth: '120px'}}>NOTES 1</th>
+              <th style={{minWidth: '120px'}}>NOTES 2</th>
+              <th style={{minWidth: '120px'}}>NOTES 3</th>
               <th>ΕΝΕΡΓΕΙΕΣ</th>
             </tr>
           </thead>
