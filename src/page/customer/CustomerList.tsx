@@ -83,7 +83,7 @@ const CustomerList = () => {
         </Accordion>
       </Row>
       <Row className="mb-3">
-        <Table striped bordered responsive="xl" style={{display: "block", overflowX: "scroll"}}>
+        <Table id="customersTableId" striped bordered responsive="xl" className="scrollableTable">
           <thead>
             <tr>
               <th>#</th>
@@ -96,9 +96,9 @@ const CustomerList = () => {
               <th>EMAIL</th>
               <th>ΣΤΑΘΕΡΟ</th>
               <th>ΚΙΝΗΤΟ</th>
-              <th style={{minWidth: '120px'}}>NOTES 1</th>
-              <th style={{minWidth: '120px'}}>NOTES 2</th>
-              <th style={{minWidth: '120px'}}>NOTES 3</th>
+              <th className="notesHeaderCell">NOTES 1</th>
+              <th className="notesHeaderCell">NOTES 2</th>
+              <th className="notesHeaderCell">NOTES 3</th>
               <th>ΕΝΕΡΓΕΙΕΣ</th>
             </tr>
           </thead>

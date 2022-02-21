@@ -18,7 +18,10 @@ Useful links so far:
 - - https://icons.getbootstrap.com/
 - - https://www.npmjs.com/package/react-bootstrap-icons
 
-
+- Usefull tutorial links for login indication
+- - https://www.bezkoder.com/react-jwt-auth/
+- - https://www.bezkoder.com/react-redux-jwt-auth/
+- - https://www.bezkoder.com/redux-refresh-token-axios/
 
 # Project dashboard:
 - https://trello.com/b/HHetOkCY/pet-clinic-project

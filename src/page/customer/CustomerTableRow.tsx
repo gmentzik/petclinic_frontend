@@ -23,9 +23,9 @@ const CustomerTableRow = (props: Props) => {
             <td>{customer.email}</td>
             <td>{customer.phone}</td>
             <td>{customer.mobilephone}</td>
-            <td>{customer.note1}</td>
-            <td>{customer.note2}</td>
-            <td>{customer.note3}</td>
+            <td className="notesTableDataCell"><div>{customer.note1}</div></td>
+            <td className="notesTableDataCell"><div>{customer.note2}</div></td>
+            <td className="notesTableDataCell"><div>{customer.note3}</div></td>
             <td>
                 <CustomBSTooltipTop tooltipText={"Διόρθωση Στοιχείων"} uniqueIdAndDescriptionText={`${customer.id}-edit-customer`} >
                     <Link className="paddingLeft4px" key={customer.id} to={"form/" + customer.id} ><i className="bi bi-pen"></i></Link >
