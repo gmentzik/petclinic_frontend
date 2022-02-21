@@ -13,6 +13,15 @@ Useful links so far:
 - - Official documentation https://axios-http.com/docs/intro
 - - Information on Async-Await: https://betterprogramming.pub/should-i-use-promises-or-async-await-126ab5c98789
 
+- Add and use bootstap icons
+- - https://www.kindacode.com/article/how-to-use-bootstrap-5-and-bootstrap-icons-in-react/
+- - https://icons.getbootstrap.com/
+- - https://www.npmjs.com/package/react-bootstrap-icons
+
+- Usefull tutorial links for login indication
+- - https://www.bezkoder.com/react-jwt-auth/
+- - https://www.bezkoder.com/react-redux-jwt-auth/
+- - https://www.bezkoder.com/redux-refresh-token-axios/
 
 # Project dashboard:
 - https://trello.com/b/HHetOkCY/pet-clinic-project

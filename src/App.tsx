@@ -18,7 +18,7 @@ const mapStateToProps = (state: State) => {
   })
 }
 
-const mapDispatchToProps = (dispatch:any) => {
+const mapDispatchToProps = (dispatch: any) => {
   return ({
     increaseStoreCounter: () => {
       dispatch(increaseCount());
@@ -28,27 +28,27 @@ const mapDispatchToProps = (dispatch:any) => {
   })
 }
 
-const App = (props:any) => {
- 
+const App = (props: any) => {
+
   return (
     <div className="App">
       <header className="App-header">
         <Header />
       </header>
-      <body>
+      <main>
         <Container fluid="md">
           <Routes>
             <Route path="/" element={
-            <HomePage 
-             counterMessage={props.counterState.message} 
-             anotherMessage={props.anotherState.message}
-             counterValue={props.counterState.count} 
-             anotherValue={props.anotherState.count} 
-             increaseStoreCounter={props.increaseStoreCounter}
-             decreaseStoreCounter={props.decreaseStoreCounter}
-             resetStoreCounter={props.resetStoreCounter}
-             />
-             } />
+              <HomePage
+                counterMessage={props.counterState.message}
+                anotherMessage={props.anotherState.message}
+                counterValue={props.counterState.count}
+                anotherValue={props.anotherState.count}
+                increaseStoreCounter={props.increaseStoreCounter}
+                decreaseStoreCounter={props.decreaseStoreCounter}
+                resetStoreCounter={props.resetStoreCounter}
+              />
+            } />
             <Route path="customers" element={<CustomerList />} />
             <Route path="customers/form" element={<CustomerForm />} >
               <Route path=":customerId" element={<CustomerForm />} />
@@ -64,7 +64,7 @@ const App = (props:any) => {
             />
           </Routes>
         </Container>
-      </body>
+      </main>
     </div>
   );
 }

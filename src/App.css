@@ -44,3 +44,31 @@
 .marginTop32px {
   margin-top: 32px;
 }
+
+.paddingLeft4px {
+  padding-left: 4px;
+}
+
+table.scrollableTable {
+  display: block !important; 
+  overflow: auto;
+}
+
+/* #customersTableId {
+
+} */
+
+th.notesHeaderCell {
+  min-width: 200px;
+}
+
+td.notesTableDataCell div {
+  font-size: 0.625rem;
+  word-wrap: break-word;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  max-height: 100px !important;
+  overflow-y: auto;
+  overflow-x: hidden;
+}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Accordion, Button, Col, Form, Row, Table } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { CustomerTableRow } from ".";
 import { sendGetAllCustomers, sendGetHelloRequest } from '../../api/customersApi'
 import { CustomersList, Customer } from "../../api/models";
@@ -13,6 +14,7 @@ const CustomerList = () => {
 
   const [customers, setCustomers] = useState<Customer[]>([]);
 
+  let navigate = useNavigate();
 
   const responseHanderMethod = (data: any) => {
     console.log(`responseHanderMethod: ${data}`);
@@ -48,7 +50,7 @@ const CustomerList = () => {
     console.log("createCustomerRows");
     return (
       customers.map((customer: Customer) =>
-        <CustomerTableRow customer={customer} />
+        <CustomerTableRow key={customer.id} customer={customer} />
       ))
   };
 
@@ -80,36 +82,32 @@ const CustomerList = () => {
           </Accordion.Item>
         </Accordion>
       </Row>
-      <Row>
-        <Table responsive="sm">
+      <Row className="mb-3">
+        <Table id="customersTableId" striped bordered responsive="xl" className="scrollableTable">
           <thead>
             <tr>
               <th>#</th>
               <th>ΕΠΩΝΥΜΟ</th>
               <th>ΟΝΟΜΑ</th>
-              <th>ΤΗΛΕΦΩΝΟ</th>
-              <th>ΚΙΝΗΤΟ ΤΗΛΕΦΩΝΟ</th>
-              <th>EMAIL</th>
+              <th style={{width: '200px'}}>ΔΙΕΥΘΥΝΣΗ</th>
               <th>ΠΕΡΙΟΧΗ</th>
+              <th>ΤΚ</th>
+              <th>ΧΩΡΑ</th>
+              <th>EMAIL</th>
+              <th>ΣΤΑΘΕΡΟ</th>
+              <th>ΚΙΝΗΤΟ</th>
+              <th className="notesHeaderCell">NOTES 1</th>
+              <th className="notesHeaderCell">NOTES 2</th>
+              <th className="notesHeaderCell">NOTES 3</th>
               <th>ΕΝΕΡΓΕΙΕΣ</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>ΜΕΝΤΖΙΚΩΦ</td>
-              <td>ΓΙΩΡΓΟΣ</td>
-              <td>2111234567</td>
-              <td>6974123456</td>
-              <td>email@mail.com</td>
-              <td>ΚΑΙΣΑΡΙΑΝΗ/ΑΤΤΙΚΗ</td>
-              <td><Button variant="info">Info</Button></td>
-            </tr>
             {createCustomerRows()}
           </tbody>
         </Table>
         <div className="d-flex justify-content-start">
-          <Button variant="primary">ΝΕΟΣ ΠΕΛΑΤΗΣ</Button>
+          <Button variant="primary" onClick={() => navigate("form")}>ΝΕΟΣ ΠΕΛΑΤΗΣ</Button>
         </div>
         <PageIndex active={activePage(selectedPage)} total={totalPages}
           goToPage={(page: number) => selectPage(page)}
