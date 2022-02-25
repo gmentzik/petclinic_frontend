@@ -1,6 +1,6 @@
 import axios from "axios";
 import { authenticateUserUrl } from '../constants';
-import { ErrorData } from '../api/models'
+import { ErrorData, User } from '../api/models'
 
 
 export const authenticateUserRequest = async (uname: string, upassword: string, loginSuccess: Function,  loginFail: Function) => {
@@ -20,8 +20,8 @@ export const authenticateUserRequest = async (uname: string, upassword: string, 
 
     try {
         const resp = await axios.post(authenticateUserUrl, user);
-        console.log(resp.data.token);
-        localStorage.setItem('mykey', resp.data.token);
+        console.log(resp.data);
+        localStorage.setItem('petUser', JSON.stringify(resp.data));
         loginSuccess();
     } catch (error:any ) {
         // Handle Error Here
@@ -53,3 +53,15 @@ export const authenticateUserRequest = async (uname: string, upassword: string, 
         
     }
 };
+
+export const getCurrentUser= ():User => {
+    const petUserJson = localStorage.getItem('petUser');
+    const petUser:User = petUserJson !== null ? JSON.parse(petUserJson) : unknownUser;
+    return petUser;
+}
+
+export const unknownUser:User = {
+    userName: "",
+    jwttoken: "",
+    roles: ""
+}
