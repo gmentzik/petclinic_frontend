@@ -1,21 +1,42 @@
-import { CounterActionTypes } from './actionTypes'
 import { authenticateUserRequest } from '../api/userApi_redux';
 import { AxiosError } from "axios";
 import { ErrorData } from '../api/models';
+import { UserReducerActionTypes } from '../actions/actionTypes';
+import { UserInfo } from '../reducers/dto/userReducerDto';
+import { unknownUser } from '../api/models/User';
 
 // export const login = (username, password) => (dispatch) => {
-export const login = (username: string, password: string, loginSuccess: Function, loginFail: Function) => {
+export const login = (username: string, password: string, loginSuccess: Function, loginFail: Function) => (dispatcher:any) => {
 
   return authenticateUserRequest(username, password).then(
     (data) => {
       localStorage.setItem('petUser', JSON.stringify(data));
-      // dispatch({
-      //   type: LOGIN_SUCCESS,
-      //   payload: { user: data },
-      // });
+      const payload:UserInfo = {
+        user: data,
+        errmessage: '',
+        loggedIn: true
+      }
+      dispatcher({
+        type: UserReducerActionTypes.LOGIN_SUCCESS,
+        payload,
+      });
       return loginSuccess();
     })
     .catch((e) => handlerError(e, loginFail));
+
+
+}
+
+export const logout = () => (dispatcher:any) =>  {
+  const payload:UserInfo = {
+    user: unknownUser,
+    errmessage: '',
+    loggedIn: false
+  }
+  dispatcher({
+    type: UserReducerActionTypes.LOGOUT,
+    payload,
+  });
 
 
 }

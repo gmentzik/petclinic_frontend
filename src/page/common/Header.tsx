@@ -1,6 +1,7 @@
 import React from "react";
 import { Container, Nav, Navbar, NavDropdown, } from 'react-bootstrap';
 import { Link, createSearchParams } from "react-router-dom";
+import { User } from "../../api/models";
 import logo from '../../images/logo.svg';
 
 // Magic of interconnecting React-Router 5 Link and React-Bootstrap comes from this link:
@@ -13,8 +14,14 @@ const location =
     search: `?${createSearchParams(params)}`,
 }
 
+interface Props {
+    loggedIn: boolean;
+    user: User;
+    logout: () => void;
+}
 
-const Header = () => {
+const Header = (props:Props) => {
+    console.log("HEADER received user: " + JSON.stringify(props.user));
     return (
         <>
             <Navbar bg="dark" variant="dark">
@@ -40,7 +47,9 @@ const Header = () => {
                             </NavDropdown>
                         </Nav>
                         <Nav>
-                            <Nav.Link as={Link} to="login">Login</Nav.Link>
+                            {!props.loggedIn && <Nav.Link as={Link} to="login">Login</Nav.Link>}
+                            {props.loggedIn && <Nav.Link as={Link} to="">{props.user.username}</Nav.Link>}
+                            {props.loggedIn && <Nav.Link as={Link} to="" onClick={props.logout}>Logout</Nav.Link>}
                             <Nav.Link as={Link} eventKey={2} to="help">Help</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { authenticateUserUrl } from '../constants';
-import { ErrorData, User } from '../api/models'
+import { ErrorData, User } from '../api/models';
+import { unknownUser } from "./models/User";
 
 
 export const authenticateUserRequest = async (uname: string, upassword: string, loginSuccess: Function,  loginFail: Function) => {
@@ -60,8 +61,3 @@ export const getCurrentUser= ():User => {
     return petUser;
 }
 
-export const unknownUser:User = {
-    userName: "",
-    jwttoken: "",
-    roles: ""
-}

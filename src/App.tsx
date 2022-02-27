@@ -9,12 +9,14 @@ import { Route, Routes } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { State } from './reducers';
 import { decreaseCount, increaseCount, resetCount } from './actions/counterActions';
+import { login, logout } from './actions/loginActions';
 
 const mapStateToProps = (state: State) => {
   console.log(state) // state
   return ({
     counterState: state.counterReducer,
-    anotherState: state.anotherReducer
+    anotherState: state.anotherReducer,
+    userState: state.userReducer
   })
 }
 
@@ -25,6 +27,8 @@ const mapDispatchToProps = (dispatch: any) => {
     },
     decreaseStoreCounter: () => dispatch(decreaseCount()),
     resetStoreCounter: () => dispatch(resetCount()),
+    login: (username: string, password: string, loginSuccess: Function, loginFail: Function) => dispatch(login(username, password, loginSuccess, loginFail)),
+    logout: () => dispatch(logout()),
   })
 }
 
@@ -33,7 +37,11 @@ const App = (props: any) => {
   return (
     <div className="App">
       <header className="App-header">
-        <Header />
+        <Header
+          loggedIn={props.userState.loggedIn}
+          user={props.userState.user}
+          logout={props.logout}
+        />
       </header>
       <main>
         <Container fluid="md">
@@ -53,7 +61,9 @@ const App = (props: any) => {
             <Route path="customers/form" element={<CustomerForm />} >
               <Route path=":customerId" element={<CustomerForm />} />
             </Route>
-            <Route path="login" element={<Login />} />
+            <Route path="login" element={<Login
+              login={props.login}
+            />} />
             <Route
               path="*"
               element={

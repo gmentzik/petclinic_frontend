@@ -8,7 +8,11 @@ import { useNavigate } from 'react-router-dom';
 //     target: T,
 // }
 
-const Login = () => {
+interface Props {
+    login: (username: string, password: string, loginSuccess: Function, loginFail: Function) => void;
+}
+
+const Login = (props:Props) => {
 
     const [userName, setUserName] = useState('');
     const [userPassword, setUserPassword] = useState('');
@@ -32,7 +36,8 @@ const Login = () => {
         console.log(userName);
         console.log(userPassword);
         // authenticateUserRequest(userName, userPassword, loginSuccess, loginFailed);
-        login(userName, userPassword, loginSuccess, loginFailed);
+        // login(userName, userPassword, loginSuccess, loginFailed);
+        props.login(userName, userPassword, loginSuccess, loginFailed);
     }
 
     const loginSuccess = () => {
