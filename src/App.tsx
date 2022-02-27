@@ -9,7 +9,7 @@ import { Route, Routes } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { State } from './reducers';
 import { decreaseCount, increaseCount, resetCount } from './actions/counterActions';
-import { login, logout } from './actions/loginActions';
+import { login } from './actions/loginActions';
 
 const mapStateToProps = (state: State) => {
   console.log(state) // state
@@ -28,7 +28,6 @@ const mapDispatchToProps = (dispatch: any) => {
     decreaseStoreCounter: () => dispatch(decreaseCount()),
     resetStoreCounter: () => dispatch(resetCount()),
     login: (username: string, password: string, loginSuccess: Function, loginFail: Function) => dispatch(login(username, password, loginSuccess, loginFail)),
-    logout: () => dispatch(logout()),
   })
 }
 
@@ -37,11 +36,7 @@ const App = (props: any) => {
   return (
     <div className="App">
       <header className="App-header">
-        <Header
-          loggedIn={props.userState.loggedIn}
-          user={props.userState.user}
-          logout={props.logout}
-        />
+        <Header />
       </header>
       <main>
         <Container fluid="md">
