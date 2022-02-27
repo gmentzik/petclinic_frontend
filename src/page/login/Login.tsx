@@ -1,6 +1,7 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { Alert, Button, Form, Toast, ToastContainer } from "react-bootstrap";
-import { authenticateUserRequest } from '../../api/userApi';
+// import { authenticateUserRequest } from '../../api/userApi';
+import { login } from '../../actions/loginActions';
 import { useNavigate } from 'react-router-dom';
 
 // type HTMLElementEvent<T extends HTMLElement> = Event & {
@@ -13,7 +14,8 @@ const Login = () => {
     const [userPassword, setUserPassword] = useState('');
     const [signInFailedError, setSignInFailedError] = useState(null);
     const [showA, setShowA] = useState(false);
-    const navigate = useNavigate();
+    const [successLogin, setSuccessLogin] = useState(false);
+    // const navigate = useNavigate();
 
     const toggleShowA = () => setShowA(!showA);
 
@@ -29,18 +31,21 @@ const Login = () => {
         event.preventDefault();
         console.log(userName);
         console.log(userPassword);
-        authenticateUserRequest(userName, userPassword, loginSuccess, loginFailed);
+        // authenticateUserRequest(userName, userPassword, loginSuccess, loginFailed);
+        login(userName, userPassword, loginSuccess, loginFailed);
     }
 
     const loginSuccess = () => {
         toggleShowA();
         setSignInFailedError(null);
-        navigate('/customers');
+        // navigate('/customers');
+        setSuccessLogin(true);
 
     }
 
     const loginFailed = (err: any) => {
         setSignInFailedError(err);
+        setSuccessLogin(false);
     }
 
     return (
@@ -53,7 +58,7 @@ const Login = () => {
                     <Toast.Body>You have signed in successfuly!</Toast.Body>
                 </Toast>
             </ToastContainer>
-            <Form onSubmit={handleSubmit}>
+            {!successLogin &&<Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Username</Form.Label>
                     <Form.Control type="text" name="username" placeholder="Username" onChange={handleChange} defaultValue={userName} />
@@ -66,7 +71,10 @@ const Login = () => {
                 <Button variant="primary" type="submit" >
                     Login
                 </Button>
-            </Form>
+            </Form>}
+            {successLogin && <div>
+                <strong>Logged in successfuly!</strong>
+            </div>}
 
             {signInFailedError && <Alert className={'marginTop10px'} variant={'danger'}>
                 Sign in failed ( {signInFailedError} )
