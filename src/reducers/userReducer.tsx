@@ -2,16 +2,19 @@ import { User } from '../api/models';
 import { unknownUser } from '../api/models/User';
 import { UserReducerActionTypes } from '../actions/actionTypes'
 import { UserInfo } from './dto/userReducerDto';
+import { BooleanLiteral } from 'typescript';
 
 export interface UserState {
   user: User;
+  loginerror: boolean;
   errmessage: string;
   loggedIn: boolean;
 }
 
 const createDefaultState = (): UserState => ({
   user: unknownUser,
-  errmessage: "AnotherReducerStateMessage",
+  loginerror: false,
+  errmessage: "",
   loggedIn: false
 });
 
@@ -32,6 +35,7 @@ const handleUserInfo = (
 ): UserState => ({
   ...state,
   user: userInfo.user || unknownUser,
+  loginerror: userInfo.loginerror,
   errmessage: userInfo.errmessage || '',
   loggedIn: userInfo.loggedIn,
 });

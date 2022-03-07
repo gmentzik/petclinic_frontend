@@ -1,14 +1,14 @@
 import axios from "axios";
 import { customerHelloUrl, customerUrl, tokenPrefix } from '../constants'
 import { CustomersList } from "../api/models";
-import { getCurrentUser } from "../api/userApi";
+import { getCurrentUserFromLocalStorage } from "../utils/localStorageUtils";
 // import { useNavigate  } from "react-router-dom";
 
 // const receivedToken = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTYzNzQ5MjQwOSwiaWF0IjoxNjM3NDkyMTA5fQ.h_NQIL-NMoFE2hEWNG5jlvVji7TPTRXlyHxS6xVoh0F0oq0-u4AMg8R0J-sfyyWajuVfrROCEy6uaAWEihRNGw'
 
 const sendGetHelloRequest = async ( responseHander:Function ) => {
     
-   const storedToken = getCurrentUser().jwttoken;
+   const storedToken = getCurrentUserFromLocalStorage().jwttoken;
    
    console.log('token is localStorage: ' + storedToken);
    const token = tokenPrefix + storedToken;
@@ -32,7 +32,7 @@ const sendGetHelloRequest = async ( responseHander:Function ) => {
 
 const sendGetAllCustomers = async ( responseHander:Function, page?:number, size?:number ) => {
     
-  const storedToken = getCurrentUser().jwttoken;
+  const storedToken = getCurrentUserFromLocalStorage().jwttoken;
       
       console.log('token is localStorage: ' + storedToken);
       const token = tokenPrefix + storedToken;

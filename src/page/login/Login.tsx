@@ -1,27 +1,26 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
-import { Alert, Button, Form, Toast, ToastContainer } from "react-bootstrap";
-// import { authenticateUserRequest } from '../../api/userApi';
-import { login } from '../../actions/loginActions';
-import { useNavigate } from 'react-router-dom';
+import { Alert, Button, Form } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { State } from "../../reducers";
 
 // type HTMLElementEvent<T extends HTMLElement> = Event & {
 //     target: T,
 // }
 
 interface Props {
-    login: (username: string, password: string, loginSuccess: Function, loginFail: Function) => void;
+    login: (username: string, password: string) => void;
 }
 
-const Login = (props:Props) => {
+const Login = (props: Props) => {
 
     const [userName, setUserName] = useState('');
     const [userPassword, setUserPassword] = useState('');
-    const [signInFailedError, setSignInFailedError] = useState(null);
-    const [showA, setShowA] = useState(false);
-    const [successLogin, setSuccessLogin] = useState(false);
-    // const navigate = useNavigate();
 
-    const toggleShowA = () => setShowA(!showA);
+    const [successLogin, setSuccessLogin] = useState(false);
+
+    const loggedIn: boolean = useSelector((state: State) => state.userReducer.loggedIn);
+    const loginerror: boolean = useSelector((state: State) => state.userReducer.loginerror);
+    const errmessage: string = useSelector((state: State) => state.userReducer.errmessage);
 
     const handleChange = (event: ChangeEvent) => {
         const target = event.target as HTMLFormElement;
@@ -35,35 +34,13 @@ const Login = (props:Props) => {
         event.preventDefault();
         console.log(userName);
         console.log(userPassword);
-        // authenticateUserRequest(userName, userPassword, loginSuccess, loginFailed);
-        // login(userName, userPassword, loginSuccess, loginFailed);
-        props.login(userName, userPassword, loginSuccess, loginFailed);
+        props.login(userName, userPassword);
     }
 
-    const loginSuccess = () => {
-        toggleShowA();
-        setSignInFailedError(null);
-        // navigate('/customers');
-        setSuccessLogin(true);
-
-    }
-
-    const loginFailed = (err: any) => {
-        setSignInFailedError(err);
-        setSuccessLogin(false);
-    }
 
     return (
         <>
-            <ToastContainer className="p-3" position={'top-center'}>
-                <Toast show={showA} bg={'info'} onClose={toggleShowA} delay={3000} autohide className={'marginTop32px'}>
-                    {/* <Toast.Header>
-                        <strong className="me-auto">Sign In</strong>
-                    </Toast.Header> */}
-                    <Toast.Body>You have signed in successfuly!</Toast.Body>
-                </Toast>
-            </ToastContainer>
-            {!successLogin &&<Form onSubmit={handleSubmit}>
+            {!loggedIn && <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Username</Form.Label>
                     <Form.Control type="text" name="username" placeholder="Username" onChange={handleChange} defaultValue={userName} />
@@ -77,12 +54,13 @@ const Login = (props:Props) => {
                     Login
                 </Button>
             </Form>}
-            {successLogin && <div>
-                <strong>Logged in successfuly!</strong>
-            </div>}
 
-            {signInFailedError && <Alert className={'marginTop10px'} variant={'danger'}>
-                Sign in failed ( {signInFailedError} )
+            {loggedIn && <Alert className={'marginTop10px'} variant={'success'}>
+                Logged in successfuly!
+            </Alert>}
+
+            {loginerror && <Alert className={'marginTop10px'} variant={'danger'}>
+                Login failed: ( {errmessage} )
             </Alert>}
         </>
     );

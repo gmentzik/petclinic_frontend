@@ -1,18 +1,21 @@
-import { authenticateUserRequest } from '../api/userApi_redux';
+import { authenticateUserRequest } from '../api/userApi';
 import { AxiosError } from "axios";
-import { ErrorData } from '../api/models';
+import { ErrorData, User } from '../api/models';
 import { UserReducerActionTypes } from '../actions/actionTypes';
 import { UserInfo } from '../reducers/dto/userReducerDto';
 import { unknownUser } from '../api/models/User';
+import { removeCurrentUserFromLocalStorage, storeCurrentUserFromLocalStorage } from '../utils/localStorageUtils';
+
 
 // export const login = (username, password) => (dispatch) => {
-export const login = (username: string, password: string, loginSuccess: Function, loginFail: Function) => (dispatcher:any) => {
+export const login = (username: string, password: string) => (dispatcher:any) => {
 
   return authenticateUserRequest(username, password).then(
-    (data) => {
-      localStorage.setItem('petUser', JSON.stringify(data));
+    (data:User) => {
+      storeCurrentUserFromLocalStorage(data);
       const payload:UserInfo = {
         user: data,
+        loginerror: false,
         errmessage: '',
         loggedIn: true
       }
@@ -20,16 +23,17 @@ export const login = (username: string, password: string, loginSuccess: Function
         type: UserReducerActionTypes.LOGIN_SUCCESS,
         payload,
       });
-      return loginSuccess();
-    })
-    .catch((e) => handlerError(e, loginFail));
 
+    })
+    .catch((e) => handlerError(e, dispatcher));
 
 }
 
 export const logout = () => (dispatcher:any) =>  {
+  removeCurrentUserFromLocalStorage();
   const payload:UserInfo = {
     user: unknownUser,
+    loginerror: false,
     errmessage: '',
     loggedIn: false
   }
@@ -41,8 +45,10 @@ export const logout = () => (dispatcher:any) =>  {
 
 }
 
-const handlerError = (error: AxiosError, loginFail: Function) => {
-  const message =
+const handlerError = (error: AxiosError, dispatcher: any) => {
+  removeCurrentUserFromLocalStorage();
+  
+  let errmessage = 
     (error.response &&
       error.response.data &&
       error.response.data.message) ||
@@ -53,27 +59,33 @@ const handlerError = (error: AxiosError, loginFail: Function) => {
     // Request made and server responded
     const errorData: ErrorData = error.response.data;
     if (errorData) {
-      loginFail(`${errorData.message}: ${errorData.details.join()}`);
-      // dispatch({
-      //   type: LOGIN_FAIL,
-      // });
-      // dispatch({
-      //   type: SET_MESSAGE,
-      //   payload: message,
-      // });
+      console.log(`${errorData.message}: ${errorData.details.join()}`);
+      errmessage = `${errorData.message}: ${errorData.details.join()}`;
     }
-    else {
-      loginFail(message);
-    }
+
 
   } else if (error.request) {
     // The request was made but no response was received
     console.log(error.request);
-    loginFail("The request was made but no response was received");
+    errmessage = "The request was made but no response was received";
   } else {
     // Something happened in setting up the request that triggered an Error
     console.log('Error', error.message);
-    loginFail(error.message);
+    errmessage = 'Error:' + error.message;
   }
 
+  const payload:UserInfo = {
+    user: unknownUser,
+    loginerror: true,
+    errmessage: errmessage,
+    loggedIn: false
+  }
+  dispatcher({
+    type: UserReducerActionTypes.LOGIN_ERROR,
+    payload,
+  });
+
+
 }
+
+

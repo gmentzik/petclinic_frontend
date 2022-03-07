@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import { Container } from 'react-bootstrap';
 import { CustomerList, CustomerForm } from './page/customer';
@@ -27,7 +27,7 @@ const mapDispatchToProps = (dispatch: any) => {
     },
     decreaseStoreCounter: () => dispatch(decreaseCount()),
     resetStoreCounter: () => dispatch(resetCount()),
-    login: (username: string, password: string, loginSuccess: Function, loginFail: Function) => dispatch(login(username, password, loginSuccess, loginFail)),
+    login: (username: string, password: string) => dispatch(login(username, password)),
   })
 }
 
