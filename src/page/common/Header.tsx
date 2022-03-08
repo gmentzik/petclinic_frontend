@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Container, Nav, Navbar, NavDropdown, } from 'react-bootstrap';
+import React, { useEffect, useState } from "react";
+import { Container, Nav, Navbar, NavDropdown, Toast, ToastContainer, } from 'react-bootstrap';
 import { useDispatch, useSelector } from "react-redux";
 import { Link, createSearchParams } from "react-router-dom";
 import { User } from "../../api/models";
@@ -24,26 +24,36 @@ const location =
 
 const Header = () => {
 
-    const loggedIn:boolean = useSelector((state: State) => state.userReducer.loggedIn);
-    const user:User = useSelector((state: State) => state.userReducer.user);
+    const loggedIn: boolean = useSelector((state: State) => state.userReducer.loggedIn);
+    const user: User = useSelector((state: State) => state.userReducer.user);
     const dispatcher = useDispatch();
 
     useEffect(() => {
         const lastKnownUser = getCurrentUserFromLocalStorage();
         if (lastKnownUser.username !== '' && lastKnownUser.jwttoken !== '') {
-          const payload: UserInfo = {
-            user: lastKnownUser,
-            loginerror: false,
-            errmessage: '',
-            loggedIn: true
-          }
-          dispatcher({
-            type: UserReducerActionTypes.LOGIN_SUCCESS,
-            payload,
-          });
+            const payload: UserInfo = {
+                user: lastKnownUser,
+                loginerror: false,
+                errmessage: '',
+                loggedIn: true
+            }
+            dispatcher({
+                type: UserReducerActionTypes.LOGIN_SUCCESS,
+                payload,
+            });
         }
-      }, []);
-    
+    }, []);
+
+    const [showA, setShowA] = useState(true);
+    const [showB, setShowB] = useState(true);
+    const [showC, setShowC] = useState(true);
+  
+    const toggleShowA = () => {
+        console.log("toggleShowA");
+        setShowA(!showA);
+    };
+    const toggleShowB = () => setShowB(!showB);
+    const toggleShowC = () => setShowC(!showC);
 
     return (
         <>
@@ -78,6 +88,34 @@ const Header = () => {
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
+            <div id='notificationsContainer' style={{ position:'relative', zIndex: 100 }} className="row" >
+                <ToastContainer className="p-3" position={'top-end'} style={{ marginRight: '10px'}}>
+                    <Toast bg={'info'} show={showA} onClose={toggleShowA}  delay={3000} autohide>
+                        <Toast.Header>
+                            <img src="holder.js/20x20?text=%20" className="rounded me-2" alt="" />
+                            <strong className="me-auto">Bootstrap</strong>
+                            <small className="text-muted">just now</small>
+                        </Toast.Header>
+                        <Toast.Body>See? Just like this.</Toast.Body>
+                    </Toast>
+                    <Toast bg={'warning'} show={showB} onClose={toggleShowB}  delay={8000} autohide>
+                        <Toast.Header>
+                            <img src="holder.js/20x20?text=%20" className="rounded me-2" alt="" />
+                            <strong className="me-auto">Bootstrap</strong>
+                            <small className="text-muted">2 seconds ago</small>
+                        </Toast.Header>
+                        <Toast.Body>Heads up, toasts will stack automatically</Toast.Body>
+                    </Toast>
+                    <Toast bg={'danger'} show={showC} onClose={toggleShowC}  delay={12000} autohide>
+                        <Toast.Header>
+                            <img src="holder.js/20x20?text=%20" className="rounded me-2" alt="" />
+                            <strong className="me-auto">Bootstrap</strong>
+                            <small className="text-muted">2 seconds ago</small>
+                        </Toast.Header>
+                        <Toast.Body>Heads up, toasts will stack automatically</Toast.Body>
+                    </Toast>
+                </ToastContainer>
+            </div>
         </>
     );
 
