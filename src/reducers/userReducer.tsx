@@ -2,7 +2,7 @@ import { User } from '../api/models';
 import { unknownUser } from '../api/models/User';
 import { UserReducerActionTypes } from '../actions/actionTypes'
 import { UserInfo } from './dto/userReducerDto';
-import { BooleanLiteral } from 'typescript';
+
 
 export interface UserState {
   user: User;

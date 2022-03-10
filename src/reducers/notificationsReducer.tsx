@@ -1,29 +1,70 @@
+import { couldStartTrivia } from "typescript";
 import { NotificationsReducerActionTypes } from "../actions/actionTypes";
 import { getUtcSecondsSinceEpoch } from "../utils/timeDateUtils";
 
-export interface Notification {
+export enum NotificationMessageType {
+  SUCCESS = 'success',
+  INFO = 'info',
+  WARNING = 'warning',
+  ERROR = 'danger'
+}
+export interface NotificationMessage {
   timestamp: number;
-  type: string;
+  type: NotificationMessageType;
+  header: string;
   message: string;
 }
 
 export interface NotificationsState {
-  notificationsList: Notification[];
+  notificationsList: NotificationMessage[];
 }
 
-const createDefaultState = (): NotificationsState => ({
-  notificationsList: [],
-});
 
+
+
+
+const msg1: NotificationMessage = {
+  timestamp: getUtcSecondsSinceEpoch(),
+  type: NotificationMessageType.INFO,
+  header: NotificationMessageType.INFO.toLocaleUpperCase(),
+  message: 'Info Message'
+}
+
+const msg2: NotificationMessage = {
+  timestamp: getUtcSecondsSinceEpoch() + 5,
+  type: NotificationMessageType.WARNING,
+  header: NotificationMessageType.WARNING.toLocaleUpperCase(),
+  message: 'Warning Message'
+}
+
+const msg3: NotificationMessage = {
+  timestamp: getUtcSecondsSinceEpoch() + 10,
+  type: NotificationMessageType.ERROR,
+  header: NotificationMessageType.ERROR.toLocaleUpperCase(),
+  message: 'Error Message'
+}
+
+const msg4: NotificationMessage = {
+  timestamp: getUtcSecondsSinceEpoch() + 20,
+  type: NotificationMessageType.SUCCESS,
+  header: NotificationMessageType.SUCCESS.toLocaleUpperCase(),
+  message: 'Success Message'
+}
+
+const testArray: NotificationMessage[] = [msg1, msg2, msg3, msg4];
+
+const createDefaultState = (): NotificationsState => ({
+  notificationsList: testArray,
+  // notificationsList: [],
+});
 interface ActionType {
   type: string;
-  payload: Notification
+  payload: NotificationMessage
 }
 
 export const notificationsReducer = (state: NotificationsState = createDefaultState(), action: ActionType): NotificationsState => {
   switch (action.type) {
     case NotificationsReducerActionTypes.ADD_NOTIFICATION:
-
       return {
         ...state,
         notificationsList: addNewNotificationToList(state.notificationsList, action.payload),
@@ -33,7 +74,7 @@ export const notificationsReducer = (state: NotificationsState = createDefaultSt
         ...state,
         notificationsList: removeNotificationMessage(state.notificationsList, action.payload.timestamp),
       };
-    case NotificationsReducerActionTypes.REMOVE_NOTIFICATION:
+    case NotificationsReducerActionTypes.CLEAR_ALL_NOTIFICATIONS:
       return {
         ...state,
         notificationsList: [],
@@ -43,21 +84,23 @@ export const notificationsReducer = (state: NotificationsState = createDefaultSt
   }
 };
 
-const addNewNotificationToList = (notificationsArray: Notification[], newNotification: Notification): Notification[] => {
-  const notificationToAdd: Notification = {
-    timestamp: getUtcSecondsSinceEpoch(),
-    type: newNotification.type,
-    message: newNotification.message
-  }
-  return [...notificationsArray, notificationToAdd];
+const addNewNotificationToList = (notificationsArray: NotificationMessage[], newNotification: NotificationMessage): NotificationMessage[] => {
+  return [...notificationsArray, newNotification];
 }
 
-const removeNotificationMessage = (notificationsArray: Notification[], notificationToRemoveTimestamp: number): Notification[] => {
+const removeNotificationMessage = (notificationsArray: NotificationMessage[], notificationToRemoveTimestamp: number): NotificationMessage[] => {
   const foundIndex = notificationsArray.findIndex(
     (notification) => notification.timestamp === notificationToRemoveTimestamp
   );
+  console.log(foundIndex);
+
   if (foundIndex > -1) {
-    return notificationsArray.slice(foundIndex, 1);
+    let deepCopyArray: NotificationMessage[] = [];
+    notificationsArray.forEach(element => {
+      deepCopyArray.push(element);
+    });
+    deepCopyArray.splice(foundIndex, 1);
+    return deepCopyArray;
   }
   return notificationsArray;
 }

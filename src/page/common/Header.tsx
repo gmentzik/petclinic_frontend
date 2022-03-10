@@ -10,6 +10,9 @@ import { getCurrentUserFromLocalStorage } from "../../utils/localStorageUtils";
 
 import { UserReducerActionTypes } from '../../actions/actionTypes';
 import { UserInfo } from "../../reducers/dto/userReducerDto";
+import { NotificationMessage } from "../../reducers/notificationsReducer";
+import { getUtcSecondsSinceEpoch } from "../../utils/timeDateUtils";
+import { removeNotification } from "../../actions/notificationActions";
 
 
 // Magic of interconnecting React-Router 5 Link and React-Bootstrap comes from this link:
@@ -26,6 +29,7 @@ const Header = () => {
 
     const loggedIn: boolean = useSelector((state: State) => state.userReducer.loggedIn);
     const user: User = useSelector((state: State) => state.userReducer.user);
+    const notificationsList: NotificationMessage[] = useSelector((state: State) => state.notificationsReducer.notificationsList);
     const dispatcher = useDispatch();
 
     useEffect(() => {
@@ -47,13 +51,33 @@ const Header = () => {
     const [showA, setShowA] = useState(true);
     const [showB, setShowB] = useState(true);
     const [showC, setShowC] = useState(true);
-  
+
     const toggleShowA = () => {
         console.log("toggleShowA");
         setShowA(!showA);
     };
     const toggleShowB = () => setShowB(!showB);
     const toggleShowC = () => setShowC(!showC);
+
+
+    const generateNotificationsList: any = () => {
+        return (
+            notificationsList.map(
+                (item) => {
+                    return (
+                        <Toast key={item.timestamp} bg={item.type} onClose={()=>dispatcher(removeNotification(item))}>
+                            <Toast.Header>
+                                <strong className="me-auto">{item.header}</strong>
+                                <small className="text-muted">{Math.abs(getUtcSecondsSinceEpoch() - item.timestamp)} sec ago</small>
+                            </Toast.Header>
+                            <Toast.Body>{item.message}</Toast.Body>
+                        </Toast>
+                    );
+                }
+            )
+
+        )
+    }
 
     return (
         <>
@@ -88,32 +112,9 @@ const Header = () => {
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
-            <div id='notificationsContainer' style={{ position:'relative', zIndex: 100 }} className="row" >
-                <ToastContainer className="p-3" position={'top-end'} style={{ marginRight: '10px'}}>
-                    <Toast bg={'info'} show={showA} onClose={toggleShowA}  delay={3000} autohide>
-                        <Toast.Header>
-                            <img src="holder.js/20x20?text=%20" className="rounded me-2" alt="" />
-                            <strong className="me-auto">Bootstrap</strong>
-                            <small className="text-muted">just now</small>
-                        </Toast.Header>
-                        <Toast.Body>See? Just like this.</Toast.Body>
-                    </Toast>
-                    <Toast bg={'warning'} show={showB} onClose={toggleShowB}  delay={8000} autohide>
-                        <Toast.Header>
-                            <img src="holder.js/20x20?text=%20" className="rounded me-2" alt="" />
-                            <strong className="me-auto">Bootstrap</strong>
-                            <small className="text-muted">2 seconds ago</small>
-                        </Toast.Header>
-                        <Toast.Body>Heads up, toasts will stack automatically</Toast.Body>
-                    </Toast>
-                    <Toast bg={'danger'} show={showC} onClose={toggleShowC}  delay={12000} autohide>
-                        <Toast.Header>
-                            <img src="holder.js/20x20?text=%20" className="rounded me-2" alt="" />
-                            <strong className="me-auto">Bootstrap</strong>
-                            <small className="text-muted">2 seconds ago</small>
-                        </Toast.Header>
-                        <Toast.Body>Heads up, toasts will stack automatically</Toast.Body>
-                    </Toast>
+            <div id='notificationsContainer' style={{ position: 'relative', zIndex: 100 }} className="row" >
+                <ToastContainer className="p-3" position={'top-end'} style={{ marginRight: '10px' }}>
+                    {generateNotificationsList()}
                 </ToastContainer>
             </div>
         </>
