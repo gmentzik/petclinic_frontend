@@ -9,3 +9,10 @@ export const UserReducerActionTypes = {
     LOGOUT: 'LOGOUT',
     LOGIN_ERROR: 'LOGIN_ERROR'
 }
+
+
+export const NotificationsReducerActionTypes = {
+    ADD_NOTIFICATION: 'ADD_NOTIFICATION',
+    REMOVE_NOTIFICATION: 'REMOVE_NOTIFICATION',
+    CLEAR_ALL_NOTIFICATIONS: 'CLEAR_ALL_NOTIFICATIONS'
+}

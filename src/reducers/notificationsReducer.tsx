@@ -1,7 +1,8 @@
 import { NotificationsReducerActionTypes } from "../actions/actionTypes";
+import { getUtcSecondsSinceEpoch } from "../utils/timeDateUtils";
 
 export interface Notification {
-  index: number;
+  timestamp: number;
   type: string;
   message: string;
 }
@@ -19,41 +20,45 @@ interface ActionType {
   payload: Notification
 }
 
-export const anotherReducer = (state: NotificationsState = createDefaultState(), action: ActionType): NotificationsState => {
+export const notificationsReducer = (state: NotificationsState = createDefaultState(), action: ActionType): NotificationsState => {
   switch (action.type) {
     case NotificationsReducerActionTypes.ADD_NOTIFICATION:
-      const arrayLength = state.notificationsList.length;
-      const newNotification:Notification = {
-        index: arrayLength,
-        type: action.payload.type,
-        message: action.payload.message
-      }
+
       return {
         ...state,
-        notificationsList: [...state.notificationsList, newNotification] 
+        notificationsList: addNewNotificationToList(state.notificationsList, action.payload),
       };
     case NotificationsReducerActionTypes.REMOVE_NOTIFICATION:
       return {
         ...state,
-        notificationsList: [...state.notificationsList, action.payload] 
+        notificationsList: removeNotificationMessage(state.notificationsList, action.payload.timestamp),
       };
     case NotificationsReducerActionTypes.REMOVE_NOTIFICATION:
-        return {
-          ...state,
-          notificationsList: []
-        };
+      return {
+        ...state,
+        notificationsList: [],
+      };
     default:
       return state;
   }
 };
 
-
-const removeNotificationMessage = (notificationsArray:Notification[], notificationToRemoveIndex:number):Notification[] => {
-  if (notificationsArray.findIndex(
-    (notification) => notification.index === notificationToRemoveIndex
-  )) > -1 {
-    return [];  
+const addNewNotificationToList = (notificationsArray: Notification[], newNotification: Notification): Notification[] => {
+  const notificationToAdd: Notification = {
+    timestamp: getUtcSecondsSinceEpoch(),
+    type: newNotification.type,
+    message: newNotification.message
   }
-  return [];
+  return [...notificationsArray, notificationToAdd];
+}
+
+const removeNotificationMessage = (notificationsArray: Notification[], notificationToRemoveTimestamp: number): Notification[] => {
+  const foundIndex = notificationsArray.findIndex(
+    (notification) => notification.timestamp === notificationToRemoveTimestamp
+  );
+  if (foundIndex > -1) {
+    return notificationsArray.slice(foundIndex, 1);
+  }
+  return notificationsArray;
 }
 
