@@ -11,7 +11,7 @@ import { getCurrentUserFromLocalStorage } from "../../utils/localStorageUtils";
 import { UserReducerActionTypes } from '../../actions/actionTypes';
 import { UserInfo } from "../../reducers/dto/userReducerDto";
 import { NotificationMessage } from "../../reducers/notificationsReducer";
-import { getUtcSecondsSinceEpoch } from "../../utils/timeDateUtils";
+import { localDateTimeFromUtcSecondsTimeStamp } from "../../utils/timeDateUtils";
 import { removeNotification } from "../../actions/notificationActions";
 
 
@@ -65,10 +65,10 @@ const Header = () => {
             notificationsList.map(
                 (item) => {
                     return (
-                        <Toast key={item.timestamp} bg={item.type} onClose={()=>dispatcher(removeNotification(item))}>
+                        <Toast key={item.timestamp} bg={item.type} onClose={() => dispatcher(removeNotification(item))}>
                             <Toast.Header>
                                 <strong className="me-auto">{item.header}</strong>
-                                <small className="text-muted">{Math.abs(getUtcSecondsSinceEpoch() - item.timestamp)} sec ago</small>
+                                <small className="text-muted">{localDateTimeFromUtcSecondsTimeStamp(item.timestamp)}</small>
                             </Toast.Header>
                             <Toast.Body>{item.message}</Toast.Body>
                         </Toast>
