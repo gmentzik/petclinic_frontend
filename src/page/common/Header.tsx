@@ -63,9 +63,9 @@ const Header = () => {
     const generateNotificationsList: any = () => {
         return (
             notificationsList.map(
-                (item) => {
+                (item, i) => {
                     return (
-                        <Toast key={item.timestamp} bg={item.type} onClose={() => dispatcher(removeNotification(item))}>
+                        <Toast key={item.timestamp} bg={item.type} onClose={() => dispatcher(removeNotification(item))} delay={3000 + i*1000}  autohide>
                             <Toast.Header>
                                 <strong className="me-auto">{item.header}</strong>
                                 <small className="text-muted">{localDateTimeFromUtcSecondsTimeStamp(item.timestamp)}</small>

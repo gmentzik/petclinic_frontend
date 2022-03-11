@@ -85,7 +85,11 @@ export const notificationsReducer = (state: NotificationsState = createDefaultSt
 };
 
 const addNewNotificationToList = (notificationsArray: NotificationMessage[], newNotification: NotificationMessage): NotificationMessage[] => {
-  return [...notificationsArray, newNotification];
+  // Allow up to 8 notifications to be added
+  if (notificationsArray.length < 8) {
+    return [...notificationsArray, newNotification];
+  }
+  return notificationsArray;
 }
 
 const removeNotificationMessage = (notificationsArray: NotificationMessage[], notificationToRemoveTimestamp: number): NotificationMessage[] => {
