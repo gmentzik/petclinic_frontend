@@ -9,12 +9,15 @@ import { Route, Routes } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { State } from './reducers';
 import { decreaseCount, increaseCount, resetCount } from './actions/counterActions';
+import CountersDemo from './page/countersDemo/CountersDemo';
+
 
 const mapStateToProps = (state: State) => {
   console.log(state) // state
   return ({
     counterState: state.counterReducer,
-    anotherState: state.anotherReducer
+    anotherState: state.anotherReducer,
+    userState: state.userReducer
   })
 }
 
@@ -38,8 +41,23 @@ const App = (props: any) => {
       <main>
         <Container fluid="md">
           <Routes>
-            <Route path="/" element={
-              <HomePage
+            <Route path="/" element={<HomePage /> } />
+            <Route path="customers" element={<CustomerList />} />
+            <Route path="customers/form" element={<CustomerForm />} >
+              <Route path=":customerId" element={<CustomerForm />} />
+            </Route>
+            <Route path="login" element={<Login
+            />} />
+            <Route
+              path="*"
+              element={
+                <main style={{ padding: "1rem" }}>
+                  <p>There's nothing here!</p>
+                </main>
+              }
+            />
+            <Route path="/countersdemo" element={
+              <CountersDemo
                 counterMessage={props.counterState.message}
                 anotherMessage={props.anotherState.message}
                 counterValue={props.counterState.count}
@@ -49,19 +67,6 @@ const App = (props: any) => {
                 resetStoreCounter={props.resetStoreCounter}
               />
             } />
-            <Route path="customers" element={<CustomerList />} />
-            <Route path="customers/form" element={<CustomerForm />} >
-              <Route path=":customerId" element={<CustomerForm />} />
-            </Route>
-            <Route path="login" element={<Login />} />
-            <Route
-              path="*"
-              element={
-                <main style={{ padding: "1rem" }}>
-                  <p>There's nothing here!</p>
-                </main>
-              }
-            />
           </Routes>
         </Container>
       </main>

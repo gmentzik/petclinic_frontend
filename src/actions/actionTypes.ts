@@ -3,3 +3,16 @@ export const CounterActionTypes = {
     DECREASE_COUNT: 'DECREASE_COUNT',
     RESET_COUNT: 'RESET_COUNT'
 }
+
+export const UserReducerActionTypes = {
+    LOGIN_SUCCESS: 'LOGIN_SUCCESS',
+    LOGOUT: 'LOGOUT',
+    LOGIN_ERROR: 'LOGIN_ERROR'
+}
+
+
+export const NotificationsReducerActionTypes = {
+    ADD_NOTIFICATION: 'ADD_NOTIFICATION',
+    REMOVE_NOTIFICATION: 'REMOVE_NOTIFICATION',
+    CLEAR_ALL_NOTIFICATIONS: 'CLEAR_ALL_NOTIFICATIONS'
+}

@@ -1,18 +1,11 @@
 import React from "react"
-import { Row } from "react-bootstrap"
-import Counter from "../../components/counter"
-interface Props {
-    counterValue: number;
-    counterMessage: string;
-    anotherValue: number;
-    anotherMessage: string;
-    increaseStoreCounter: any;
-    decreaseStoreCounter: any;
-    resetStoreCounter: any;
-}
+import { Alert, Row } from "react-bootstrap"
+import { useSelector } from "react-redux";
+import { State } from "../../reducers";
 
-const HomePage = (props:Props) => {
+const HomePage = () => {
 
+    const loggedIn: boolean = useSelector((state: State) => state.userReducer.loggedIn);
 
     return (
         <>
@@ -26,24 +19,24 @@ const HomePage = (props:Props) => {
                     <h4>George Mentzikof 2021</h4>
                 </div>
             </Row>
-            <Row>
-                <div className="d-flex justify-content-center">
-                    <h4>Redux counterReducer {props.counterMessage}  and value: {props.counterValue}</h4>
-                </div>
-            </Row>
-            <Row>
-                <div className="d-flex justify-content-center">
-                    <h4>Redux anotherReducer {props.anotherMessage}  and value: {props.anotherValue}</h4>
-                </div>
-            </Row>
-            <Row>
-                <Counter 
-                    counter={props.counterValue}
-                    increase={props.increaseStoreCounter}
-                    decrease={props.decreaseStoreCounter}
-                    reset={props.resetStoreCounter}
-                />
-            </Row>
+            {!loggedIn &&
+                <Row>
+                    <div className="d-flex justify-content-center">
+                        <Alert className={'marginTop10px'} variant={'warning'}>
+                            PLEASE LOGIN FIRST
+                        </Alert>
+                    </div>
+                </Row>
+            }
+            {loggedIn &&
+                <Row>
+                    <div className="d-flex justify-content-center">
+                        <Alert className={'marginTop10px'} variant={'success'}>
+                            WELCOME TO PET MEDICAL CARE DATABASE
+                        </Alert>
+                    </div>
+                </Row>
+            }
 
         </>
     );
