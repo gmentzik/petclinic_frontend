@@ -1,5 +1,5 @@
-import React from "react"
-import { Row } from "react-bootstrap"
+import React, { ChangeEvent, FormEvent, useState } from "react"
+import { Button, Form, Row } from "react-bootstrap"
 import { useParams, useSearchParams, useLocation } from "react-router-dom";
 
 const CustomerForm = () => {
@@ -22,6 +22,24 @@ const CustomerForm = () => {
         console.log(query.get('myparam'));
     }
 
+    const [userName, setUserName] = useState('');
+    const [userPassword, setUserPassword] = useState('');
+    
+
+    const handleChange = (event: ChangeEvent) => {
+        const target = event.target as HTMLFormElement;
+        let fieldName: string = target.name;
+        let fieldVal: string = target.value;
+        if (fieldName === 'username') setUserName(fieldVal);
+        if (fieldName === 'password') setUserPassword(fieldVal);
+    }
+
+    const handleSubmit = (event: FormEvent) => {
+        event.preventDefault();
+        console.log(userName);
+        console.log(userPassword);
+        // dispatcher(loginAction(userName, userPassword));
+    }
 
     return (
         <>
@@ -35,6 +53,20 @@ const CustomerForm = () => {
                     {!customerId ? <h1>NEW CUSTOMER</h1> : <h1>CUSTOMER ID: {customerId} </h1>}
                 </div>
             </Row>
+            <Form onSubmit={handleSubmit}>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Label>Username</Form.Label>
+                    <Form.Control type="text" name="username" placeholder="Username" onChange={handleChange} defaultValue={userName} />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formBasicPassword">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control type="password" name="password" placeholder="Password" onChange={handleChange} defaultValue={userPassword} />
+                </Form.Group>
+                <Button variant="primary" type="submit" >
+                    Add Customer
+                </Button>
+            </Form>
         </>
     );
 }

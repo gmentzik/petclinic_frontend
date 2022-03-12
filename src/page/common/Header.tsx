@@ -55,7 +55,7 @@ const Header = (props:any) => {
             setLogged(true);
             navigate("/");
         }
-    }, [loggedIn, navigate]);
+    }, [loggedIn, logged, navigate]);
 
     const generateNotificationsList: any = () => {
         return (
