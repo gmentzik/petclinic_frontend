@@ -50,10 +50,6 @@ const Login = () => {
                 </Button>
             </Form>}
 
-            {loggedIn && <Alert className={'marginTop10px'} variant={'success'}>
-                Logged in successfuly!
-            </Alert>}
-
             {loginerror && <Alert className={'marginTop10px'} variant={'danger'}>
                 Login failed: ( {errmessage} )
             </Alert>}

@@ -9,6 +9,7 @@ import { Route, Routes } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { State } from './reducers';
 import { decreaseCount, increaseCount, resetCount } from './actions/counterActions';
+import CountersDemo from './page/countersDemo/CountersDemo';
 
 
 const mapStateToProps = (state: State) => {
@@ -40,17 +41,7 @@ const App = (props: any) => {
       <main>
         <Container fluid="md">
           <Routes>
-            <Route path="/" element={
-              <HomePage
-                counterMessage={props.counterState.message}
-                anotherMessage={props.anotherState.message}
-                counterValue={props.counterState.count}
-                anotherValue={props.anotherState.count}
-                increaseStoreCounter={props.increaseStoreCounter}
-                decreaseStoreCounter={props.decreaseStoreCounter}
-                resetStoreCounter={props.resetStoreCounter}
-              />
-            } />
+            <Route path="/" element={<HomePage /> } />
             <Route path="customers" element={<CustomerList />} />
             <Route path="customers/form" element={<CustomerForm />} >
               <Route path=":customerId" element={<CustomerForm />} />
@@ -65,6 +56,17 @@ const App = (props: any) => {
                 </main>
               }
             />
+            <Route path="/countersdemo" element={
+              <CountersDemo
+                counterMessage={props.counterState.message}
+                anotherMessage={props.anotherState.message}
+                counterValue={props.counterState.count}
+                anotherValue={props.anotherState.count}
+                increaseStoreCounter={props.increaseStoreCounter}
+                decreaseStoreCounter={props.decreaseStoreCounter}
+                resetStoreCounter={props.resetStoreCounter}
+              />
+            } />
           </Routes>
         </Container>
       </main>

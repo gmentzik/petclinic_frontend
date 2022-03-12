@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Nav, Navbar, NavDropdown, Toast, ToastContainer, } from 'react-bootstrap';
 import { useDispatch, useSelector } from "react-redux";
 import { Link, createSearchParams } from "react-router-dom";
@@ -32,6 +32,7 @@ const Header = (props:any) => {
     const notificationsList: NotificationMessage[] = useSelector((state: State) => state.notificationsReducer.notificationsList);
     const dispatcher = useDispatch();
     const navigate = useNavigate();
+    const [logged, setLogged] = useState(false);
 
     useEffect(() => {
         const lastKnownUser = getCurrentUserFromLocalStorage();
@@ -50,7 +51,8 @@ const Header = (props:any) => {
     }, [dispatcher]);
 
     useEffect(() => {
-        if(loggedIn){
+        if(loggedIn && !logged){
+            setLogged(true);
             navigate("/");
         }
     }, [loggedIn, navigate]);
@@ -96,6 +98,7 @@ const Header = (props:any) => {
                                 <NavDropdown.Item as={Link} disabled={!loggedIn} to="customers/form">ΝΕΟΣ ΠΕΛΑΤΗΣ</NavDropdown.Item>
                                 <NavDropdown.Item as={Link} disabled={!loggedIn} to="customers/form/24">ΠΡΟΒΟΛΗ ΠΕΛΑΤΗ 24</NavDropdown.Item>
                                 <NavDropdown.Item as={Link} disabled={!loggedIn} to={location}>ΠΡΟΒΟΛΗ ΠΕΛΑΤΗ 25</NavDropdown.Item>
+                                <NavDropdown.Item as={Link} to={'countersdemo'}>COUNTERS DEMO</NavDropdown.Item>
                             </NavDropdown>
                         </Nav>
                         <Nav>
