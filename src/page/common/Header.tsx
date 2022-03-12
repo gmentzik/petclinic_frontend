@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Container, Nav, Navbar, NavDropdown, Toast, ToastContainer, } from 'react-bootstrap';
 import { useDispatch, useSelector } from "react-redux";
 import { Link, createSearchParams } from "react-router-dom";
 import { User } from "../../api/models";
 import logo from '../../images/logo.svg';
 import { State } from "../../reducers";
-import { logout } from '../../actions/loginActions';
+import { logoutAction } from '../../actions/loginActions';
 import { getCurrentUserFromLocalStorage } from "../../utils/localStorageUtils";
 
 import { UserReducerActionTypes } from '../../actions/actionTypes';
 import { UserInfo } from "../../reducers/dto/userReducerDto";
 import { NotificationMessage } from "../../reducers/notificationsReducer";
 import { localDateTimeFromUtcSecondsTimeStamp } from "../../utils/timeDateUtils";
-import { removeNotification } from "../../actions/notificationActions";
+import { removeNotificationAction } from "../../actions/notificationActions";
 
 
 // Magic of interconnecting React-Router 5 Link and React-Bootstrap comes from this link:
@@ -46,26 +46,14 @@ const Header = () => {
                 payload,
             });
         }
-    }, []);
-
-    const [showA, setShowA] = useState(true);
-    const [showB, setShowB] = useState(true);
-    const [showC, setShowC] = useState(true);
-
-    const toggleShowA = () => {
-        console.log("toggleShowA");
-        setShowA(!showA);
-    };
-    const toggleShowB = () => setShowB(!showB);
-    const toggleShowC = () => setShowC(!showC);
-
+    }, [dispatcher]);
 
     const generateNotificationsList: any = () => {
         return (
             notificationsList.map(
                 (item, i) => {
                     return (
-                        <Toast key={item.timestamp} bg={item.type} onClose={() => dispatcher(removeNotification(item))} delay={3000 + i*1000}  autohide>
+                        <Toast key={item.timestamp} bg={item.type} onClose={() => dispatcher(removeNotificationAction(item))} delay={5000 + i*1000}  autohide>
                             <Toast.Header>
                                 <strong className="me-auto">{item.header}</strong>
                                 <small className="text-muted">{localDateTimeFromUtcSecondsTimeStamp(item.timestamp)}</small>
@@ -106,7 +94,7 @@ const Header = () => {
                         <Nav>
                             {!loggedIn && <Nav.Link as={Link} to="login">Login</Nav.Link>}
                             {loggedIn && <Nav.Link as={Link} to="">{user.username}</Nav.Link>}
-                            {loggedIn && <Nav.Link as={Link} to="" onClick={dispatcher(logout)}>Logout</Nav.Link>}
+                            {loggedIn && <Nav.Link as={Link} to="" onClick={dispatcher(logoutAction)}>Logout</Nav.Link>}
                             <Nav.Link as={Link} eventKey={2} to="help">Help</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>

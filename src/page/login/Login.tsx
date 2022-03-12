@@ -1,26 +1,22 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { Alert, Button, Form } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { loginAction } from "../../actions/loginActions";
 import { State } from "../../reducers";
 
 // type HTMLElementEvent<T extends HTMLElement> = Event & {
 //     target: T,
 // }
 
-interface Props {
-    login: (username: string, password: string) => void;
-}
-
-const Login = (props: Props) => {
+const Login = () => {
 
     const [userName, setUserName] = useState('');
     const [userPassword, setUserPassword] = useState('');
 
-    const [successLogin, setSuccessLogin] = useState(false);
-
     const loggedIn: boolean = useSelector((state: State) => state.userReducer.loggedIn);
     const loginerror: boolean = useSelector((state: State) => state.userReducer.loginerror);
     const errmessage: string = useSelector((state: State) => state.userReducer.errmessage);
+    const dispatcher = useDispatch();
 
     const handleChange = (event: ChangeEvent) => {
         const target = event.target as HTMLFormElement;
@@ -34,9 +30,8 @@ const Login = (props: Props) => {
         event.preventDefault();
         console.log(userName);
         console.log(userPassword);
-        props.login(userName, userPassword);
+        dispatcher(loginAction(userName, userPassword));
     }
-
 
     return (
         <>
@@ -64,7 +59,6 @@ const Login = (props: Props) => {
             </Alert>}
         </>
     );
-
 
 }
 

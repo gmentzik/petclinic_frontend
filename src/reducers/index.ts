@@ -4,14 +4,20 @@ import { AnotherState, anotherReducer } from "../reducers/anotherReducer";
 import { UserState, userReducer } from "../reducers/userReducer";
 import { NotificationsState, notificationsReducer } from "../reducers/notificationsReducer";
 
-export interface CustomerState {
-    counterReducer: CounterState;
-    anotherReducer: AnotherState;
+export interface AppUserState {
     userReducer: UserState;
     notificationsReducer: NotificationsState;
 }
 
-export type State = CustomerState;
+export interface AppState {
+    notificationsReducer: NotificationsState;
+}
+export interface AppCustomerState {
+    counterReducer: CounterState;
+    anotherReducer: AnotherState;
+}
+
+export type State = AppUserState & AppState & AppCustomerState;
 
 export const rootReducer = combineReducers<State>({
     counterReducer,

@@ -5,15 +5,17 @@ import { UserReducerActionTypes } from '../actions/actionTypes';
 import { UserInfo } from '../reducers/dto/userReducerDto';
 import { unknownUser } from '../api/models/User';
 import { removeCurrentUserFromLocalStorage, storeCurrentUserFromLocalStorage } from '../utils/localStorageUtils';
+import { createAndDispachNewNotification } from './notificationActions';
+import { NotificationMessageType } from '../reducers/notificationsReducer';
 
 
 // export const login = (username, password) => (dispatch) => {
-export const login = (username: string, password: string) => (dispatcher:any) => {
+export const loginAction = (username: string, password: string) => (dispatcher: any) => {
 
   return authenticateUserRequest(username, password).then(
-    (data:User) => {
+    (data: User) => {
       storeCurrentUserFromLocalStorage(data);
-      const payload:UserInfo = {
+      const payload: UserInfo = {
         user: data,
         loginerror: false,
         errmessage: '',
@@ -23,32 +25,37 @@ export const login = (username: string, password: string) => (dispatcher:any) =>
         type: UserReducerActionTypes.LOGIN_SUCCESS,
         payload,
       });
-
+      // Notification message
+      const message = "Welcome " + data.username;
+      createAndDispachNewNotification(dispatcher, NotificationMessageType.SUCCESS, message);
     })
     .catch((e) => handlerError(e, dispatcher));
 
 }
 
-export const logout = () => (dispatcher:any) =>  {
+export const logoutAction = () => (dispatcher: any) => {
   removeCurrentUserFromLocalStorage();
-  const payload:UserInfo = {
+  const payload: UserInfo = {
     user: unknownUser,
     loginerror: false,
     errmessage: '',
     loggedIn: false
   }
+  // Dispatch Logout
   dispatcher({
     type: UserReducerActionTypes.LOGOUT,
     payload,
   });
-
-
+  // Notification message
+  const message = "Logout requested";
+  createAndDispachNewNotification(dispatcher, NotificationMessageType.INFO, message);
+  
 }
 
 const handlerError = (error: AxiosError, dispatcher: any) => {
   removeCurrentUserFromLocalStorage();
-  
-  let errmessage = 
+
+  let errmessage =
     (error.response &&
       error.response.data &&
       error.response.data.message) ||
@@ -74,7 +81,7 @@ const handlerError = (error: AxiosError, dispatcher: any) => {
     errmessage = 'Error:' + error.message;
   }
 
-  const payload:UserInfo = {
+  const payload: UserInfo = {
     user: unknownUser,
     loginerror: true,
     errmessage: errmessage,
@@ -84,8 +91,8 @@ const handlerError = (error: AxiosError, dispatcher: any) => {
     type: UserReducerActionTypes.LOGIN_ERROR,
     payload,
   });
-
+  // Notification message
+  const message = errmessage;
+  createAndDispachNewNotification(dispatcher, NotificationMessageType.ERROR, message);
 
 }
-
-

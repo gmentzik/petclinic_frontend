@@ -1,6 +1,5 @@
-import { couldStartTrivia } from "typescript";
 import { NotificationsReducerActionTypes } from "../actions/actionTypes";
-import { getUtcSecondsSinceEpoch } from "../utils/timeDateUtils";
+
 
 export enum NotificationMessageType {
   SUCCESS = 'success',
@@ -20,42 +19,8 @@ export interface NotificationsState {
 }
 
 
-
-
-
-const msg1: NotificationMessage = {
-  timestamp: getUtcSecondsSinceEpoch(),
-  type: NotificationMessageType.INFO,
-  header: NotificationMessageType.INFO.toLocaleUpperCase(),
-  message: 'Info Message'
-}
-
-const msg2: NotificationMessage = {
-  timestamp: getUtcSecondsSinceEpoch() + 5,
-  type: NotificationMessageType.WARNING,
-  header: NotificationMessageType.WARNING.toLocaleUpperCase(),
-  message: 'Warning Message'
-}
-
-const msg3: NotificationMessage = {
-  timestamp: getUtcSecondsSinceEpoch() + 10,
-  type: NotificationMessageType.ERROR,
-  header: NotificationMessageType.ERROR.toLocaleUpperCase(),
-  message: 'Error Message'
-}
-
-const msg4: NotificationMessage = {
-  timestamp: getUtcSecondsSinceEpoch() + 20,
-  type: NotificationMessageType.SUCCESS,
-  header: NotificationMessageType.SUCCESS.toLocaleUpperCase(),
-  message: 'Success Message'
-}
-
-const testArray: NotificationMessage[] = [msg1, msg2, msg3, msg4];
-
 const createDefaultState = (): NotificationsState => ({
-  notificationsList: testArray,
-  // notificationsList: [],
+  notificationsList: [],
 });
 interface ActionType {
   type: string;
@@ -85,6 +50,9 @@ export const notificationsReducer = (state: NotificationsState = createDefaultSt
 };
 
 const addNewNotificationToList = (notificationsArray: NotificationMessage[], newNotification: NotificationMessage): NotificationMessage[] => {
+  console.log('addNewNotificationToList');
+
+
   // Allow up to 8 notifications to be added
   if (notificationsArray.length < 8) {
     return [...notificationsArray, newNotification];
@@ -109,3 +77,34 @@ const removeNotificationMessage = (notificationsArray: NotificationMessage[], no
   return notificationsArray;
 }
 
+
+// DUMMY CODE FOR TESTING NOTIFICATIONS
+// const msg1: NotificationMessage = {
+//   timestamp: getUtcSecondsSinceEpoch(),
+//   type: NotificationMessageType.INFO,
+//   header: NotificationMessageType.INFO.toLocaleUpperCase(),
+//   message: 'Info Message'
+// }
+
+// const msg2: NotificationMessage = {
+//   timestamp: getUtcSecondsSinceEpoch() + 5,
+//   type: NotificationMessageType.WARNING,
+//   header: NotificationMessageType.WARNING.toLocaleUpperCase(),
+//   message: 'Warning Message'
+// }
+
+// const msg3: NotificationMessage = {
+//   timestamp: getUtcSecondsSinceEpoch() + 10,
+//   type: NotificationMessageType.ERROR,
+//   header: NotificationMessageType.ERROR.toLocaleUpperCase(),
+//   message: 'Error Message'
+// }
+
+// const msg4: NotificationMessage = {
+//   timestamp: getUtcSecondsSinceEpoch() + 20,
+//   type: NotificationMessageType.SUCCESS,
+//   header: NotificationMessageType.SUCCESS.toLocaleUpperCase(),
+//   message: 'Success Message'
+// }
+
+// const testArray: NotificationMessage[] = [msg1, msg2, msg3, msg4];

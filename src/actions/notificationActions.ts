@@ -8,7 +8,8 @@ export interface NewNotificationMessage {
   message: string;
 }
 
-export const addNotification = (notificationMessage: NewNotificationMessage) => (dispatcher:any) =>  {
+export const addNotificationAction = (notificationMessage: NewNotificationMessage) => (dispatcher:any) =>  {
+  console.log('addNotificationAction');
   const epochtimestamp = getUtcSecondsSinceEpoch();
   const notificationToAdd: NotificationMessage = {
     timestamp: epochtimestamp,
@@ -16,22 +17,22 @@ export const addNotification = (notificationMessage: NewNotificationMessage) => 
     header: getNotificationHeader(notificationMessage.type),
     message: notificationMessage.message,
   }
+  console.log('addNotificationAction');
+  console.log(notificationToAdd);
   dispatcher({
     type: NotificationsReducerActionTypes.ADD_NOTIFICATION,
     payload: notificationToAdd,
   });
 }
 
-export const removeNotification = (notificationMessage: NotificationMessage) => (dispatcher:any) =>  {
-  console.log("removeNotification");
-  console.log(notificationMessage);
+export const removeNotificationAction = (notificationMessage: NotificationMessage) => (dispatcher:any) =>  {
   dispatcher({
     type: NotificationsReducerActionTypes.REMOVE_NOTIFICATION,
     payload: notificationMessage,
   });
 }
 
-export const clearAllNotifications = () => (dispatcher:any) =>  {
+export const clearAllNotificationsAction = () => (dispatcher:any) =>  {
   dispatcher({
     type: NotificationsReducerActionTypes.CLEAR_ALL_NOTIFICATIONS,
   });
@@ -47,8 +48,17 @@ const getNotificationHeader = (type:string):string => {
     case NotificationMessageType.WARNING:
       return NotificationMessageType.WARNING.toLocaleUpperCase();
     case NotificationMessageType.ERROR:
-      return NotificationMessageType.ERROR.toLocaleUpperCase();
+      return 'ERROR';
     default:
       return "UNEXPECTED VALUE";
   }
 } 
+
+
+export const createAndDispachNewNotification = (dispatcher: any, type: NotificationMessageType, message: string) => {
+  const notificationMessage:NewNotificationMessage = {
+    type,
+    message
+  }
+  dispatcher(addNotificationAction(notificationMessage));
+}

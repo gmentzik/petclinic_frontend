@@ -9,7 +9,7 @@ import { Route, Routes } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { State } from './reducers';
 import { decreaseCount, increaseCount, resetCount } from './actions/counterActions';
-import { login } from './actions/loginActions';
+
 
 const mapStateToProps = (state: State) => {
   console.log(state) // state
@@ -27,7 +27,6 @@ const mapDispatchToProps = (dispatch: any) => {
     },
     decreaseStoreCounter: () => dispatch(decreaseCount()),
     resetStoreCounter: () => dispatch(resetCount()),
-    login: (username: string, password: string) => dispatch(login(username, password)),
   })
 }
 
@@ -57,7 +56,6 @@ const App = (props: any) => {
               <Route path=":customerId" element={<CustomerForm />} />
             </Route>
             <Route path="login" element={<Login
-              login={props.login}
             />} />
             <Route
               path="*"
