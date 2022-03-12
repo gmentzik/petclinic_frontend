@@ -28,6 +28,7 @@ export const loginAction = (username: string, password: string) => (dispatcher: 
       // Notification message
       const message = "Welcome " + data.username;
       createAndDispachNewNotification(dispatcher, NotificationMessageType.SUCCESS, message);
+
     })
     .catch((e) => handlerError(e, dispatcher));
 
