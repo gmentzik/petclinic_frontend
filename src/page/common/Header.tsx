@@ -11,7 +11,7 @@ import { getCurrentUserFromLocalStorage } from "../../utils/localStorageUtils";
 import { UserReducerActionTypes } from '../../actions/actionTypes';
 import { UserInfo } from "../../reducers/dto/userReducerDto";
 import { NotificationMessage } from "../../reducers/notificationsReducer";
-import { localDateTimeFromUtcSecondsTimeStamp } from "../../utils/timeDateUtils";
+import { localDateTimeFromUtcMillisecondsTimeStamp } from "../../utils/timeDateUtils";
 import { removeNotificationAction } from "../../actions/notificationActions";
 import { useNavigate  } from "react-router-dom";
 
@@ -62,10 +62,10 @@ const Header = (props:any) => {
             notificationsList.map(
                 (item, i) => {
                     return (
-                        <Toast key={item.timestamp} bg={item.type} onClose={() => dispatcher(removeNotificationAction(item))} delay={5000 + i*1000}  autohide>
+                        <Toast key={item.timestamp} bg={item.type} onClose={() => dispatcher(removeNotificationAction(item))} delay={3000}  autohide>
                             <Toast.Header>
                                 <strong className="me-auto">{item.header}</strong>
-                                <small className="text-muted">{localDateTimeFromUtcSecondsTimeStamp(item.timestamp)}</small>
+                                <small className="text-muted">{localDateTimeFromUtcMillisecondsTimeStamp(item.timestamp)}</small>
                             </Toast.Header>
                             <Toast.Body>{item.message}</Toast.Body>
                         </Toast>

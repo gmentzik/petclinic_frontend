@@ -4,14 +4,13 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { CustomerTableRow } from ".";
 import { fetchCustomerListAction } from "../../actions/customerActions";
-import { sendGetAllCustomers, sendGetHelloRequest } from '../../api/customersApi'
 import { CustomersList, Customer } from "../../api/models";
 import PageIndex from "../../components/pageIndex";
 
 const CustomerList = () => {
 
   const [selectedPage, setSelectedPage] = useState(0);
-  // eslint-disable-next-line
+  const [displayPerPage, setDisplayPerPage] = useState(5);
   const [totalPages, setTotalPages] = useState(1);
 
   const [customers, setCustomers] = useState<Customer[]>([]);
@@ -20,10 +19,6 @@ const CustomerList = () => {
 
   const navigate = useNavigate();
 
-  // const responseHanderMethod = (data: any) => {
-  //   console.log(`responseHanderMethod: ${data}`);
-  // }
-
   const customerList = (data: CustomersList) => {
     console.log(`customerList: ${data}`);
     setCustomers(data.customers);
@@ -31,23 +26,16 @@ const CustomerList = () => {
     setTotalPages(data.totalPages);
   }
 
-  useEffect(() => {
-    // console.log("Effect has been called at load");
-    // sendGetHelloRequest(responseHanderMethod);
-    // sendGetAllCustomers(customerList);
-    dispatcher(fetchCustomerListAction(customerList));
-  }, []);
 
   useEffect(() => {
-    // console.log("Effect has been called at page change");
-    sendGetAllCustomers(customerList, selectedPage);
-  }, [selectedPage]);
+      dispatcher(fetchCustomerListAction(customerList, navigate, selectedPage, displayPerPage));
+  }, [selectedPage, dispatcher, navigate]);
 
-  const activePage = (page: number):number => {
+  const activePage = (page: number): number => {
     return page + 1;
   }
 
-  const selectPage = (page:number) => {
+  const selectPage = (page: number) => {
     setSelectedPage(page - 1);
   }
 
@@ -94,7 +82,7 @@ const CustomerList = () => {
               <th>#</th>
               <th>ΕΠΩΝΥΜΟ</th>
               <th>ΟΝΟΜΑ</th>
-              <th style={{width: '200px'}}>ΔΙΕΥΘΥΝΣΗ</th>
+              <th style={{ width: '200px' }}>ΔΙΕΥΘΥΝΣΗ</th>
               <th>ΠΕΡΙΟΧΗ</th>
               <th>ΤΚ</th>
               <th>ΧΩΡΑ</th>

@@ -30,7 +30,7 @@ const sendGetHelloRequest = async (responseHander: Function) => {
 
 };
 
-const sendGetAllCustomersReduxThunk = (responseHander: Function, page?: number, size?: number) => {
+const sendGetAllCustomersReduxThunk = (page?: number | undefined, size?: number | undefined) => {
 
   const storedToken = getCurrentUserFromLocalStorage().jwttoken;
 
@@ -108,9 +108,6 @@ const sendGetAllCustomers = async (responseHander: Function, page?: number, size
       default:
         console.error(error.response.status, error.message);
       //notify.error('Server Error');
-
-
-
     }
     return Promise.reject(error);
   }
