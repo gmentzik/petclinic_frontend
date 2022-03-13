@@ -16,3 +16,9 @@ export const NotificationsReducerActionTypes = {
     REMOVE_NOTIFICATION: 'REMOVE_NOTIFICATION',
     CLEAR_ALL_NOTIFICATIONS: 'CLEAR_ALL_NOTIFICATIONS'
 }
+
+
+export const UtilReducerActionTypes = {
+    SHOW_LOADING: 'SHOW_LOADING',
+    REMOVE_LOADING: 'REMOVE_LOADING'
+}

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Container, Nav, Navbar, NavDropdown, Toast, ToastContainer, } from 'react-bootstrap';
+import { Container, Nav, Navbar, NavDropdown, Spinner, Toast, ToastContainer, } from 'react-bootstrap';
 import { useDispatch, useSelector } from "react-redux";
 import { Link, createSearchParams } from "react-router-dom";
 import { User } from "../../api/models";
-// import logo from '../../images/logo.svg';
 import pmclogo from '../../images/pmc128x128.webp';
 import { State } from "../../reducers";
 import { logoutAction } from '../../actions/loginActions';
@@ -14,7 +13,7 @@ import { UserInfo } from "../../reducers/dto/userReducerDto";
 import { NotificationMessage } from "../../reducers/notificationsReducer";
 import { localDateTimeFromUtcMillisecondsTimeStamp } from "../../utils/timeDateUtils";
 import { removeNotificationAction } from "../../actions/notificationActions";
-import { useNavigate  } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // Magic of interconnecting React-Router 5 Link and React-Bootstrap comes from this link:
 // https://stackoverflow.com/questions/54843302/reactjs-bootstrap-navbar-and-routing-not-working-together
@@ -26,9 +25,10 @@ const location =
     search: `?${createSearchParams(params)}`,
 }
 
-const Header = (props:any) => {
+const Header = (props: any) => {
 
     const loggedIn: boolean = useSelector((state: State) => state.userReducer.loggedIn);
+    const loading: boolean = useSelector((state: State) => state.utilReducer.loading);
     const user: User = useSelector((state: State) => state.userReducer.user);
     const notificationsList: NotificationMessage[] = useSelector((state: State) => state.notificationsReducer.notificationsList);
     const dispatcher = useDispatch();
@@ -52,7 +52,7 @@ const Header = (props:any) => {
     }, [dispatcher]);
 
     useEffect(() => {
-        if(loggedIn && !logged){
+        if (loggedIn && !logged) {
             setLogged(true);
             navigate("/");
         }
@@ -63,7 +63,7 @@ const Header = (props:any) => {
             notificationsList.map(
                 (item, i) => {
                     return (
-                        <Toast key={item.timestamp} bg={item.type} onClose={() => dispatcher(removeNotificationAction(item))} delay={3000}  autohide>
+                        <Toast key={item.timestamp} bg={item.type} onClose={() => dispatcher(removeNotificationAction(item))} delay={3000} autohide>
                             <Toast.Header>
                                 <strong className="me-auto">{item.header}</strong>
                                 <small className="text-muted">{localDateTimeFromUtcMillisecondsTimeStamp(item.timestamp)}</small>
@@ -116,6 +116,9 @@ const Header = (props:any) => {
                     {generateNotificationsList()}
                 </ToastContainer>
             </div>
+            {loading && <div id='loadingContainer' >
+                <Spinner id='loadingSpinner' animation="border" variant="info" />
+            </div>}
         </>
     );
 

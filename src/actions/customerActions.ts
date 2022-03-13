@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import { CustomersList, ErrorData } from '../api/models';
-import { UserReducerActionTypes } from '../actions/actionTypes';
+import { UserReducerActionTypes, UtilReducerActionTypes } from '../actions/actionTypes';
 import { UserInfo } from '../reducers/dto/userReducerDto';
 import { unknownUser } from '../api/models/User';
 import { removeCurrentUserFromLocalStorage } from '../utils/localStorageUtils';
@@ -12,17 +12,19 @@ import { sendGetAllCustomersReduxThunk } from '../api/customersApi';
 
 // export const login = (username, password) => (dispatch) => {
 export const fetchCustomerListAction = (responseHander: Function, navigateTo: any, page?: number, size?: number,) => (dispatcher: any) => {
-
+    dispatcher({type: UtilReducerActionTypes.SHOW_LOADING});
     return sendGetAllCustomersReduxThunk(page, size).then(
         (data: CustomersList) => {
             const message = "Fetched customer List";
-            createAndDispachNewNotification(dispatcher, NotificationMessageType.SUCCESS, message);
+            // createAndDispachNewNotification(dispatcher, NotificationMessageType.SUCCESS, message);
+            dispatcher({type: UtilReducerActionTypes.REMOVE_LOADING});
             return responseHander(data);
         })
         .catch((e) => handlerError(e, dispatcher, navigateTo));
 }
 
 const handlerError = (error: AxiosError, dispatcher: any, navigateTo: any) => {
+    dispatcher({type: UtilReducerActionTypes.REMOVE_LOADING});
     let message = '';
     let errmessage =
         (error.response &&
@@ -87,12 +89,5 @@ const handlerError = (error: AxiosError, dispatcher: any, navigateTo: any) => {
     // Notification message
     message = errmessage;
     createAndDispachNewNotification(dispatcher, NotificationMessageType.ERROR, message);
-
-    // if (!error.response) {
-    //     //notify.warn('Network/Server error');
-    //     console.error('**Network/Server error');
-    //     return Promise.reject(error);
-    // }
-
 
 }
