@@ -4,7 +4,7 @@ import { ErrorData, User } from '../api/models';
 import { UserReducerActionTypes } from '../actions/actionTypes';
 import { UserInfo } from '../reducers/dto/userReducerDto';
 import { unknownUser } from '../api/models/User';
-import { removeCurrentUserFromLocalStorage, storeCurrentUserFromLocalStorage } from '../utils/localStorageUtils';
+import { removeCurrentUserFromLocalStorage, storeCurrentUserToLocalStorage } from '../utils/localStorageUtils';
 import { createAndDispachNewNotification } from './notificationActions';
 import { NotificationMessageType } from '../reducers/notificationsReducer';
 
@@ -14,7 +14,7 @@ export const loginAction = (username: string, password: string) => (dispatcher: 
 
   return authenticateUserRequest(username, password).then(
     (data: User) => {
-      storeCurrentUserFromLocalStorage(data);
+      storeCurrentUserToLocalStorage(data);
       const payload: UserInfo = {
         user: data,
         loginerror: false,

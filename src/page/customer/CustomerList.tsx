@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Accordion, Button, Col, Form, Row, Table } from "react-bootstrap";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { CustomerTableRow } from ".";
+import { fetchCustomerListAction } from "../../actions/customerActions";
 import { sendGetAllCustomers, sendGetHelloRequest } from '../../api/customersApi'
 import { CustomersList, Customer } from "../../api/models";
 import PageIndex from "../../components/pageIndex";
@@ -14,11 +16,13 @@ const CustomerList = () => {
 
   const [customers, setCustomers] = useState<Customer[]>([]);
 
-  let navigate = useNavigate();
+  const dispatcher = useDispatch();
 
-  const responseHanderMethod = (data: any) => {
-    console.log(`responseHanderMethod: ${data}`);
-  }
+  const navigate = useNavigate();
+
+  // const responseHanderMethod = (data: any) => {
+  //   console.log(`responseHanderMethod: ${data}`);
+  // }
 
   const customerList = (data: CustomersList) => {
     console.log(`customerList: ${data}`);
@@ -28,14 +32,15 @@ const CustomerList = () => {
   }
 
   useEffect(() => {
-    console.log("Effect has been called at load");
-    sendGetHelloRequest(responseHanderMethod);
-    sendGetAllCustomers(customerList); // eslint-disable-next-line
+    // console.log("Effect has been called at load");
+    // sendGetHelloRequest(responseHanderMethod);
+    // sendGetAllCustomers(customerList);
+    dispatcher(fetchCustomerListAction(customerList));
   }, []);
 
   useEffect(() => {
-    console.log("Effect has been called at page change");
-    sendGetAllCustomers(customerList, selectedPage); // eslint-disable-next-line
+    // console.log("Effect has been called at page change");
+    sendGetAllCustomers(customerList, selectedPage);
   }, [selectedPage]);
 
   const activePage = (page: number):number => {

@@ -1,7 +1,7 @@
 import { User, unknownUser } from "../api/models/User";
 
 
-export const storeCurrentUserFromLocalStorage= (user: User) => {
+export const storeCurrentUserToLocalStorage= (user: User) => {
     localStorage.setItem('petUser', JSON.stringify(user));
 }
 
