@@ -28,8 +28,8 @@ const CustomerList = () => {
 
 
   useEffect(() => {
-      dispatcher(fetchCustomerListAction(customerList, navigate, selectedPage, displayPerPage));
-  }, [selectedPage, dispatcher, navigate]);
+    dispatcher(fetchCustomerListAction(customerList, navigate, selectedPage, displayPerPage));
+  }, [selectedPage, dispatcher, navigate, displayPerPage]);
 
   const activePage = (page: number): number => {
     return page + 1;
@@ -47,6 +47,11 @@ const CustomerList = () => {
       ))
   };
 
+  const onChangeColor = (e: any) => {
+    const customersPerPageValue: number = e.target.value;
+    console.log(customersPerPageValue);
+    setDisplayPerPage(customersPerPageValue);
+  }
 
   return (
     <>
@@ -99,13 +104,37 @@ const CustomerList = () => {
             {createCustomerRows()}
           </tbody>
         </Table>
-        <div className="d-flex justify-content-start">
-          <Button variant="primary" onClick={() => navigate("form")}>ΝΕΟΣ ΠΕΛΑΤΗΣ</Button>
-        </div>
+      </Row>
+      <Row>
+        <Col xs={9}>
+          <span className="d-flex justify-content-start">
+            <Button variant="primary" onClick={() => navigate("form")}>ΝΕΟΣ ΠΕΛΑΤΗΣ</Button>
+          </span>
+        </Col>
+
+        <Col>
+          <span className="d-flex justify-content-end">
+            Customers per page:
+          </span>
+        </Col>
+        <Col xs={1}>
+          <span className="d-flex justify-content-end">
+            <Form.Select size="sm" onChange={onChangeColor}>
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+            </Form.Select>
+          </span>
+        </Col>
+
+
+      </Row>
+      <Row>
         <PageIndex active={activePage(selectedPage)} total={totalPages}
           goToPage={(page: number) => selectPage(page)}
         />
       </Row>
+
 
     </>
   );

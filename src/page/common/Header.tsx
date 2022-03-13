@@ -3,7 +3,8 @@ import { Container, Nav, Navbar, NavDropdown, Toast, ToastContainer, } from 'rea
 import { useDispatch, useSelector } from "react-redux";
 import { Link, createSearchParams } from "react-router-dom";
 import { User } from "../../api/models";
-import logo from '../../images/logo.svg';
+// import logo from '../../images/logo.svg';
+import pmclogo from '../../images/pmc128x128.webp';
 import { State } from "../../reducers";
 import { logoutAction } from '../../actions/loginActions';
 import { getCurrentUserFromLocalStorage } from "../../utils/localStorageUtils";
@@ -83,7 +84,7 @@ const Header = (props:any) => {
                     <Navbar.Brand as={Link} to="/">
                         <img
                             alt=""
-                            src={logo}
+                            src={pmclogo}
                             width="30"
                             height="30"
                             className="d-inline-block align-top"
