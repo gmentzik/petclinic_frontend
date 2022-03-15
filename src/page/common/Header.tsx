@@ -8,12 +8,13 @@ import { State } from "../../reducers";
 import { logoutAction } from '../../actions/loginActions';
 import { getCurrentUserFromLocalStorage } from "../../utils/localStorageUtils";
 
-import { UserReducerActionTypes } from '../../actions/actionTypes';
+import { UserReducerActionTypes, UtilReducerActionTypes } from '../../actions/actionTypes';
 import { UserInfo } from "../../reducers/dto/userReducerDto";
 import { NotificationMessage } from "../../reducers/notificationsReducer";
 import { localDateTimeFromUtcMillisecondsTimeStamp } from "../../utils/timeDateUtils";
 import { removeNotificationAction } from "../../actions/notificationActions";
 import { useNavigate } from "react-router-dom";
+
 
 // Magic of interconnecting React-Router 5 Link and React-Bootstrap comes from this link:
 // https://stackoverflow.com/questions/54843302/reactjs-bootstrap-navbar-and-routing-not-working-together
@@ -30,6 +31,7 @@ const Header = (props: any) => {
     const loggedIn: boolean = useSelector((state: State) => state.userReducer.loggedIn);
     const loading: boolean = useSelector((state: State) => state.utilReducer.loading);
     const user: User = useSelector((state: State) => state.userReducer.user);
+    const navigateToUrl: string = useSelector((state: State) => state.utilReducer.navigateToUrl);
     const notificationsList: NotificationMessage[] = useSelector((state: State) => state.notificationsReducer.notificationsList);
     const dispatcher = useDispatch();
     const navigate = useNavigate();
@@ -57,6 +59,16 @@ const Header = (props: any) => {
             navigate("/");
         }
     }, [loggedIn, logged, navigate]);
+   
+    useEffect(() => {
+        if (navigateToUrl !== '') {
+            navigate(navigateToUrl);
+            dispatcher({
+                type: UtilReducerActionTypes.CLEAR_NAVIGATE_TO,
+            });
+        }
+    }, [navigateToUrl, navigate, dispatcher]);
+
 
     const generateNotificationsList: any = () => {
         return (

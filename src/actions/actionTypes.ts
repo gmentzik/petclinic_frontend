@@ -20,7 +20,10 @@ export const NotificationsReducerActionTypes = {
 
 export const UtilReducerActionTypes = {
     SHOW_LOADING: 'SHOW_LOADING',
-    REMOVE_LOADING: 'REMOVE_LOADING'
+    REMOVE_LOADING: 'REMOVE_LOADING',
+    NAVIGATE_TO: 'NAVIGATE_TO',
+    CLEAR_NAVIGATE_TO: 'CLEAR_NAVIGATE_TO'
+
 }
 
 export const customerReducerActionTypes = {

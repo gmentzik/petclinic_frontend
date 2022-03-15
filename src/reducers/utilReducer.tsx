@@ -3,11 +3,12 @@ import { UtilReducerActionTypes } from "../actions/actionTypes";
 
 export interface UtilReducerState {
   loading: boolean;
+  navigateToUrl: string;
 }
-
 
 const createDefaultState = (): UtilReducerState => ({
   loading: false,
+  navigateToUrl: '',
 });
 
 interface ActionType {
@@ -26,6 +27,16 @@ export const utilReducer = (state: UtilReducerState = createDefaultState(), acti
       return {
         ...state,
         loading: false,
+      };
+    case UtilReducerActionTypes.NAVIGATE_TO:
+      return {
+        ...state,
+        navigateToUrl: action.payload
+      };
+    case UtilReducerActionTypes.CLEAR_NAVIGATE_TO:
+      return {
+        ...state,
+        navigateToUrl: ''
       };
     default:
       return state;

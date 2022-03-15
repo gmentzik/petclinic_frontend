@@ -11,17 +11,17 @@ import { sendGetAllCustomersReduxThunk } from '../api/customersApi';
 
 
 // export const login = (username, password) => (dispatch) => {
-export const fetchCustomerListAction = ( navigateTo: any, page?: number, size?: number,) => (dispatcher: any) => {
+export const fetchCustomerListAction = ( page?: number, size?: number,) => (dispatcher: any) => {
     dispatcher({type: UtilReducerActionTypes.SHOW_LOADING});
     return sendGetAllCustomersReduxThunk(page, size).then(
         (data: CustomersList) => {
             dispatcher({type: UtilReducerActionTypes.REMOVE_LOADING});
             dispatcher({type: customerReducerActionTypes.UPDATE_CUSTOMER_LIST, payload: data});
         })
-        .catch((e) => handlerError(e, dispatcher, navigateTo));
+        .catch((e) => handlerError(e, dispatcher));
 }
 
-const handlerError = (error: AxiosError, dispatcher: any, navigateTo: any) => {
+const handlerError = (error: AxiosError, dispatcher: any) => {
     dispatcher({type: UtilReducerActionTypes.REMOVE_LOADING});
     dispatcher({type: customerReducerActionTypes.CLEAR_CUSTOMER_LIST});
     let message = '';
@@ -66,7 +66,10 @@ const handlerError = (error: AxiosError, dispatcher: any, navigateTo: any) => {
                 });
                 message = 'Please login again, Session Expired';
                 createAndDispachNewNotification(dispatcher, NotificationMessageType.ERROR, message);
-                navigateTo('/login');
+                dispatcher({
+                    type: UtilReducerActionTypes.NAVIGATE_TO,
+                    payload: '/login',
+                });
                 break;
 
             default:

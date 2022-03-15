@@ -17,7 +17,7 @@ const CustomerList = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatcher(fetchCustomerListAction(navigate, nextPage, displayPerPage));
+    dispatcher(fetchCustomerListAction(nextPage, displayPerPage));
   }, [nextPage, dispatcher, navigate, displayPerPage]);
 
   const activePage = (page: number): number => {
