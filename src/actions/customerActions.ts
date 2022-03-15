@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import { CustomersList, ErrorData } from '../api/models';
-import { UserReducerActionTypes, UtilReducerActionTypes } from '../actions/actionTypes';
+import { customerReducerActionTypes, UserReducerActionTypes, UtilReducerActionTypes } from '../actions/actionTypes';
 import { UserInfo } from '../reducers/dto/userReducerDto';
 import { unknownUser } from '../api/models/User';
 import { removeCurrentUserFromLocalStorage } from '../utils/localStorageUtils';
@@ -11,18 +11,19 @@ import { sendGetAllCustomersReduxThunk } from '../api/customersApi';
 
 
 // export const login = (username, password) => (dispatch) => {
-export const fetchCustomerListAction = (responseHander: Function, navigateTo: any, page?: number, size?: number,) => (dispatcher: any) => {
+export const fetchCustomerListAction = ( navigateTo: any, page?: number, size?: number,) => (dispatcher: any) => {
     dispatcher({type: UtilReducerActionTypes.SHOW_LOADING});
     return sendGetAllCustomersReduxThunk(page, size).then(
         (data: CustomersList) => {
             dispatcher({type: UtilReducerActionTypes.REMOVE_LOADING});
-            return responseHander(data);
+            dispatcher({type: customerReducerActionTypes.UPDATE_CUSTOMER_LIST, payload: data});
         })
         .catch((e) => handlerError(e, dispatcher, navigateTo));
 }
 
 const handlerError = (error: AxiosError, dispatcher: any, navigateTo: any) => {
     dispatcher({type: UtilReducerActionTypes.REMOVE_LOADING});
+    dispatcher({type: customerReducerActionTypes.CLEAR_CUSTOMER_LIST});
     let message = '';
     let errmessage =
         (error.response &&

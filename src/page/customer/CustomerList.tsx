@@ -1,36 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { Accordion, Button, Col, Form, Row, Table } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { CustomerTableRow } from ".";
 import { fetchCustomerListAction } from "../../actions/customerActions";
 import { CustomersList, Customer } from "../../api/models";
 import PageIndex from "../../components/pageIndex";
+import { State } from "../../reducers";
 
 const CustomerList = () => {
 
-  const [selectedPage, setSelectedPage] = useState(0);
   const [nextPage, setNextPage] = useState(0);
   const [displayPerPage, setDisplayPerPage] = useState(5);
-  const [totalPages, setTotalPages] = useState(1);
-
-  const [customers, setCustomers] = useState<Customer[]>([]);
-
+  const customerList: CustomersList = useSelector((state: State) => state.customersReducer.customersList);
   const dispatcher = useDispatch();
-
   const navigate = useNavigate();
 
-  const customerList = (data: CustomersList) => {
-    console.log(`customerList: ${data}`);
-    setCustomers(data.customers);
-    setSelectedPage(data.currentPage);
-    setNextPage(data.currentPage);
-    setTotalPages(data.totalPages);
-  }
-
-
   useEffect(() => {
-    dispatcher(fetchCustomerListAction(customerList, navigate, nextPage, displayPerPage));
+    dispatcher(fetchCustomerListAction(navigate, nextPage, displayPerPage));
   }, [nextPage, dispatcher, navigate, displayPerPage]);
 
   const activePage = (page: number): number => {
@@ -44,7 +31,7 @@ const CustomerList = () => {
   const createCustomerRows = (): any => {
     console.log("createCustomerRows");
     return (
-      customers.map((customer: Customer) =>
+      customerList.customers.map((customer: Customer) =>
         <CustomerTableRow key={customer.id} customer={customer} />
       ))
   };
@@ -57,7 +44,6 @@ const CustomerList = () => {
 
   return (
     <>
-      {console.log(customers)}
       <Row>
         <Accordion>
           <Accordion.Item eventKey="0">
@@ -132,7 +118,7 @@ const CustomerList = () => {
 
       </Row>
       <Row>
-        <PageIndex active={activePage(selectedPage)} total={totalPages}
+        <PageIndex active={activePage(customerList.currentPage)} total={customerList.totalPages}
           goToPage={(page: number) => selectPage(page)}
         />
       </Row>

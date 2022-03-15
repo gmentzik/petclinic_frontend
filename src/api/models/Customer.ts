@@ -15,3 +15,21 @@ export interface Customer {
     created: string;
     updated: string;
 }
+
+export const emptyCustomer = {
+    id: 0,
+    name: '',
+    surname: '',
+    address: '',
+    area: '',
+    pobox: '',
+    country: '',
+    email: '',
+    phone: '',
+    mobilephone: '',
+    note1: '',
+    note2: '',
+    note3: '',
+    created: '',
+    updated: ''
+}
