@@ -10,6 +10,7 @@ import PageIndex from "../../components/pageIndex";
 const CustomerList = () => {
 
   const [selectedPage, setSelectedPage] = useState(0);
+  const [nextPage, setNextPage] = useState(0);
   const [displayPerPage, setDisplayPerPage] = useState(5);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -23,20 +24,21 @@ const CustomerList = () => {
     console.log(`customerList: ${data}`);
     setCustomers(data.customers);
     setSelectedPage(data.currentPage);
+    setNextPage(data.currentPage);
     setTotalPages(data.totalPages);
   }
 
 
   useEffect(() => {
-    dispatcher(fetchCustomerListAction(customerList, navigate, selectedPage, displayPerPage));
-  }, [selectedPage, dispatcher, navigate, displayPerPage]);
+    dispatcher(fetchCustomerListAction(customerList, navigate, nextPage, displayPerPage));
+  }, [nextPage, dispatcher, navigate, displayPerPage]);
 
   const activePage = (page: number): number => {
     return page + 1;
   }
 
   const selectPage = (page: number) => {
-    setSelectedPage(page - 1);
+    setNextPage(page - 1);
   }
 
   const createCustomerRows = (): any => {

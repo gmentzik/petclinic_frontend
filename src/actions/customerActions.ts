@@ -15,8 +15,6 @@ export const fetchCustomerListAction = (responseHander: Function, navigateTo: an
     dispatcher({type: UtilReducerActionTypes.SHOW_LOADING});
     return sendGetAllCustomersReduxThunk(page, size).then(
         (data: CustomersList) => {
-            const message = "Fetched customer List";
-            // createAndDispachNewNotification(dispatcher, NotificationMessageType.SUCCESS, message);
             dispatcher({type: UtilReducerActionTypes.REMOVE_LOADING});
             return responseHander(data);
         })
