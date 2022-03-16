@@ -1,6 +1,27 @@
-import React, { ChangeEvent, FormEvent, useState } from "react"
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react"
 import { Button, Col, Form, Row } from "react-bootstrap"
+import { useSelector } from "react-redux";
 import { useParams, useSearchParams, useLocation } from "react-router-dom";
+import { Customer } from "../../api/models";
+import { State } from "../../reducers";
+
+
+interface CustomerDTO {
+    id?: number;
+    name: string;
+    surname: string;
+    address: string;
+    area: string;
+    pobox: string;
+    country: string;
+    email: string;
+    phone: string;
+    mobilephone: string;
+    note1: string;
+    note2: string;
+    note3: string;
+}
+
 
 const CustomerForm = () => {
 
@@ -11,6 +32,21 @@ const CustomerForm = () => {
     console.log(searchParams);
     console.log(useLocation());
     const useLocationSearch: string = useLocation().search;
+    const selectedCustomer: Customer = useSelector((state: State) => state.customersReducer.selectedCustomer);
+    const [newCustomer, setNewCustomer] = useState({
+        name: '',
+        surname: '',
+        address: '',
+        area: '',
+        pobox: '',
+        country: '',
+        email: '',
+        phone: '',
+        mobilephone: '',
+        note1: '',
+        note2: '',
+        note3: '',
+    });
 
     if (useLocationSearch && useLocationSearch.length > 0) {
         console.log("Query string exists: " + useLocationSearch);
@@ -22,25 +58,58 @@ const CustomerForm = () => {
         console.log(query.get('myparam'));
     }
 
-    const [name, setName] = useState('');
-    const [surname, setSurname] = useState('');
-    const [address, setAddress] = useState('');
-    const [area, setArea] = useState('');
+    
+    useEffect(()=>{
+        let customerData: CustomerDTO = {
+            name: '',
+            surname: '',
+            address: '',
+            area: '',
+            pobox: '',
+            country: '',
+            email: '',
+            phone: '',
+            mobilephone: '',
+            note1: '',
+            note2: '',
+            note3: '',
+        };
+
+        if (selectedCustomer.id >= 0) {
+            customerData = {
+                ...customerData,
+                id: selectedCustomer.id
+            };
+
+        }
+        customerData = {
+            ...customerData,
+            name: selectedCustomer.name,
+            surname: selectedCustomer.surname,
+            address: selectedCustomer.address,
+            area: selectedCustomer.area,
+            pobox: selectedCustomer.pobox,
+            country: selectedCustomer.country,
+            email: selectedCustomer.email,
+            phone: selectedCustomer.phone,
+            mobilephone: selectedCustomer.mobilephone,
+            note1: selectedCustomer.note1,
+            note2: selectedCustomer.note2,
+            note3: selectedCustomer.note3,
+        }
+        setNewCustomer(customerData);
+    },[])
+
+
 
     const handleChange = (event: ChangeEvent) => {
         const target = event.target as HTMLFormElement;
-        let fieldName: string = target.name;
-        let fieldVal: string = target.value;
-        if (fieldName === 'name') setName(fieldVal);
-        if (fieldName === 'surname') setSurname(fieldVal);
-        if (fieldName === 'address') setAddress(fieldVal);
-        if (fieldName === 'area') setArea(fieldVal);
+        setNewCustomer({ ...newCustomer, [target.name]: target.value });
     }
 
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
-        console.log(name);
-        console.log(surname);
+        console.log(newCustomer);
         // dispatcher(loginAction(userName, userPassword));
     }
 
@@ -48,12 +117,7 @@ const CustomerForm = () => {
         <>
             <Row>
                 <div className="d-flex justify-content-center">
-                    {!customerId ? <h1>CREATE NEW CUSTOMER</h1> : <h1>VIEW/EDIT CUSTOMER</h1>}
-                </div>
-            </Row>
-            <Row>
-                <div className="d-flex justify-content-center">
-                    {!customerId ? <h1>NEW CUSTOMER</h1> : <h1>CUSTOMER ID: {customerId} </h1>}
+                    {selectedCustomer.id < 0 ? <h1>NEW CUSTOMER</h1> : <h1>EDIT CUSTOMER</h1>}
                 </div>
             </Row>
             <Form onSubmit={handleSubmit}>
@@ -66,7 +130,7 @@ const CustomerForm = () => {
                                 Name
                             </Form.Label>
                             <Col sm="10">
-                                <Form.Control type="text" name="name" onChange={handleChange} defaultValue={name} />
+                                <Form.Control type="text" name="name" onChange={handleChange} defaultValue={newCustomer.name} />
                             </Col>
                         </Form.Group>
 
@@ -75,25 +139,91 @@ const CustomerForm = () => {
                                 Surname
                             </Form.Label>
                             <Col sm="10">
-                                <Form.Control type="text" name="surname" onChange={handleChange} defaultValue={surname} />
+                                <Form.Control type="text" name="surname" onChange={handleChange} defaultValue={newCustomer.surname} />
                             </Col>
                         </Form.Group>
 
-                        <Form.Group as={Row} className="mb-3" controlId="formCustomerSurname">
+                        <Form.Group as={Row} className="mb-3" controlId="formCustomerAddress">
                             <Form.Label column sm="2">
                                 Street address
                             </Form.Label>
                             <Col sm="10">
-                                <Form.Control type="text" name="address" onChange={handleChange} defaultValue={address} />
+                                <Form.Control type="text" name="address" onChange={handleChange} defaultValue={newCustomer.address} />
                             </Col>
                         </Form.Group>
 
-                        <Form.Group as={Row} className="mb-3" controlId="formCustomerSurname">
+                        <Form.Group as={Row} className="mb-3" controlId="formCustomerArea">
                             <Form.Label column sm="2">
                                 Area
                             </Form.Label>
                             <Col sm="10">
-                                <Form.Control type="text" name="area" onChange={handleChange} defaultValue={area} />
+                                <Form.Control type="text" name="area" onChange={handleChange} defaultValue={newCustomer.area} />
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} className="mb-3" controlId="formCustomerPobox">
+                            <Form.Label column sm="2">
+                                POBOX
+                            </Form.Label>
+                            <Col sm="10">
+                                <Form.Control type="text" name="pobox" onChange={handleChange} defaultValue={newCustomer.pobox} />
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} className="mb-3" controlId="formCustomerCountry">
+                            <Form.Label column sm="2">
+                                Country
+                            </Form.Label>
+                            <Col sm="10">
+                                <Form.Control type="text" name="country" onChange={handleChange} defaultValue={newCustomer.country} />
+                            </Col>
+                        </Form.Group>
+                        <Form.Group as={Row} className="mb-3" controlId="formCustomerEmail">
+                            <Form.Label column sm="2">
+                                Email
+                            </Form.Label>
+                            <Col sm="10">
+                                <Form.Control type="text" name="email" onChange={handleChange} defaultValue={newCustomer.email} />
+                            </Col>
+                        </Form.Group>
+                        <Form.Group as={Row} className="mb-3" controlId="formCustomerPhone">
+                            <Form.Label column sm="2">
+                                Landline Phone
+                            </Form.Label>
+                            <Col sm="10">
+                                <Form.Control type="text" name="phone" onChange={handleChange} defaultValue={newCustomer.phone} />
+                            </Col>
+                        </Form.Group>
+                        <Form.Group as={Row} className="mb-3" controlId="formCustomerMobile">
+                            <Form.Label column sm="2">
+                                Mobile Phone
+                            </Form.Label>
+                            <Col sm="10">
+                                <Form.Control type="text" name="mobilephone" onChange={handleChange} defaultValue={newCustomer.mobilephone} />
+                            </Col>
+                        </Form.Group>
+                        <Form.Group as={Row} className="mb-3" controlId="formCustomerNote1">
+                            <Form.Label column sm="2">
+                                Note1
+                            </Form.Label>
+                            <Col sm="10">
+                                <Form.Control  as="textarea" rows={3} name="note1" onChange={handleChange} defaultValue={newCustomer.note1} />
+                            </Col>
+                        </Form.Group>
+                        <Form.Group as={Row} className="mb-3" controlId="formCustomerNote2">
+                            <Form.Label column sm="2">
+                                Note2
+                            </Form.Label>
+                            <Col sm="10">
+                                <Form.Control  as="textarea" rows={3} name="note2" onChange={handleChange} defaultValue={newCustomer.note2} />
+                            </Col>
+                        </Form.Group>
+                        <Form.Group as={Row} className="mb-3" controlId="formCustomerNote3">
+                            <Form.Label column sm="2">
+                                Note3
+                            </Form.Label>
+                            <Col sm="10">
+                                <Form.Control  as="textarea" rows={3} name="note3" onChange={handleChange} defaultValue={newCustomer.note3} />
                             </Col>
                         </Form.Group>
                     </Col>
@@ -118,20 +248,3 @@ export default CustomerForm;
 
 
 
-// export interface Customer {
-//     id: number;
-//     name: string;
-//     surname: string;
-//     address: string;
-//     area: string;
-//     pobox: string;
-//     country: string;
-//     email: string;
-//     phone: string;
-//     mobilephone: string;
-//     note1: string;
-//     note2: string;
-//     note3: string;
-//     created: string;
-//     updated: string;
-// }

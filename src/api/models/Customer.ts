@@ -17,7 +17,7 @@ export interface Customer {
 }
 
 export const emptyCustomer = {
-    id: 0,
+    id: -1,
     name: '',
     surname: '',
     address: '',
