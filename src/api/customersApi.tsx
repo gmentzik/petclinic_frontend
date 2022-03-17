@@ -1,10 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { customerHelloUrl, customerUrl, tokenPrefix } from '../constants'
-import { CustomersList } from "../api/models";
+import { CustomerDTO } from "../api/models";
 import { getCurrentUserFromLocalStorage } from "../utils/localStorageUtils";
-// import { useNavigate  } from "react-router-dom";
-
-// const receivedToken = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTYzNzQ5MjQwOSwiaWF0IjoxNjM3NDkyMTA5fQ.h_NQIL-NMoFE2hEWNG5jlvVji7TPTRXlyHxS6xVoh0F0oq0-u4AMg8R0J-sfyyWajuVfrROCEy6uaAWEihRNGw'
 
 const sendGetHelloRequest = async (responseHander: Function) => {
 
@@ -49,6 +46,10 @@ const sendGetAllCustomers = (page?: number | undefined, size?: number | undefine
     }
   }).then(success).catch(failure);
 
+}
+
+export const createEditCustomer = (customerData: CustomerDTO) => {
+  return axios.post(customerUrl, customerData).then(success).catch(failure);
 }
 
 const success = (response: AxiosResponse): any => {

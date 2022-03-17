@@ -2,25 +2,11 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from "react"
 import { Button, Col, Form, Row } from "react-bootstrap"
 import { useSelector } from "react-redux";
 import { useParams, useSearchParams, useLocation } from "react-router-dom";
-import { Customer } from "../../api/models";
+import { Customer, CustomerDTO, emptyCustomerDTO } from "../../api/models";
 import { State } from "../../reducers";
 
 
-interface CustomerDTO {
-    id?: number;
-    name: string;
-    surname: string;
-    address: string;
-    area: string;
-    pobox: string;
-    country: string;
-    email: string;
-    phone: string;
-    mobilephone: string;
-    note1: string;
-    note2: string;
-    note3: string;
-}
+
 
 
 const CustomerForm = () => {
@@ -33,20 +19,7 @@ const CustomerForm = () => {
     console.log(useLocation());
     const useLocationSearch: string = useLocation().search;
     const selectedCustomer: Customer = useSelector((state: State) => state.customersReducer.selectedCustomer);
-    const [newCustomer, setNewCustomer] = useState({
-        name: '',
-        surname: '',
-        address: '',
-        area: '',
-        pobox: '',
-        country: '',
-        email: '',
-        phone: '',
-        mobilephone: '',
-        note1: '',
-        note2: '',
-        note3: '',
-    });
+    const [newCustomer, setNewCustomer] = useState({...emptyCustomerDTO});
 
     if (useLocationSearch && useLocationSearch.length > 0) {
         console.log("Query string exists: " + useLocationSearch);
@@ -60,20 +33,7 @@ const CustomerForm = () => {
 
     
     useEffect(()=>{
-        let customerData: CustomerDTO = {
-            name: '',
-            surname: '',
-            address: '',
-            area: '',
-            pobox: '',
-            country: '',
-            email: '',
-            phone: '',
-            mobilephone: '',
-            note1: '',
-            note2: '',
-            note3: '',
-        };
+        let customerData: CustomerDTO = {...emptyCustomerDTO};
 
         if (selectedCustomer.id >= 0) {
             customerData = {
@@ -98,6 +58,7 @@ const CustomerForm = () => {
             note3: selectedCustomer.note3,
         }
         setNewCustomer(customerData);
+        // eslint-disable-next-line
     },[])
 
 
