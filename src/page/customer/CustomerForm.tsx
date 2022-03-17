@@ -1,7 +1,8 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react"
 import { Button, Col, Form, Row } from "react-bootstrap"
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams, useSearchParams, useLocation } from "react-router-dom";
+import { updateCustomerAction } from "../../actions/customerActions";
 import { Customer, CustomerDTO, emptyCustomerDTO } from "../../api/models";
 import { State } from "../../reducers";
 
@@ -17,6 +18,7 @@ const CustomerForm = () => {
     console.log(customerId);
     console.log(searchParams);
     console.log(useLocation());
+    const dispatcher = useDispatch();
     const useLocationSearch: string = useLocation().search;
     const selectedCustomer: Customer = useSelector((state: State) => state.customersReducer.selectedCustomer);
     const [newCustomer, setNewCustomer] = useState({...emptyCustomerDTO});
@@ -71,7 +73,7 @@ const CustomerForm = () => {
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
         console.log(newCustomer);
-        // dispatcher(loginAction(userName, userPassword));
+        dispatcher(updateCustomerAction(newCustomer));
     }
 
     return (
