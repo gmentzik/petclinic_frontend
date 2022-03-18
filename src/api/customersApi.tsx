@@ -3,6 +3,7 @@ import { customerHelloUrl, customerUrl, tokenPrefix } from '../constants'
 import { CustomerDTO } from "../api/models";
 import { getCurrentUserFromLocalStorage } from "../utils/localStorageUtils";
 
+
 const sendGetHelloRequest = async (responseHander: Function) => {
 
   const storedToken = getCurrentUserFromLocalStorage().jwttoken;
@@ -27,18 +28,12 @@ const sendGetHelloRequest = async (responseHander: Function) => {
 
 };
 
+
 const sendGetAllCustomers = (page?: number | undefined, size?: number | undefined) => {
-
-  const storedToken = getCurrentUserFromLocalStorage().jwttoken;
-
-  console.log('token is localStorage: ' + storedToken);
-  const token = tokenPrefix + storedToken;
-  console.log('Authorization Token: ' + token);
-
   return axios.get(customerUrl, {
     withCredentials: false,
     headers: {
-      'Authorization': token,
+      'Authorization':  tokenPrefix + getCurrentUserFromLocalStorage().jwttoken,
     },
     params: {
       page: page ? page : 0,
@@ -48,21 +43,20 @@ const sendGetAllCustomers = (page?: number | undefined, size?: number | undefine
 
 }
 
-const updateCustomer = (customerData: CustomerDTO) => {
-  console.log('updateCustomer');
-  const storedToken = getCurrentUserFromLocalStorage().jwttoken;
-  console.log('token is localStorage: ' + storedToken);
-  const token = tokenPrefix + storedToken;
-  console.log('Authorization Token: ' + token);
+const getPostHeaders = () => {
+  return {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': tokenPrefix + getCurrentUserFromLocalStorage().jwttoken,
+    }
+  }
+}
 
-  return axios.post(customerUrl, 
-    {
-      withCredentials: false,
-      headers: {
-        'Authorization': token,
-      },
-      customerData
-    }).then(success).catch(failure);
+const updateCustomer = (customerData: CustomerDTO) => {
+  return axios.post(customerUrl,
+    customerData,
+    getPostHeaders()
+  ).then(success).catch(failure);
 }
 
 const success = (response: AxiosResponse): any => {

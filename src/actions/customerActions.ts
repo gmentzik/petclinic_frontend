@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { CustomerDTO, CustomersList, ErrorData } from '../api/models';
+import { CustomerDTO, CustomersList } from '../api/models';
 import { customerReducerActionTypes, UserReducerActionTypes, UtilReducerActionTypes } from '../actions/actionTypes';
 import { UserInfo } from '../reducers/dto/userReducerDto';
 import { unknownUser } from '../api/models/User';
@@ -9,12 +9,14 @@ import { NotificationMessageType } from '../reducers/notificationsReducer';
 import { sendGetAllCustomers, updateCustomer } from '../api/customersApi';
 
 
+
 export const fetchCustomerListAction = ( page?: number, size?: number,) => (dispatcher: any) => {
     dispatcher({type: UtilReducerActionTypes.SHOW_LOADING});
     return sendGetAllCustomers(page, size).then(
         (data: CustomersList) => {
             dispatcher({type: UtilReducerActionTypes.REMOVE_LOADING});
             dispatcher({type: customerReducerActionTypes.UPDATE_CUSTOMER_LIST, payload: data});
+            dispatcher({type: customerReducerActionTypes.CLEAR_FORM_ERRORS});
         })
         .catch((e) => handlerError(e, dispatcher));
 }
@@ -34,6 +36,7 @@ export const updateCustomerAction = ( customer:CustomerDTO ) => (dispatcher: any
 
 
 const handlerError = (error: AxiosError, dispatcher: any) => {
+    console.log('handlerError');
     dispatcher({type: UtilReducerActionTypes.REMOVE_LOADING});
     dispatcher({type: customerReducerActionTypes.CLEAR_CUSTOMER_LIST});
     let message = '';
@@ -44,16 +47,9 @@ const handlerError = (error: AxiosError, dispatcher: any) => {
         error.message ||
         error.toString();
 
-    if (error.response) {
-        // Request made and server responded
-        const errorData: ErrorData = error.response.data;
-        if (errorData) {
-            if (errorData.details) {
-                console.log(`${errorData.message}: ${errorData.details.join()}`);
-                errmessage = `${errorData.message}: ${errorData.details.join()}`;
-            }
-        }
+        console.log(errmessage);
 
+    if (error.response) {
         // all the other error responses
         switch (error.response.status) {
             case 400:
@@ -63,7 +59,6 @@ const handlerError = (error: AxiosError, dispatcher: any) => {
                 message = 'Nothing to display, Data Not Found';
                 createAndDispachNewNotification(dispatcher, NotificationMessageType.WARNING, message);
                 break;
-
             case 401: // authentication error, logout the user
                 removeCurrentUserFromLocalStorage();
                 const payload: UserInfo = {
@@ -83,7 +78,10 @@ const handlerError = (error: AxiosError, dispatcher: any) => {
                     payload: '/login',
                 });
                 break;
-
+            case 422: // handleMethodArgumentNotValid
+                console.log(error.response?.data?.errors);
+                dispatcher({type: customerReducerActionTypes.UPDATE_FORM_ERRORS, payload: error.response?.data?.errors});
+                break;
             default:
                 message = 'Server Error';
                 createAndDispachNewNotification(dispatcher, NotificationMessageType.ERROR, message);
@@ -103,5 +101,6 @@ const handlerError = (error: AxiosError, dispatcher: any) => {
     // Notification message
     message = errmessage;
     createAndDispachNewNotification(dispatcher, NotificationMessageType.ERROR, message);
-
+    // return Promise.reject(message);
+    
 }

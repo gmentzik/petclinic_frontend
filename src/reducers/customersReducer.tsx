@@ -5,11 +5,13 @@ import { Customer, CustomersList, emptyCustomer, emptyCustomersList } from "../a
 export interface CustomersState {
     customersList: CustomersList;
     selectedCustomer: Customer;
+    formErrors: any;
 }
 
 const createDefaultState = (): CustomersState => ({
     customersList: emptyCustomersList,
-    selectedCustomer: emptyCustomer
+    selectedCustomer: emptyCustomer,
+    formErrors: {}
 });
 
 interface ActionType {
@@ -38,6 +40,16 @@ export const customersReducer = (state: CustomersState = createDefaultState(), a
             return {
                 ...state,
                 selectedCustomer: emptyCustomer
+            };
+        case customerReducerActionTypes.UPDATE_FORM_ERRORS:
+            return {
+                ...state,
+                formErrors: action.payload
+            };
+        case customerReducerActionTypes.CLEAR_FORM_ERRORS:
+            return {
+                ...state,
+                formErrors: {}
             };
         default:
             return state;
