@@ -104,3 +104,7 @@ const handlerError = (error: AxiosError, dispatcher: any) => {
     // return Promise.reject(message);
     
 }
+
+export const clearAllCustomerFormErrors = () => (dispatcher: any) => {
+    dispatcher({type: customerReducerActionTypes.CLEAR_FORM_ERRORS});
+}

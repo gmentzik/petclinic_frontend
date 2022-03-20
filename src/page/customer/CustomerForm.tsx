@@ -2,7 +2,7 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from "react"
 import { Button, Col, Form, Row } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useSearchParams, useLocation } from "react-router-dom";
-import { updateCustomerAction } from "../../actions/customerActions";
+import { updateCustomerAction, clearAllCustomerFormErrors } from "../../actions/customerActions";
 import { Customer, CustomerDTO, emptyCustomerDTO } from "../../api/models";
 import { State } from "../../reducers";
 
@@ -74,6 +74,7 @@ const CustomerForm = () => {
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
         console.log(newCustomer);
+        dispatcher(clearAllCustomerFormErrors());
         dispatcher(updateCustomerAction(newCustomer));
     }
 
@@ -90,109 +91,128 @@ const CustomerForm = () => {
                     <Col xs={2}></Col>
                     <Col xs={8}>
 
-                    <Row className="mb-3">
-                        <Form.Group as={Col} className="xs-4" controlId="formCustomerName">
-                            <Form.Label>
-                                Name
-                            </Form.Label>
-                            <Col>
-                                <Form.Control type="text" name="name" onChange={handleChange} defaultValue={newCustomer.name} />
-                            </Col>
-                            {formerrors.name && <p className="text-danger">{formerrors.name}</p>}
-                        </Form.Group>
-                        <Form.Group as={Col} className="xs-4" controlId="formCustomerSurname">
-                            <Form.Label>
-                                Surname
-                            </Form.Label>
-                            <Col>
-                                <Form.Control type="text" name="surname" onChange={handleChange} defaultValue={newCustomer.surname} />
-                            </Col>
-                            {formerrors.surname && <p className="text-danger">{formerrors.surname}</p>}
-                        </Form.Group>
-                    </Row>
-                    <Row className="mb-3">
-                        <Form.Group as={Col} className="mb-3" controlId="formCustomerAddress">
-                            <Form.Label>
-                                Street address
-                            </Form.Label>
-                            <Col>
-                                <Form.Control type="text" name="address" onChange={handleChange} defaultValue={newCustomer.address} />
-                            </Col>
-                        </Form.Group>
+                        <Row className="mb-2">
+                            <Form.Group as={Col}  controlId="formCustomerName">
+                                <Form.Label>
+                                    Name
+                                </Form.Label>
+                                <Col>
+                                    <Form.Control size="sm" type="text" name="name" onChange={handleChange} defaultValue={newCustomer.name} isInvalid={formerrors?.name} />
+                                </Col>
+                                {formerrors?.name && <p className="text-danger small" style = {{marginBottom: 0}}>{formerrors?.name}</p>}
+                                <Form.Control.Feedback type="invalid">
+                                    Please enter your name
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group as={Col}  controlId="formCustomerSurname">
+                                <Form.Label>
+                                    Surname
+                                </Form.Label>
+                                <Col>
+                                    <Form.Control size="sm" type="text" name="surname" onChange={handleChange} defaultValue={newCustomer.surname} isInvalid={formerrors?.surname} />
+                                </Col>
+                                {formerrors?.surname && <p className="text-danger small"style = {{marginBottom: 0}} >{formerrors?.surname}</p>}
+                            </Form.Group>
+                        </Row>
+                        <Row className="mb-2">
+                            <Form.Group as={Col}  controlId="formCustomerAddress">
+                                <Form.Label>
+                                    Street address
+                                </Form.Label>
+                                <Col>
+                                    <Form.Control size="sm" type="text" name="address" onChange={handleChange} defaultValue={newCustomer.address} isInvalid={formerrors?.address} />
+                                </Col>
+                                {formerrors?.address && <p className="text-danger small" style = {{marginBottom: 0}}>{formerrors?.address}</p>}
+                            </Form.Group>
 
-                        <Form.Group as={Col} className="mb-3" controlId="formCustomerArea">
+                            <Form.Group as={Col}  controlId="formCustomerArea">
+                                <Form.Label>
+                                    Area
+                                </Form.Label>
+                                <Col>
+                                    <Form.Control size="sm" type="text" name="area" onChange={handleChange} defaultValue={newCustomer.area} isInvalid={formerrors?.area} />
+                                </Col>
+                                {formerrors?.area && <p className="text-danger small" style = {{marginBottom: 0}}>{formerrors?.area}</p>}
+                            </Form.Group>
+                        </Row>
+
+                        <Row >
+                        <Form.Group as={Col} className="xs-3" controlId="formCustomerPobox">
                             <Form.Label>
-                                Area
-                            </Form.Label>
-                            <Col>
-                                <Form.Control type="text" name="area" onChange={handleChange} defaultValue={newCustomer.area} />
-                            </Col>
-                        </Form.Group>
-                    </Row>
-                        <Form.Group as={Row} className="mb-3" controlId="formCustomerPobox">
-                            <Form.Label column sm="2">
                                 POBOX
                             </Form.Label>
-                            <Col sm="10">
-                                <Form.Control type="text" name="pobox" onChange={handleChange} defaultValue={newCustomer.pobox} />
+                            <Col >
+                                <Form.Control size="sm" type="text" name="pobox" onChange={handleChange} defaultValue={newCustomer.pobox} isInvalid={formerrors?.pobox}/>
                             </Col>
+                            {formerrors?.pobox && <p className="text-danger small" style = {{marginBottom: 0}}>{formerrors?.pobox}</p>}
                         </Form.Group>
-
-                        <Form.Group as={Row} className="mb-3" controlId="formCustomerCountry">
-                            <Form.Label column sm="2">
+                        <Form.Group as={Col} className="xs-3" controlId="formCustomerCountry">
+                            <Form.Label >
                                 Country
                             </Form.Label>
-                            <Col sm="10">
-                                <Form.Control type="text" name="country" onChange={handleChange} defaultValue={newCustomer.country} />
+                            <Col >
+                                <Form.Control size="sm" type="text" name="country" onChange={handleChange} defaultValue={newCustomer.country} isInvalid={formerrors?.country}/>
                             </Col>
+                            {formerrors?.country && <p className="text-danger small" style = {{marginBottom: 0}}>{formerrors?.country}</p>}
                         </Form.Group>
-                        <Form.Group as={Row} className="mb-3" controlId="formCustomerEmail">
-                            <Form.Label column sm="2">
+                        <Form.Group as={Col} xs={6} className="mb-3" controlId="formCustomerEmail">
+                            <Form.Label >
                                 Email
                             </Form.Label>
-                            <Col sm="10">
-                                <Form.Control type="text" name="email" onChange={handleChange} defaultValue={newCustomer.email} />
+                            <Col>
+                                <Form.Control size="sm" type="text" name="email" onChange={handleChange} defaultValue={newCustomer.email} isInvalid={formerrors?.email}/>
                             </Col>
+                            {formerrors?.email && <p className="text-danger small" style = {{marginBottom: 0}}>{formerrors?.email}</p>}
                         </Form.Group>
-                        <Form.Group as={Row} className="mb-3" controlId="formCustomerPhone">
-                            <Form.Label column sm="2">
+                        </Row>
+
+                        <Row className="mb-2">
+                        <Form.Group as={Col} controlId="formCustomerPhone">
+                            <Form.Label >
                                 Landline Phone
                             </Form.Label>
-                            <Col sm="10">
-                                <Form.Control type="text" name="phone" onChange={handleChange} defaultValue={newCustomer.phone} />
+                            <Col >
+                                <Form.Control size="sm" type="text" name="phone" onChange={handleChange} defaultValue={newCustomer.phone} isInvalid={formerrors?.phone}/>
                             </Col>
+                            {formerrors?.phone && <p className="text-danger small" style = {{marginBottom: 0}}>{formerrors?.phone}</p>}
                         </Form.Group>
-                        <Form.Group as={Row} className="mb-3" controlId="formCustomerMobile">
-                            <Form.Label column sm="2">
+                        <Form.Group as={Col} controlId="formCustomerMobile">
+                            <Form.Label >
                                 Mobile Phone
                             </Form.Label>
-                            <Col sm="10">
-                                <Form.Control type="text" name="mobilephone" onChange={handleChange} defaultValue={newCustomer.mobilephone} />
+                            <Col >
+                                <Form.Control size="sm" type="text" name="mobilephone" onChange={handleChange} defaultValue={newCustomer.mobilephone}  isInvalid={formerrors?.mobilephone}/>
                             </Col>
+                            {formerrors?.mobilephone && <p className="text-danger small" style = {{marginBottom: 0}}>{formerrors?.mobilephone}</p>}
                         </Form.Group>
+                        </Row>
+
                         <Form.Group as={Row} className="mb-3" controlId="formCustomerNote1">
-                            <Form.Label column sm="2">
+                            <Form.Label >
                                 Note1
                             </Form.Label>
-                            <Col sm="10">
-                                <Form.Control as="textarea" rows={3} name="note1" onChange={handleChange} defaultValue={newCustomer.note1} />
+                            <Col >
+                                <Form.Control size="sm" as="textarea" rows={3} name="note1" onChange={handleChange} defaultValue={newCustomer.note1} isInvalid={formerrors?.note1}/>
                             </Col>
+                            {formerrors?.note1 && <p className="text-danger small" style = {{marginBottom: 0}}>{formerrors?.note1}</p>}
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3" controlId="formCustomerNote2">
-                            <Form.Label column sm="2">
+                            <Form.Label >
                                 Note2
                             </Form.Label>
-                            <Col sm="10">
-                                <Form.Control as="textarea" rows={3} name="note2" onChange={handleChange} defaultValue={newCustomer.note2} />
+                            <Col >
+                                <Form.Control size="sm" as="textarea" rows={3} name="note2" onChange={handleChange} defaultValue={newCustomer.note2} isInvalid={formerrors?.note2}/>
                             </Col>
+                            {formerrors?.note2 && <p className="text-danger small" style = {{marginBottom: 0}}>{formerrors?.note2}</p>}
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3" controlId="formCustomerNote3">
-                            <Form.Label column sm="2">
+                            <Form.Label >
                                 Note3
                             </Form.Label>
-                            <Col sm="10">
-                                <Form.Control as="textarea" rows={3} name="note3" onChange={handleChange} defaultValue={newCustomer.note3} />
+                            <Col >
+                                <Form.Control size="sm" as="textarea" rows={3} name="note3" onChange={handleChange} defaultValue={newCustomer.note3} isInvalid={formerrors?.note3}/>
                             </Col>
+                            {formerrors?.note3 && <p className="text-danger small" style = {{marginBottom: 0}}>{formerrors?.note3}</p>}
                         </Form.Group>
                     </Col>
                     <Col xs={2}></Col>
