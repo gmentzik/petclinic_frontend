@@ -21,7 +21,8 @@ const CustomerForm = () => {
     const dispatcher = useDispatch();
     const useLocationSearch: string = useLocation().search;
     const selectedCustomer: Customer = useSelector((state: State) => state.customersReducer.selectedCustomer);
-    const [newCustomer, setNewCustomer] = useState({...emptyCustomerDTO});
+    const formerrors: any = useSelector((state: State) => state.customersReducer.formErrors);
+    const [newCustomer, setNewCustomer] = useState({ ...emptyCustomerDTO });
 
     if (useLocationSearch && useLocationSearch.length > 0) {
         console.log("Query string exists: " + useLocationSearch);
@@ -33,9 +34,9 @@ const CustomerForm = () => {
         console.log(query.get('myparam'));
     }
 
-    
-    useEffect(()=>{
-        let customerData: CustomerDTO = {...emptyCustomerDTO};
+
+    useEffect(() => {
+        let customerData: CustomerDTO = { ...emptyCustomerDTO };
 
         if (selectedCustomer.id >= 0) {
             customerData = {
@@ -61,7 +62,7 @@ const CustomerForm = () => {
         }
         setNewCustomer(customerData);
         // eslint-disable-next-line
-    },[])
+    }, [])
 
 
 
@@ -88,42 +89,46 @@ const CustomerForm = () => {
                 <Row>
                     <Col xs={2}></Col>
                     <Col xs={8}>
-                        <Form.Group as={Row} className="mb-3" controlId="formCustomerName">
-                            <Form.Label column sm="2">
+
+                    <Row className="mb-3">
+                        <Form.Group as={Col} className="xs-4" controlId="formCustomerName">
+                            <Form.Label>
                                 Name
                             </Form.Label>
-                            <Col sm="10">
+                            <Col>
                                 <Form.Control type="text" name="name" onChange={handleChange} defaultValue={newCustomer.name} />
                             </Col>
+                            {formerrors.name && <p className="text-danger">{formerrors.name}</p>}
                         </Form.Group>
-
-                        <Form.Group as={Row} className="mb-3" controlId="formCustomerSurname">
-                            <Form.Label column sm="2">
+                        <Form.Group as={Col} className="xs-4" controlId="formCustomerSurname">
+                            <Form.Label>
                                 Surname
                             </Form.Label>
-                            <Col sm="10">
+                            <Col>
                                 <Form.Control type="text" name="surname" onChange={handleChange} defaultValue={newCustomer.surname} />
                             </Col>
+                            {formerrors.surname && <p className="text-danger">{formerrors.surname}</p>}
                         </Form.Group>
-
-                        <Form.Group as={Row} className="mb-3" controlId="formCustomerAddress">
-                            <Form.Label column sm="2">
+                    </Row>
+                    <Row className="mb-3">
+                        <Form.Group as={Col} className="mb-3" controlId="formCustomerAddress">
+                            <Form.Label>
                                 Street address
                             </Form.Label>
-                            <Col sm="10">
+                            <Col>
                                 <Form.Control type="text" name="address" onChange={handleChange} defaultValue={newCustomer.address} />
                             </Col>
                         </Form.Group>
 
-                        <Form.Group as={Row} className="mb-3" controlId="formCustomerArea">
-                            <Form.Label column sm="2">
+                        <Form.Group as={Col} className="mb-3" controlId="formCustomerArea">
+                            <Form.Label>
                                 Area
                             </Form.Label>
-                            <Col sm="10">
+                            <Col>
                                 <Form.Control type="text" name="area" onChange={handleChange} defaultValue={newCustomer.area} />
                             </Col>
                         </Form.Group>
-
+                    </Row>
                         <Form.Group as={Row} className="mb-3" controlId="formCustomerPobox">
                             <Form.Label column sm="2">
                                 POBOX
@@ -170,7 +175,7 @@ const CustomerForm = () => {
                                 Note1
                             </Form.Label>
                             <Col sm="10">
-                                <Form.Control  as="textarea" rows={3} name="note1" onChange={handleChange} defaultValue={newCustomer.note1} />
+                                <Form.Control as="textarea" rows={3} name="note1" onChange={handleChange} defaultValue={newCustomer.note1} />
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3" controlId="formCustomerNote2">
@@ -178,7 +183,7 @@ const CustomerForm = () => {
                                 Note2
                             </Form.Label>
                             <Col sm="10">
-                                <Form.Control  as="textarea" rows={3} name="note2" onChange={handleChange} defaultValue={newCustomer.note2} />
+                                <Form.Control as="textarea" rows={3} name="note2" onChange={handleChange} defaultValue={newCustomer.note2} />
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3" controlId="formCustomerNote3">
@@ -186,7 +191,7 @@ const CustomerForm = () => {
                                 Note3
                             </Form.Label>
                             <Col sm="10">
-                                <Form.Control  as="textarea" rows={3} name="note3" onChange={handleChange} defaultValue={newCustomer.note3} />
+                                <Form.Control as="textarea" rows={3} name="note3" onChange={handleChange} defaultValue={newCustomer.note3} />
                             </Col>
                         </Form.Group>
                     </Col>
