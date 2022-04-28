@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Nav, Navbar, NavDropdown, Spinner, Toast, ToastContainer, } from 'react-bootstrap';
+import { Button, Container, Nav, Navbar, NavDropdown, Spinner, Toast, ToastContainer, } from 'react-bootstrap';
 import { useDispatch, useSelector } from "react-redux";
 import { Link, createSearchParams } from "react-router-dom";
 import { User } from "../../api/models";
@@ -12,7 +12,7 @@ import { UserReducerActionTypes, UtilReducerActionTypes } from '../../actions/ac
 import { UserInfo } from "../../reducers/dto/userReducerDto";
 import { NotificationMessage } from "../../reducers/notificationsReducer";
 import { localDateTimeFromUtcMillisecondsTimeStamp } from "../../utils/timeDateUtils";
-import { removeNotificationAction } from "../../actions/notificationActions";
+import { clearAllNotificationsAction, removeNotificationAction } from "../../actions/notificationActions";
 import { useNavigate } from "react-router-dom";
 
 
@@ -69,7 +69,6 @@ const Header = (props: any) => {
         }
     }, [navigateToUrl, navigate, dispatcher]);
 
-
     const generateNotificationsList: any = () => {
         return (
             notificationsList.map(
@@ -85,7 +84,6 @@ const Header = (props: any) => {
                     );
                 }
             )
-
         )
     }
 
@@ -126,6 +124,7 @@ const Header = (props: any) => {
             <div id='notificationsContainer' style={{ position: 'relative', zIndex: 100 }} className="row" >
                 <ToastContainer className="p-3" position={'top-end'} style={{ marginRight: '10px' }}>
                     {generateNotificationsList()}
+                    {!!notificationsList.length && <Button style={{ pointerEvents: 'auto' }}variant="primary" onClick={() => {console.log('Clear all notifications'); dispatcher(clearAllNotificationsAction());}} >Clear all</Button>}
                 </ToastContainer>
             </div>
             {loading && <div id='loadingContainer' >
