@@ -1,8 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { authenticateUserUrl } from '../constants';
 
-
-
 export const authenticateUserRequest = (uname: string, upassword: string) => {
 
     const user =

@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { Container, Nav, Navbar, NavDropdown, Toast, ToastContainer, } from 'react-bootstrap';
+import { Button, Container, Nav, Navbar, NavDropdown, Spinner, Toast, ToastContainer, } from 'react-bootstrap';
 import { useDispatch, useSelector } from "react-redux";
 import { Link, createSearchParams } from "react-router-dom";
 import { User } from "../../api/models";
-import logo from '../../images/logo.svg';
+import pmclogo from '../../images/pmc128x128.webp';
 import { State } from "../../reducers";
 import { logoutAction } from '../../actions/loginActions';
 import { getCurrentUserFromLocalStorage } from "../../utils/localStorageUtils";
 
-import { UserReducerActionTypes } from '../../actions/actionTypes';
+import { UserReducerActionTypes, UtilReducerActionTypes } from '../../actions/actionTypes';
 import { UserInfo } from "../../reducers/dto/userReducerDto";
 import { NotificationMessage } from "../../reducers/notificationsReducer";
-import { localDateTimeFromUtcSecondsTimeStamp } from "../../utils/timeDateUtils";
-import { removeNotificationAction } from "../../actions/notificationActions";
-import { useNavigate  } from "react-router-dom";
+import { localDateTimeFromUtcMillisecondsTimeStamp } from "../../utils/timeDateUtils";
+import { clearAllNotificationsAction, removeNotificationAction } from "../../actions/notificationActions";
+import { useNavigate } from "react-router-dom";
+
 
 // Magic of interconnecting React-Router 5 Link and React-Bootstrap comes from this link:
 // https://stackoverflow.com/questions/54843302/reactjs-bootstrap-navbar-and-routing-not-working-together
@@ -25,10 +26,12 @@ const location =
     search: `?${createSearchParams(params)}`,
 }
 
-const Header = (props:any) => {
+const Header = (props: any) => {
 
     const loggedIn: boolean = useSelector((state: State) => state.userReducer.loggedIn);
+    const loading: boolean = useSelector((state: State) => state.utilReducer.loading);
     const user: User = useSelector((state: State) => state.userReducer.user);
+    const navigateToUrl: string = useSelector((state: State) => state.utilReducer.navigateToUrl);
     const notificationsList: NotificationMessage[] = useSelector((state: State) => state.notificationsReducer.notificationsList);
     const dispatcher = useDispatch();
     const navigate = useNavigate();
@@ -51,28 +54,36 @@ const Header = (props:any) => {
     }, [dispatcher]);
 
     useEffect(() => {
-        if(loggedIn && !logged){
+        if (loggedIn && !logged) {
             setLogged(true);
             navigate("/");
         }
-    }, [loggedIn, navigate]);
+    }, [loggedIn, logged, navigate]);
+   
+    useEffect(() => {
+        if (navigateToUrl !== '') {
+            navigate(navigateToUrl);
+            dispatcher({
+                type: UtilReducerActionTypes.CLEAR_NAVIGATE_TO,
+            });
+        }
+    }, [navigateToUrl, navigate, dispatcher]);
 
     const generateNotificationsList: any = () => {
         return (
             notificationsList.map(
                 (item, i) => {
                     return (
-                        <Toast key={item.timestamp} bg={item.type} onClose={() => dispatcher(removeNotificationAction(item))} delay={5000 + i*1000}  autohide>
+                        <Toast key={item.timestamp} bg={item.type} onClose={() => dispatcher(removeNotificationAction(item))} delay={3000} autohide>
                             <Toast.Header>
                                 <strong className="me-auto">{item.header}</strong>
-                                <small className="text-muted">{localDateTimeFromUtcSecondsTimeStamp(item.timestamp)}</small>
+                                <small className="text-muted">{localDateTimeFromUtcMillisecondsTimeStamp(item.timestamp)}</small>
                             </Toast.Header>
                             <Toast.Body>{item.message}</Toast.Body>
                         </Toast>
                     );
                 }
             )
-
         )
     }
 
@@ -83,7 +94,7 @@ const Header = (props:any) => {
                     <Navbar.Brand as={Link} to="/">
                         <img
                             alt=""
-                            src={logo}
+                            src={pmclogo}
                             width="30"
                             height="30"
                             className="d-inline-block align-top"
@@ -113,8 +124,12 @@ const Header = (props:any) => {
             <div id='notificationsContainer' style={{ position: 'relative', zIndex: 100 }} className="row" >
                 <ToastContainer className="p-3" position={'top-end'} style={{ marginRight: '10px' }}>
                     {generateNotificationsList()}
+                    {!!notificationsList.length && <Button style={{ pointerEvents: 'auto' }}variant="primary" onClick={() => {console.log('Clear all notifications'); dispatcher(clearAllNotificationsAction());}} >Clear all</Button>}
                 </ToastContainer>
             </div>
+            {loading && <div id='loadingContainer' >
+                <Spinner id='loadingSpinner' animation="border" variant="info" />
+            </div>}
         </>
     );
 

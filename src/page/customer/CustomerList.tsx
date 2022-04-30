@@ -1,63 +1,49 @@
 import React, { useEffect, useState } from "react";
 import { Accordion, Button, Col, Form, Row, Table } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { CustomerTableRow } from ".";
-import { sendGetAllCustomers, sendGetHelloRequest } from '../../api/customersApi'
+import { fetchCustomerListAction } from "../../actions/customerActions";
 import { CustomersList, Customer } from "../../api/models";
 import PageIndex from "../../components/pageIndex";
+import { State } from "../../reducers";
 
 const CustomerList = () => {
 
-  const [selectedPage, setSelectedPage] = useState(0);
-  // eslint-disable-next-line
-  const [totalPages, setTotalPages] = useState(1);
-
-  const [customers, setCustomers] = useState<Customer[]>([]);
-
-  let navigate = useNavigate();
-
-  const responseHanderMethod = (data: any) => {
-    console.log(`responseHanderMethod: ${data}`);
-  }
-
-  const customerList = (data: CustomersList) => {
-    console.log(`customerList: ${data}`);
-    setCustomers(data.customers);
-    setSelectedPage(data.currentPage);
-    setTotalPages(data.totalPages);
-  }
+  const [nextPage, setNextPage] = useState(0);
+  const [displayPerPage, setDisplayPerPage] = useState(5);
+  const customerList: CustomersList = useSelector((state: State) => state.customersReducer.customersList);
+  const dispatcher = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("Effect has been called at load");
-    sendGetHelloRequest(responseHanderMethod);
-    sendGetAllCustomers(customerList); // eslint-disable-next-line
-  }, []);
+    dispatcher(fetchCustomerListAction(nextPage, displayPerPage));
+  }, [nextPage, dispatcher, navigate, displayPerPage]);
 
-  useEffect(() => {
-    console.log("Effect has been called at page change");
-    sendGetAllCustomers(customerList, selectedPage); // eslint-disable-next-line
-  }, [selectedPage]);
-
-  const activePage = (page: number):number => {
+  const activePage = (page: number): number => {
     return page + 1;
   }
 
-  const selectPage = (page:number) => {
-    setSelectedPage(page - 1);
+  const selectPage = (page: number) => {
+    setNextPage(page - 1);
   }
 
   const createCustomerRows = (): any => {
     console.log("createCustomerRows");
     return (
-      customers.map((customer: Customer) =>
+      customerList.customers.map((customer: Customer) =>
         <CustomerTableRow key={customer.id} customer={customer} />
       ))
   };
 
+  const onChangeColor = (e: any) => {
+    const customersPerPageValue: number = e.target.value;
+    console.log(customersPerPageValue);
+    setDisplayPerPage(customersPerPageValue);
+  }
 
   return (
     <>
-      {console.log(customers)}
       <Row>
         <Accordion>
           <Accordion.Item eventKey="0">
@@ -89,7 +75,7 @@ const CustomerList = () => {
               <th>#</th>
               <th>ΕΠΩΝΥΜΟ</th>
               <th>ΟΝΟΜΑ</th>
-              <th style={{width: '200px'}}>ΔΙΕΥΘΥΝΣΗ</th>
+              <th style={{ width: '200px' }}>ΔΙΕΥΘΥΝΣΗ</th>
               <th>ΠΕΡΙΟΧΗ</th>
               <th>ΤΚ</th>
               <th>ΧΩΡΑ</th>
@@ -106,13 +92,37 @@ const CustomerList = () => {
             {createCustomerRows()}
           </tbody>
         </Table>
-        <div className="d-flex justify-content-start">
-          <Button variant="primary" onClick={() => navigate("form")}>ΝΕΟΣ ΠΕΛΑΤΗΣ</Button>
-        </div>
-        <PageIndex active={activePage(selectedPage)} total={totalPages}
+      </Row>
+      <Row>
+        <Col xs={9}>
+          <span className="d-flex justify-content-start">
+            <Button variant="primary" onClick={() => navigate("form")}>ΝΕΟΣ ΠΕΛΑΤΗΣ</Button>
+          </span>
+        </Col>
+
+        <Col>
+          <span className="d-flex justify-content-end">
+            Customers per page:
+          </span>
+        </Col>
+        <Col xs={1}>
+          <span className="d-flex justify-content-end">
+            <Form.Select size="sm" onChange={onChangeColor}>
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+            </Form.Select>
+          </span>
+        </Col>
+
+
+      </Row>
+      <Row>
+        <PageIndex active={activePage(customerList.currentPage)} total={customerList.totalPages}
           goToPage={(page: number) => selectPage(page)}
         />
       </Row>
+
 
     </>
   );

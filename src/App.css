@@ -72,3 +72,16 @@ td.notesTableDataCell div {
   overflow-y: auto;
   overflow-x: hidden;
 }
+
+/* Loading spinner */
+#loadingContainer {
+  position: relative;
+  display: flex; 
+  justify-content: center;
+}
+
+#loadingSpinner {
+  position: absolute;
+  top: 40px; 
+  z-index: 100;
+}

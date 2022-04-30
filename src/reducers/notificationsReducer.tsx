@@ -37,7 +37,7 @@ export const notificationsReducer = (state: NotificationsState = createDefaultSt
     case NotificationsReducerActionTypes.REMOVE_NOTIFICATION:
       return {
         ...state,
-        notificationsList: removeNotificationMessage(state.notificationsList, action.payload.timestamp),
+        notificationsList: removeNotificationMessage(state.notificationsList, action.payload),
       };
     case NotificationsReducerActionTypes.CLEAR_ALL_NOTIFICATIONS:
       return {
@@ -60,21 +60,22 @@ const addNewNotificationToList = (notificationsArray: NotificationMessage[], new
   return notificationsArray;
 }
 
-const removeNotificationMessage = (notificationsArray: NotificationMessage[], notificationToRemoveTimestamp: number): NotificationMessage[] => {
+const removeNotificationMessage = (notificationsArray: NotificationMessage[], notificationToRemove: NotificationMessage): NotificationMessage[] => {
+  console.log('removeNotificationMessage');
   const foundIndex = notificationsArray.findIndex(
-    (notification) => notification.timestamp === notificationToRemoveTimestamp
+    (notification) => notification.timestamp === notificationToRemove.timestamp
   );
-  console.log(foundIndex);
-
   if (foundIndex > -1) {
     let deepCopyArray: NotificationMessage[] = [];
-    notificationsArray.forEach(element => {
-      deepCopyArray.push(element);
+    notificationsArray.forEach(notification => {
+      if (notification.timestamp !== notificationToRemove.timestamp) {
+        deepCopyArray.push(notification);
+      }
     });
-    deepCopyArray.splice(foundIndex, 1);
     return deepCopyArray;
   }
   return notificationsArray;
+
 }
 
 
