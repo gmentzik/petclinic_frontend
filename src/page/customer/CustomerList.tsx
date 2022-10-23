@@ -52,15 +52,23 @@ const CustomerList = () => {
               <Form>
                 <Row className="mb-3">
                   <Form.Group as={Col} controlId="formGridName">
-                    <Form.Control type="text" placeholder="ΟΝΟΜΑ" />
+                    <Form.Control size="sm" name="name" type="text" placeholder="ΟΝΟΜΑ" />
                   </Form.Group>
                   <Form.Group as={Col} controlId="formGridSurname">
-                    <Form.Control type="text" placeholder="ΕΠΩΝΥΜΟ" />
+                    <Form.Control size="sm" name="surname"  type="text" placeholder="ΕΠΩΝΥΜΟ" />
                   </Form.Group>
                   <Form.Group as={Col}>
                     <Button variant="primary" type="submit">
                       ΑΝΑΖΗΤΗΣΗ
                     </Button>
+                  </Form.Group>
+                </Row>
+                <Row className="mb-3">
+                  <Form.Group as={Col} xs={4} controlId="formCustomerPhone">
+                    <Form.Control size="sm" type="text" name="phone" placeholder="ΣΤΑΘΕΡΟ TΗΛΕΦΩΝΟ" />
+                  </Form.Group>
+                  <Form.Group as={Col} xs={4} controlId="formCustomerMobile">
+                    <Form.Control size="sm" type="text" name="mobilephone" placeholder="ΚΙΝΗΤΟ TΗΛΕΦΩΝΟ" />
                   </Form.Group>
                 </Row>
               </Form>
