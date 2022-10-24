@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { customerHelloUrl, customerUrl, tokenPrefix } from '../constants'
-import { CustomerDTO } from "../api/models";
+import { CustomerDTO, CustomersListQueryFilter } from "../api/models";
 import { getCurrentUserFromLocalStorage } from "../utils/localStorageUtils";
 
 
@@ -29,7 +29,8 @@ const sendGetHelloRequest = async (responseHander: Function) => {
 };
 
 
-const sendGetAllCustomers = (page?: number | undefined, size?: number | undefined) => {
+const sendGetAllCustomers = (page?: number | undefined, size?: number | undefined, 
+                             queryParams?: CustomersListQueryFilter | undefined  ) => {
   return axios.get(customerUrl, {
     withCredentials: false,
     headers: {
@@ -37,7 +38,11 @@ const sendGetAllCustomers = (page?: number | undefined, size?: number | undefine
     },
     params: {
       page: page ? page : 0,
-      size: size ? size : 3
+      size: size ? size : 3,
+      name: queryParams?.name ? queryParams?.name : '',
+      surname: queryParams?.surname ? queryParams?.surname : '',
+      phone: queryParams?.landline ? queryParams?.landline : '',
+      mobile: queryParams?.mobile ? queryParams?.mobile : ''
     }
   }).then(success).catch(failure);
 
