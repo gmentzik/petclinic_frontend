@@ -10,7 +10,7 @@ import { sendGetAllCustomers, updateCustomer } from '../api/customersApi';
 
 
 
-export const fetchCustomerListAction = ( page?: number, size?: number, searchParams?: CustomersListQueryFilter | undefined,) => (dispatcher: any) => {
+export const fetchCustomerListAction = ( page?: number, size?: number, searchParams?: CustomersListQueryFilter | any | undefined,) => (dispatcher: any) => {
     dispatcher({type: UtilReducerActionTypes.SHOW_LOADING});
     return sendGetAllCustomers(page, size, searchParams).then(
         (data: CustomersList) => {

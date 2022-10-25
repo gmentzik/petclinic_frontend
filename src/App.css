@@ -49,6 +49,10 @@
   padding-left: 4px;
 }
 
+.paddingLeft8px {
+  padding-left: 8px;
+}
+
 table.scrollableTable {
   display: block !important; 
   overflow: auto;

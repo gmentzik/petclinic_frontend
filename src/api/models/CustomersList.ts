@@ -17,10 +17,10 @@ export const emptyCustomersList = {
 
 
 export interface CustomersListQueryFilter {
-    name: string;
-    surname: string;
-    phone: string;
-    mobile: string;
+    name?: string;
+    surname?: string;
+    phone?: string;
+    mobile?: string;
 }
 
 

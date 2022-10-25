@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Accordion, Button, Col, Form, Row, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { CustomerTableRow } from ".";
 import { fetchCustomerListAction } from "../../actions/customerActions";
-import { CustomersList, Customer } from "../../api/models";
+import { CustomersList, Customer, emptyCustomersListQueryFilter } from "../../api/models";
 import PageIndex from "../../components/pageIndex";
 import { State } from "../../reducers";
 
@@ -13,6 +13,7 @@ const CustomerList = () => {
   const [nextPage, setNextPage] = useState(0);
   const [displayPerPage, setDisplayPerPage] = useState(5);
   const customerList: CustomersList = useSelector((state: State) => state.customersReducer.customersList);
+  const [searchParams, setSearchParams] = useState({ ...emptyCustomersListQueryFilter });
   const dispatcher = useDispatch();
   const navigate = useNavigate();
 
@@ -42,6 +43,26 @@ const CustomerList = () => {
     setDisplayPerPage(customersPerPageValue);
   }
 
+  // customerList searchForm methods
+  const handleChange = (event: ChangeEvent) => {
+    const target = event.target as HTMLFormElement;
+    setSearchParams({ ...searchParams, [target.name]: target.value });
+  }
+
+  const handleSearchFormSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    dispatcher(fetchCustomerListAction(nextPage, displayPerPage, searchParams));
+  }
+
+  const getSearchParams = ():string => {
+    let searchParamsString = 'Search parameters: ';
+    for (const [key, value] of Object.entries(searchParams)) {
+            console.log(`${key}: ${value}`);
+            searchParamsString+=`${key}: ${value}`+", ";
+    }
+    return searchParamsString;
+  } 
+
   return (
     <>
       <Row>
@@ -49,13 +70,13 @@ const CustomerList = () => {
           <Accordion.Item eventKey="0">
             <Accordion.Header>ΑΝΑΖΗΤΗΣΗ ΠΕΛΑΤΗ</Accordion.Header>
             <Accordion.Body>
-              <Form>
+              <Form onSubmit={handleSearchFormSubmit}>
                 <Row className="mb-3">
                   <Form.Group as={Col} controlId="formGridName">
-                    <Form.Control size="sm" name="name" type="text" placeholder="ΟΝΟΜΑ" />
+                    <Form.Control size="sm" name="name" onChange={handleChange} type="text" placeholder="ΟΝΟΜΑ" />
                   </Form.Group>
                   <Form.Group as={Col} controlId="formGridSurname">
-                    <Form.Control size="sm" name="surname"  type="text" placeholder="ΕΠΩΝΥΜΟ" />
+                    <Form.Control size="sm" name="surname"  onChange={handleChange} type="text" placeholder="ΕΠΩΝΥΜΟ" />
                   </Form.Group>
                   <Form.Group as={Col}>
                     <Button variant="primary" type="submit">
@@ -65,10 +86,10 @@ const CustomerList = () => {
                 </Row>
                 <Row className="mb-3">
                   <Form.Group as={Col} xs={4} controlId="formCustomerPhone">
-                    <Form.Control size="sm" type="text" name="phone" placeholder="ΣΤΑΘΕΡΟ TΗΛΕΦΩΝΟ" />
+                    <Form.Control size="sm" type="text" name="phone" onChange={handleChange} placeholder="ΣΤΑΘΕΡΟ TΗΛΕΦΩΝΟ" />
                   </Form.Group>
                   <Form.Group as={Col} xs={4} controlId="formCustomerMobile">
-                    <Form.Control size="sm" type="text" name="mobilephone" placeholder="ΚΙΝΗΤΟ TΗΛΕΦΩΝΟ" />
+                    <Form.Control size="sm" type="text" name="mobilephone" onChange={handleChange} placeholder="ΚΙΝΗΤΟ TΗΛΕΦΩΝΟ" />
                   </Form.Group>
                 </Row>
               </Form>
@@ -76,10 +97,14 @@ const CustomerList = () => {
           </Accordion.Item>
         </Accordion>
       </Row>
+      <Row>
+        <span className="tableSearchParams">{getSearchParams()}</span>
+      </Row>
       <Row className="mb-3">
         <Table id="customersTableId" striped bordered responsive="xl" className="scrollableTable">
           <thead>
             <tr>
+              <th>ΕΝΕΡΓΕΙΕΣ</th>
               <th>#</th>
               <th>ΕΠΩΝΥΜΟ</th>
               <th>ΟΝΟΜΑ</th>
@@ -93,7 +118,6 @@ const CustomerList = () => {
               <th className="notesHeaderCell">NOTES 1</th>
               <th className="notesHeaderCell">NOTES 2</th>
               <th className="notesHeaderCell">NOTES 3</th>
-              <th>ΕΝΕΡΓΕΙΕΣ</th>
             </tr>
           </thead>
           <tbody>

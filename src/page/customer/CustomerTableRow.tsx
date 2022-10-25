@@ -13,6 +13,14 @@ const CustomerTableRow = (props: Props) => {
 
     return (
         <tr>
+            <td>
+                <CustomBSTooltipTop tooltipText={"Λίστα κατοικιδίων"} uniqueIdAndDescriptionText={`${customer.id}-view-animals`} >
+                    <Link className="paddingLeft4px" key={customer.id} to={""}><i className="bi bi-clipboard-pulse"></i></Link >
+                </CustomBSTooltipTop>
+                <CustomBSTooltipTop tooltipText={"Διόρθωση Στοιχείων"} uniqueIdAndDescriptionText={`${customer.id}-edit-customer`} >
+                    <Link className="paddingLeft8px" key={customer.id} to={"form/" + customer.id} ><i className="bi bi-pen"></i></Link >
+                </CustomBSTooltipTop>
+            </td>
             <td>{customer.id}</td>
             <td>{customer.surname}</td>
             <td>{customer.name}</td>
@@ -26,14 +34,6 @@ const CustomerTableRow = (props: Props) => {
             <td className="notesTableDataCell"><div>{customer.note1}</div></td>
             <td className="notesTableDataCell"><div>{customer.note2}</div></td>
             <td className="notesTableDataCell"><div>{customer.note3}</div></td>
-            <td>
-                <CustomBSTooltipTop tooltipText={"Διόρθωση Στοιχείων"} uniqueIdAndDescriptionText={`${customer.id}-edit-customer`} >
-                    <Link className="paddingLeft4px" key={customer.id} to={"form/" + customer.id} ><i className="bi bi-pen"></i></Link >
-                </CustomBSTooltipTop>
-                <CustomBSTooltipTop tooltipText={"Λίστα κατοικιδίων"} uniqueIdAndDescriptionText={`${customer.id}-view-animals`} >
-                    <Link className="paddingLeft4px" key={customer.id} to={""}><i className="bi bi-clipboard-pulse"></i></Link >
-                </CustomBSTooltipTop>
-            </td>
         </tr>
     );
 }
