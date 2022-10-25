@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { CustomerDTO, CustomersList } from '../api/models';
+import { CustomerDTO, CustomersList, CustomersListQueryFilter } from '../api/models';
 import { customerReducerActionTypes, UserReducerActionTypes, UtilReducerActionTypes } from '../actions/actionTypes';
 import { UserInfo } from '../reducers/dto/userReducerDto';
 import { unknownUser } from '../api/models/User';
@@ -10,9 +10,9 @@ import { sendGetAllCustomers, updateCustomer } from '../api/customersApi';
 
 
 
-export const fetchCustomerListAction = ( page?: number, size?: number,) => (dispatcher: any) => {
+export const fetchCustomerListAction = ( page?: number, size?: number, searchParams?: CustomersListQueryFilter | undefined,) => (dispatcher: any) => {
     dispatcher({type: UtilReducerActionTypes.SHOW_LOADING});
-    return sendGetAllCustomers(page, size).then(
+    return sendGetAllCustomers(page, size, searchParams).then(
         (data: CustomersList) => {
             dispatcher({type: UtilReducerActionTypes.REMOVE_LOADING});
             dispatcher({type: customerReducerActionTypes.UPDATE_CUSTOMER_LIST, payload: data});

@@ -19,7 +19,7 @@ export const emptyCustomersList = {
 export interface CustomersListQueryFilter {
     name: string;
     surname: string;
-    landline: string;
+    phone: string;
     mobile: string;
 }
 
