@@ -25,8 +25,8 @@ export interface CustomersListQueryFilter {
 
 
 export const emptyCustomersListQueryFilter = {
-    currentPage: '',
-    totalItems: '',
-    totalPages: '',
-    customers: ''
+    name: '',
+    surname: '',
+    phone: '',
+    mobile: ''
 }

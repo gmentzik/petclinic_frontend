@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { CustomerTableRow } from ".";
 import { fetchCustomerListAction } from "../../actions/customerActions";
-import { CustomersList, Customer, emptyCustomersListQueryFilter } from "../../api/models";
+import { CustomersList, Customer, CustomersListQueryFilter } from "../../api/models";
 import PageIndex from "../../components/pageIndex";
 import { State } from "../../reducers";
 
@@ -13,7 +13,8 @@ const CustomerList = () => {
   const [nextPage, setNextPage] = useState(0);
   const [displayPerPage, setDisplayPerPage] = useState(5);
   const customerList: CustomersList = useSelector((state: State) => state.customersReducer.customersList);
-  const [searchParams, setSearchParams] = useState({ ...emptyCustomersListQueryFilter });
+  const emptyCustomerSearchParams:CustomersListQueryFilter = {};
+  const [customerSearchParams, setCustomerSearchParams] = useState(emptyCustomerSearchParams);
   const dispatcher = useDispatch();
   const navigate = useNavigate();
 
@@ -46,21 +47,29 @@ const CustomerList = () => {
   // customerList searchForm methods
   const handleChange = (event: ChangeEvent) => {
     const target = event.target as HTMLFormElement;
-    setSearchParams({ ...searchParams, [target.name]: target.value });
+    setCustomerSearchParams({ ...customerSearchParams, [target.name]: target.value });
   }
 
   const handleSearchFormSubmit = (event: FormEvent) => {
     event.preventDefault();
-    dispatcher(fetchCustomerListAction(nextPage, displayPerPage, searchParams));
+    dispatcher(fetchCustomerListAction(nextPage, displayPerPage, customerSearchParams));
   }
 
-  const getSearchParams = ():string => {
-    let searchParamsString = 'Search parameters: ';
-    for (const [key, value] of Object.entries(searchParams)) {
-            console.log(`${key}: ${value}`);
-            searchParamsString+=`${key}: ${value}`+", ";
+  const handleSearchFormReset = (event: FormEvent) => {
+    setCustomerSearchParams({});
+    dispatcher(fetchCustomerListAction(nextPage, displayPerPage));
+  }
+
+  const getSearchParams = () => {
+    console.log("getSearchParams was called");
+    let searchParamsString = '';
+    if (Object.keys(customerSearchParams).length !== 0) searchParamsString = 'Search parameters: '
+    for (const [key, value] of Object.entries(customerSearchParams)) {
+            searchParamsString+=`${key}: ${value}, `;
     }
-    return searchParamsString;
+    return (
+      <small>{searchParamsString}</small>
+    );
   } 
 
   return (
@@ -73,10 +82,10 @@ const CustomerList = () => {
               <Form onSubmit={handleSearchFormSubmit}>
                 <Row className="mb-3">
                   <Form.Group as={Col} controlId="formGridName">
-                    <Form.Control size="sm" name="name" onChange={handleChange} type="text" placeholder="ΟΝΟΜΑ" />
+                    <Form.Control size="sm" name="name" onChange={handleChange} type="text" placeholder="ΟΝΟΜΑ" value={customerSearchParams.name?customerSearchParams.name:''}/>
                   </Form.Group>
                   <Form.Group as={Col} controlId="formGridSurname">
-                    <Form.Control size="sm" name="surname"  onChange={handleChange} type="text" placeholder="ΕΠΩΝΥΜΟ" />
+                    <Form.Control size="sm" name="surname"  onChange={handleChange} type="text" placeholder="ΕΠΩΝΥΜΟ" value={customerSearchParams.surname?customerSearchParams.surname:''}/>
                   </Form.Group>
                   <Form.Group as={Col}>
                     <Button variant="primary" type="submit">
@@ -86,10 +95,15 @@ const CustomerList = () => {
                 </Row>
                 <Row className="mb-3">
                   <Form.Group as={Col} xs={4} controlId="formCustomerPhone">
-                    <Form.Control size="sm" type="text" name="phone" onChange={handleChange} placeholder="ΣΤΑΘΕΡΟ TΗΛΕΦΩΝΟ" />
+                    <Form.Control size="sm" type="text" name="phone" onChange={handleChange} placeholder="ΣΤΑΘΕΡΟ TΗΛΕΦΩΝΟ" value={customerSearchParams.phone?customerSearchParams.phone:''}/>
                   </Form.Group>
                   <Form.Group as={Col} xs={4} controlId="formCustomerMobile">
-                    <Form.Control size="sm" type="text" name="mobilephone" onChange={handleChange} placeholder="ΚΙΝΗΤΟ TΗΛΕΦΩΝΟ" />
+                    <Form.Control size="sm" type="text" name="mobilephone" onChange={handleChange} placeholder="ΚΙΝΗΤΟ TΗΛΕΦΩΝΟ" value={customerSearchParams.mobile?customerSearchParams.mobile:''}/>
+                  </Form.Group>
+                  <Form.Group as={Col} xs={4}>
+                    <Button variant="secondary" onClick={handleSearchFormReset}>
+                      ΚΑΘΑΡΙΣΕ
+                    </Button>
                   </Form.Group>
                 </Row>
               </Form>
