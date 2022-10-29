@@ -88,8 +88,8 @@ const CustomerList = () => {
                     <Form.Control size="sm" name="surname"  onChange={handleChange} type="text" placeholder="ΕΠΩΝΥΜΟ" value={customerSearchParams.surname?customerSearchParams.surname:''}/>
                   </Form.Group>
                   <Form.Group as={Col}>
-                    <Button variant="primary" type="submit">
-                      ΑΝΑΖΗΤΗΣΗ
+                    <Button style={{width:'100px'}} variant="primary" size="sm" type="submit">
+                      SEARCH
                     </Button>
                   </Form.Group>
                 </Row>
@@ -101,8 +101,8 @@ const CustomerList = () => {
                     <Form.Control size="sm" type="text" name="mobilephone" onChange={handleChange} placeholder="ΚΙΝΗΤΟ TΗΛΕΦΩΝΟ" value={customerSearchParams.mobile?customerSearchParams.mobile:''}/>
                   </Form.Group>
                   <Form.Group as={Col} xs={4}>
-                    <Button variant="secondary" onClick={handleSearchFormReset}>
-                      ΚΑΘΑΡΙΣΕ
+                    <Button style={{width:'100px'}} variant="secondary" size="sm" onClick={handleSearchFormReset}>
+                      RESET
                     </Button>
                   </Form.Group>
                 </Row>
