@@ -15,12 +15,13 @@ const CustomerList = () => {
   const customerList: CustomersList = useSelector((state: State) => state.customersReducer.customersList);
   const emptyCustomerSearchParams:CustomersListQueryFilter = {};
   const [customerSearchParams, setCustomerSearchParams] = useState(emptyCustomerSearchParams);
+  const [customerSearchParamsToSend, setCustomerSearchParamsToSend] = useState(emptyCustomerSearchParams);
   const dispatcher = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatcher(fetchCustomerListAction(nextPage, displayPerPage));
-  }, [nextPage, dispatcher, navigate, displayPerPage]);
+    dispatcher(fetchCustomerListAction(nextPage, displayPerPage, customerSearchParamsToSend));
+  }, [nextPage, dispatcher, navigate, displayPerPage, customerSearchParamsToSend]);
 
   const activePage = (page: number): number => {
     return page + 1;
@@ -38,7 +39,7 @@ const CustomerList = () => {
       ))
   };
 
-  const onChangeColor = (e: any) => {
+  const onChangeDisplayPerPage = (e: any) => {
     const customersPerPageValue: number = e.target.value;
     console.log(customersPerPageValue);
     setDisplayPerPage(customersPerPageValue);
@@ -52,24 +53,23 @@ const CustomerList = () => {
 
   const handleSearchFormSubmit = (event: FormEvent) => {
     event.preventDefault();
-    dispatcher(fetchCustomerListAction(nextPage, displayPerPage, customerSearchParams));
+    setCustomerSearchParamsToSend({...customerSearchParams});
   }
 
   const handleSearchFormReset = (event: FormEvent) => {
-    setCustomerSearchParams({});
-    dispatcher(fetchCustomerListAction(nextPage, displayPerPage));
+    setCustomerSearchParams(emptyCustomerSearchParams);
+    setCustomerSearchParamsToSend(emptyCustomerSearchParams);
   }
 
   const getSearchParams = () => {
     console.log("getSearchParams was called");
     let searchParamsString = '';
-    if (Object.keys(customerSearchParams).length !== 0) searchParamsString = 'Search parameters: '
-    for (const [key, value] of Object.entries(customerSearchParams)) {
+    if (Object.keys(customerSearchParamsToSend).length !== 0) searchParamsString = '( filter by: ';
+    for (const [key, value] of Object.entries(customerSearchParamsToSend)) {
             searchParamsString+=`${key}: ${value}, `;
     }
-    return (
-      <small>{searchParamsString}</small>
-    );
+    if (Object.keys(customerSearchParamsToSend).length !== 0) searchParamsString += ' )';
+    return searchParamsString;
   } 
 
   return (
@@ -112,7 +112,9 @@ const CustomerList = () => {
         </Accordion>
       </Row>
       <Row>
-        <span className="tableSearchParams">{getSearchParams()}</span>
+      <Col>
+        <small className="d-flex justify-content-start tableSearchParams">Total search results: {customerList.totalItems} {getSearchParams()}</small>
+      </Col>
       </Row>
       <Row className="mb-3">
         <Table id="customersTableId" striped bordered responsive="xl" className="scrollableTable">
@@ -145,7 +147,6 @@ const CustomerList = () => {
             <Button variant="primary" onClick={() => navigate("form")}>ΝΕΟΣ ΠΕΛΑΤΗΣ</Button>
           </span>
         </Col>
-
         <Col>
           <span className="d-flex justify-content-end">
             Customers per page:
@@ -153,7 +154,7 @@ const CustomerList = () => {
         </Col>
         <Col xs={1}>
           <span className="d-flex justify-content-end">
-            <Form.Select size="sm" onChange={onChangeColor}>
+            <Form.Select size="sm" onChange={onChangeDisplayPerPage}>
               <option value="5">5</option>
               <option value="10">10</option>
               <option value="20">20</option>
