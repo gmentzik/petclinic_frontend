@@ -14,3 +14,19 @@ export const emptyCustomersList = {
     totalPages: 0,
     customers: []
 }
+
+
+export interface CustomersListQueryFilter {
+    name?: string;
+    surname?: string;
+    phone?: string;
+    mobile?: string;
+}
+
+
+export const emptyCustomersListQueryFilter = {
+    name: '',
+    surname: '',
+    phone: '',
+    mobile: ''
+}

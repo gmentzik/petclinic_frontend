@@ -4,7 +4,7 @@ import { Customer, CustomersList, emptyCustomer, emptyCustomersList } from "../a
 
 export interface CustomersState {
     customersList: CustomersList;
-    selectedCustomer: Customer;
+    selectedCustomer: Customer;    
     formErrors: any;
 }
 
