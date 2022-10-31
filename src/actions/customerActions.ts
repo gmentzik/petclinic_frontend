@@ -6,7 +6,7 @@ import { unknownUser } from '../api/models/User';
 import { removeCurrentUserFromLocalStorage } from '../utils/localStorageUtils';
 import { createAndDispachNewNotification } from './notificationActions';
 import { NotificationMessageType } from '../reducers/notificationsReducer';
-import { sendGetAllCustomers, updateCustomer } from '../api/customersApi';
+import { sendGetAllCustomers, sendGetCustomerById, updateCustomer } from '../api/customersApi';
 
 
 
@@ -17,6 +17,16 @@ export const fetchCustomerListAction = ( page?: number, size?: number, searchPar
             dispatcher({type: UtilReducerActionTypes.REMOVE_LOADING});
             dispatcher({type: customerReducerActionTypes.UPDATE_CUSTOMER_LIST, payload: data});
             dispatcher({type: customerReducerActionTypes.CLEAR_FORM_ERRORS});
+        })
+        .catch((e) => handlerError(e, dispatcher));
+}
+
+export const fetchCustomerByIdAction = (customerId: number) => (dispatcher: any) => {
+    dispatcher({type: UtilReducerActionTypes.SHOW_LOADING});
+    return sendGetCustomerById(customerId).then(
+        (data: CustomersList) => {
+            dispatcher({type: UtilReducerActionTypes.REMOVE_LOADING});
+            dispatcher({type: customerReducerActionTypes.UPDATE_SELECTED_CUSTOMER, payload: data});
         })
         .catch((e) => handlerError(e, dispatcher));
 }

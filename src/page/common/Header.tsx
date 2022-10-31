@@ -107,7 +107,7 @@ const Header = (props: any) => {
                             <NavDropdown title="ΠΕΛΑΤΕΣ" id="collasible-nav-dropdown">
                                 <NavDropdown.Item as={Link} disabled={!loggedIn} to="customers"> ΛΙΣΤΑ ΠΕΛΑΤΩΝ </NavDropdown.Item>
                                 <NavDropdown.Item as={Link} disabled={!loggedIn} to="customers/form">ΝΕΟΣ ΠΕΛΑΤΗΣ</NavDropdown.Item>
-                                <NavDropdown.Item as={Link} disabled={!loggedIn} to="customers/form/24">ΠΡΟΒΟΛΗ ΠΕΛΑΤΗ 24</NavDropdown.Item>
+                                <NavDropdown.Item as={Link} disabled={!loggedIn} to="customers/form/1">ΠΡΟΒΟΛΗ ΠΕΛΑΤΗ 1</NavDropdown.Item>
                                 <NavDropdown.Item as={Link} disabled={!loggedIn} to={location}>ΠΡΟΒΟΛΗ ΠΕΛΑΤΗ 25</NavDropdown.Item>
                                 <NavDropdown.Item as={Link} to={'countersdemo'}>COUNTERS DEMO</NavDropdown.Item>
                             </NavDropdown>

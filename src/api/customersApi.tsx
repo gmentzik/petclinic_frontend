@@ -48,6 +48,18 @@ const sendGetAllCustomers = (page?: number | undefined, size?: number | undefine
 
 }
 
+const sendGetCustomerById = (customerId: number) => {
+  const getSpecificCustomentURL = `${customerUrl}/${customerId}`
+  return axios.get(getSpecificCustomentURL, {
+    withCredentials: false,
+    headers: {
+      'Authorization': tokenPrefix + getCurrentUserFromLocalStorage().jwttoken,
+    },
+  }).then(success).catch(failure);
+
+}
+
+
 const addGetGetAllCustomersParams: any = (getGetAllCustomersParams: any, searchParams?: CustomersListQueryFilter | undefined) => {
   if (searchParams?.name) {
     getGetAllCustomersParams = {
@@ -100,4 +112,4 @@ const failure = (error: AxiosError): any => {
   throw error;
 };
 
-export { sendGetHelloRequest, sendGetAllCustomers, updateCustomer };
+export { sendGetHelloRequest, sendGetAllCustomers, updateCustomer, sendGetCustomerById };

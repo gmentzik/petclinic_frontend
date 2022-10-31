@@ -2,7 +2,7 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from "react"
 import { Button, Col, Form, Row } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useSearchParams, useLocation } from "react-router-dom";
-import { updateCustomerAction, clearAllCustomerFormErrors } from "../../actions/customerActions";
+import { updateCustomerAction, clearAllCustomerFormErrors, fetchCustomerByIdAction } from "../../actions/customerActions";
 import { Customer, CustomerDTO, emptyCustomerDTO } from "../../api/models";
 import { State } from "../../reducers";
 import { convertSmallGreekWithAccentToUppercase } from "../../utils/utils";
@@ -13,41 +13,66 @@ import { convertSmallGreekWithAccentToUppercase } from "../../utils/utils";
 
 const CustomerForm = () => {
 
+    const dispatcher = useDispatch();
     const { customerId } = useParams();
     const searchParams = useSearchParams();
-
-    console.log(customerId);
-    console.log(searchParams);
-    console.log(useLocation());
-    const dispatcher = useDispatch();
     const useLocationSearch: string = useLocation().search;
     const selectedCustomer: Customer = useSelector((state: State) => state.customersReducer.selectedCustomer);
     const formerrors: any = useSelector((state: State) => state.customersReducer.formErrors);
     const [newCustomer, setNewCustomer] = useState({ ...emptyCustomerDTO });
 
-    if (useLocationSearch && useLocationSearch.length > 0) {
-        console.log("Query string exists: " + useLocationSearch);
-        // const queryString = useLocationSearch.substring(2);
-        // console.log(queryString);
-        const query = new URLSearchParams(useLocationSearch);
-        console.log(query.get('sort'));
-        console.log(query.get('order'));
-        console.log(query.get('myparam'));
-    }
+    // console.log("CustomerForm");
+    // console.log(customerId);
+    // console.log(searchParams);
+    // console.log(useLocation());
+    // if (useLocationSearch && useLocationSearch.length > 0) {
+    //     console.log("Query string exists: " + useLocationSearch);
+    //     // const queryString = useLocationSearch.substring(2);
+    //     // console.log(queryString);
+    //     const query = new URLSearchParams(useLocationSearch);
+    //     console.log(query.get('sort'));
+    //     console.log(query.get('order'));
+    //     console.log(query.get('myparam'));
+    // }
 
 
     useEffect(() => {
+        console.log("CustomerForm useEffect []")
         let customerData: CustomerDTO = { ...emptyCustomerDTO };
+        setNewCustomer(customerData);
+        
+        if (customerId) {
 
-        if (selectedCustomer.id >= 0) {
-            customerData = {
-                ...customerData,
-                id: selectedCustomer.id
-            };
-
+            dispatcher(fetchCustomerByIdAction(parseInt(customerId)));
+            // customerData = {
+            //     ...customerData,
+            //     id: selectedCustomer.id
+            // };
         }
-        customerData = {
+        // customerData = {
+        //     ...customerData,
+        //     name: selectedCustomer.name,
+        //     surname: selectedCustomer.surname,
+        //     address: selectedCustomer.address,
+        //     area: selectedCustomer.area,
+        //     pobox: selectedCustomer.pobox,
+        //     country: selectedCustomer.country,
+        //     email: selectedCustomer.email,
+        //     phone: selectedCustomer.phone,
+        //     mobilephone: selectedCustomer.mobilephone,
+        //     note1: selectedCustomer.note1,
+        //     note2: selectedCustomer.note2,
+        //     note3: selectedCustomer.note3,
+        // }
+        // eslint-disable-next-line
+    }, [])
+
+    useEffect(() => {
+        console.log("CustomerForm useEffect [selectedCustomer]")
+        let customerData: CustomerDTO = { ...emptyCustomerDTO };
+               customerData = {
             ...customerData,
+            id: selectedCustomer.id,
             name: selectedCustomer.name,
             surname: selectedCustomer.surname,
             address: selectedCustomer.address,
@@ -62,9 +87,8 @@ const CustomerForm = () => {
             note3: selectedCustomer.note3,
         }
         setNewCustomer(customerData);
-        // eslint-disable-next-line
-    }, [])
 
+    },[selectedCustomer])
 
 
     const handleChange = (event: ChangeEvent) => {
