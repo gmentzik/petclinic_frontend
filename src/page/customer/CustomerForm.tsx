@@ -2,7 +2,7 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from "react"
 import { Button, Col, Form, Row } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useSearchParams, useLocation } from "react-router-dom";
-import { updateCustomerAction, clearAllCustomerFormErrors, fetchCustomerByIdAction } from "../../actions/customerActions";
+import { updateCustomerAction, clearAllCustomerFormErrors, fetchCustomerByIdAction, clearSelectedCustomerAction } from "../../actions/customerActions";
 import { Customer, CustomerDTO, emptyCustomerDTO } from "../../api/models";
 import { State } from "../../reducers";
 import { convertSmallGreekWithAccentToUppercase } from "../../utils/utils";
@@ -41,6 +41,7 @@ const CustomerForm = () => {
         let customerData: CustomerDTO = { ...emptyCustomerDTO };
         setNewCustomer(customerData);
         
+        console.log("CustomeriD: " + customerId);
         if (customerId) {
 
             dispatcher(fetchCustomerByIdAction(parseInt(customerId)));
@@ -48,6 +49,8 @@ const CustomerForm = () => {
             //     ...customerData,
             //     id: selectedCustomer.id
             // };
+        } else {
+            dispatcher(clearSelectedCustomerAction());
         }
         // customerData = {
         //     ...customerData,
@@ -261,9 +264,12 @@ const CustomerForm = () => {
                 <Row>
                     <Col xs={2}></Col>
                     <Col xs={8} className="d-flex justify-content-end" >
-                        <Button variant="primary" type="submit" >
-                            Add Customer
-                        </Button>
+                        {!customerId && <Button variant="primary" type="submit" >
+                            Create
+                        </Button>}
+                        {customerId && <Button variant="primary" type="submit" >
+                            Update
+                        </Button>}
 
                     </Col>
                     <Col xs={2}></Col>

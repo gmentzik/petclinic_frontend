@@ -40,10 +40,14 @@ export const updateCustomerAction = ( customer:CustomerDTO ) => (dispatcher: any
                 type: UtilReducerActionTypes.NAVIGATE_TO,
                 payload: '/customers',
             });
+            dispatcher({type: customerReducerActionTypes.CLEAR_SELECTED_CUSTOMER});
         })
         .catch((e) => handlerError(e, dispatcher));
 }
 
+export const clearSelectedCustomerAction = () => (dispatcher:any) =>  {
+  dispatcher({type: customerReducerActionTypes.CLEAR_SELECTED_CUSTOMER});
+}
 
 const handlerError = (error: AxiosError, dispatcher: any) => {
     console.log('handlerError');
