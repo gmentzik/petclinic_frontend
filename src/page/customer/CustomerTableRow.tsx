@@ -15,7 +15,7 @@ const CustomerTableRow = (props: Props) => {
         <tr>
             <td>
                 <CustomBSTooltipTop tooltipText={"Λίστα κατοικιδίων"} uniqueIdAndDescriptionText={`${customer.id}-view-animals`} >
-                    <Link className="paddingLeft4px" key={customer.id} to={""}><i className="bi bi-clipboard-pulse"></i></Link >
+                    <Link className="paddingLeft4px" key={customer.id} to={"pets/" + customer.id}><i className="bi bi-search-heart-fill"></i></Link >
                 </CustomBSTooltipTop>
                 <CustomBSTooltipTop tooltipText={"Διόρθωση Στοιχείων"} uniqueIdAndDescriptionText={`${customer.id}-edit-customer`} >
                     <Link className="paddingLeft8px" key={customer.id} to={"form/" + customer.id} ><i className="bi bi-pen"></i></Link >

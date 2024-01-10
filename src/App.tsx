@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import { Container } from 'react-bootstrap';
-import { CustomerList, CustomerForm } from './page/customer';
+import { CustomerList, CustomerForm, CustomerPets } from './page/customer';
 import Header from './page/common/Header';
 import HomePage from './page/home/HomePage';
 import Login from './page/login/Login';
@@ -46,8 +46,9 @@ const App = (props: any) => {
             <Route path="customers/form" element={<CustomerForm />} >
               <Route path=":customerId" element={<CustomerForm />} />
             </Route>
-            <Route path="login" element={<Login
-            />} />
+            <Route path="customers/pets/:customerId" element={<CustomerPets />} />
+
+            <Route path="login" element={<Login />} />
             <Route
               path="*"
               element={
