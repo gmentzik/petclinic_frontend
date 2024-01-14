@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react"
-import { Button, Col, Form, Row } from "react-bootstrap"
+import { Accordion, Button, Col, Form, Row } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useSearchParams, useLocation } from "react-router-dom";
 import { updateCustomerAction, clearAllCustomerFormErrors, fetchCustomerByIdAction, clearSelectedCustomerAction } from "../../actions/customerActions";
@@ -130,11 +130,28 @@ const CustomerPets = () => {
                     {selectedCustomer.id < 0 ? <h1>CUSTOMER INFO</h1> : <h1>CUSTOMER INFO</h1>}
                 </div>
             </Row>
-            <Row>
-               <Col>{ newCustomer.name }</Col>
-               <Col>{ newCustomer.surname }</Col>
-            </Row>
+            <Row className="justify-content-md-center">
+                <Col md={1} className='d-md-block d-sm-none'></Col>
 
+                <Col xs md={5} className='border border-dark'><b>ΟΝΟΜΑ:</b> { newCustomer.name }</Col>
+                <Col xs md={5} className='border border-dark'><b>ΕΠΩΝΥΜΟ:</b> { newCustomer.surname }</Col>
+
+                <Col md={1} className='d-md-block d-sm-none'></Col>
+
+            </Row>
+            <Row className="justify-content-md-center">
+                <Col md={1} className='d-md-block d-sm-none'></Col>
+                <Col xs md={10} className='border border-dark'>
+                <Accordion>
+                    <Accordion.Item eventKey="0">
+                    <Accordion.Header>ΠΕΡΙΣΟΤΕΡΕΣ ΠΛΗΡΟΦΟΡΙΕΣ ΠΕΛΑΤΗ</Accordion.Header>
+                    <Accordion.Body>
+                    </Accordion.Body>
+                </Accordion.Item>
+                </Accordion>
+                </Col>
+                <Col md={1} className='d-md-block d-sm-none'></Col>
+            </Row>
            {/*  <Row>
                 <div className="d-flex justify-content-center">
                     {selectedCustomer.id < 0 ? <h1>NEW CUSTOMER</h1> : <h1>EDIT CUSTOMER</h1>}
