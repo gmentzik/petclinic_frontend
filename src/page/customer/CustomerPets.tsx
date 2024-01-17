@@ -146,6 +146,22 @@ const CustomerPets = () => {
                     <Accordion.Item eventKey="0">
                     <Accordion.Header>ΠΕΡΙΣΟΤΕΡΕΣ ΠΛΗΡΟΦΟΡΙΕΣ ΠΕΛΑΤΗ</Accordion.Header>
                     <Accordion.Body>
+                        <Row>
+                            <Col xs md={6} className='border border-dark'><b>ΣΤΑΘΕΡΟ:</b> { newCustomer.phone }</Col>
+                            <Col xs md={6} className='border border-dark'><b>ΚΙΝΗΤΟ:</b> { newCustomer.mobilephone }</Col>
+                        </Row>
+                        <Row>
+                            <Col xs md={12} className='border border-dark'><b>EMAIL:</b> { newCustomer.email }</Col>                          
+                        </Row>
+                        <Row>
+                            <Col xs md={6} className='border border-dark'><b>ΔΙΕΥΘΥΝΣΗ:</b> { newCustomer.address }</Col>
+                            <Col xs md={6} className='border border-dark'><b>ΠΕΡΙΟΧΗ:</b> { newCustomer.area }</Col>
+                        </Row>
+                        <Row>
+                            <Col xs md={6} className='border border-dark'><b>ΤΚ:</b> { newCustomer.pobox }</Col>
+                            <Col xs md={6} className='border border-dark'><b>ΧΩΡΑ:</b> { newCustomer.country }</Col>
+                        </Row>
+
                     </Accordion.Body>
                 </Accordion.Item>
                 </Accordion>
