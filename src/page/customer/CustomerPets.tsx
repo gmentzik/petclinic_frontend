@@ -141,18 +141,28 @@ const CustomerPets = () => {
             </Row>
             <Row className="justify-content-md-center">
                 <Col md={1} className='d-md-block d-sm-none'></Col>
+
+                <Col xs md={5} className='border border-dark'><b>ΣΤΑΘΕΡΟ:</b> { newCustomer.phone }</Col>
+                <Col xs md={5} className='border border-dark'><b>ΚΙΝΗΤΟ:</b> { newCustomer.mobilephone }</Col>
+
+                <Col md={1} className='d-md-block d-sm-none'></Col>
+
+            </Row>
+            <Row className="justify-content-md-center">
+                <Col md={1} className='d-md-block d-sm-none'></Col>
+
+                <Col xs md={10} className='border border-dark'><b>EMAIL:</b> { newCustomer.email }</Col>                          
+                  
+                <Col md={1} className='d-md-block d-sm-none'></Col>
+
+            </Row>
+            <Row className="justify-content-md-center">
+                <Col md={1} className='d-md-block d-sm-none'></Col>
                 <Col xs md={10} className='border border-dark'>
                 <Accordion>
                     <Accordion.Item eventKey="0">
                     <Accordion.Header>ΠΕΡΙΣΟΤΕΡΕΣ ΠΛΗΡΟΦΟΡΙΕΣ ΠΕΛΑΤΗ</Accordion.Header>
                     <Accordion.Body>
-                        <Row>
-                            <Col xs md={6} className='border border-dark'><b>ΣΤΑΘΕΡΟ:</b> { newCustomer.phone }</Col>
-                            <Col xs md={6} className='border border-dark'><b>ΚΙΝΗΤΟ:</b> { newCustomer.mobilephone }</Col>
-                        </Row>
-                        <Row>
-                            <Col xs md={12} className='border border-dark'><b>EMAIL:</b> { newCustomer.email }</Col>                          
-                        </Row>
                         <Row>
                             <Col xs md={6} className='border border-dark'><b>ΔΙΕΥΘΥΝΣΗ:</b> { newCustomer.address }</Col>
                             <Col xs md={6} className='border border-dark'><b>ΠΕΡΙΟΧΗ:</b> { newCustomer.area }</Col>
@@ -161,166 +171,24 @@ const CustomerPets = () => {
                             <Col xs md={6} className='border border-dark'><b>ΤΚ:</b> { newCustomer.pobox }</Col>
                             <Col xs md={6} className='border border-dark'><b>ΧΩΡΑ:</b> { newCustomer.country }</Col>
                         </Row>
-
+                        <Row>
+                            <b>Note 1:</b>
+                            <Col xs md={12} className='border border-dark small'>{newCustomer.note1 }</Col>
+                        </Row>
+                        <Row>
+                            <b>Note 2:</b>
+                            <Col xs md={12} className='border border-dark small'>{newCustomer.note2 }</Col>
+                        </Row>
+                        <Row>
+                            <b>Note 3:</b>
+                            <Col xs md={12} className='border border-dark small'>{newCustomer.note3 }</Col>
+                        </Row>
                     </Accordion.Body>
                 </Accordion.Item>
                 </Accordion>
                 </Col>
                 <Col md={1} className='d-md-block d-sm-none'></Col>
             </Row>
-           {/*  <Row>
-                <div className="d-flex justify-content-center">
-                    {selectedCustomer.id < 0 ? <h1>NEW CUSTOMER</h1> : <h1>EDIT CUSTOMER</h1>}
-                </div>
-            </Row>
-            
-
-            <Form onSubmit={handleSubmit}>
-
-                <Row>
-                    <Col xs={2}></Col>
-                    <Col xs={8}>
-
-                        <Row className="mb-2">
-                            <Form.Group as={Col} controlId="formCustomerName">
-                                <Form.Label>
-                                    Name
-                                </Form.Label>
-                                <Col>
-                                    <Form.Control size="sm" type="text" name="name" onChange={handleChange} onBlur={modifyValue} defaultValue={newCustomer.name} isInvalid={formerrors?.name} />
-                                </Col>
-                                {formerrors?.name && <p className="text-danger small" style={{ marginBottom: 0 }}>{formerrors?.name}</p>}
-                                <Form.Control.Feedback type="invalid">
-                                    Please enter your name
-                                </Form.Control.Feedback>
-                            </Form.Group>
-                            <Form.Group as={Col} controlId="formCustomerSurname">
-                                <Form.Label>
-                                    Surname
-                                </Form.Label>
-                                <Col>
-                                    <Form.Control size="sm" type="text" name="surname" onChange={handleChange} onBlur={modifyValue} defaultValue={newCustomer.surname} isInvalid={formerrors?.surname} />
-                                </Col>
-                                {formerrors?.surname && <p className="text-danger small" style={{ marginBottom: 0 }} >{formerrors?.surname}</p>}
-                            </Form.Group>
-                        </Row>
-                        <Row className="mb-2">
-                            <Form.Group as={Col} controlId="formCustomerAddress">
-                                <Form.Label>
-                                    Street address
-                                </Form.Label>
-                                <Col>
-                                    <Form.Control size="sm" type="text" name="address" onChange={handleChange} onBlur={modifyValue} defaultValue={newCustomer.address} isInvalid={formerrors?.address} />
-                                </Col>
-                                {formerrors?.address && <p className="text-danger small" style={{ marginBottom: 0 }}>{formerrors?.address}</p>}
-                            </Form.Group>
-
-                            <Form.Group as={Col} controlId="formCustomerArea">
-                                <Form.Label>
-                                    Area
-                                </Form.Label>
-                                <Col>
-                                    <Form.Control size="sm" type="text" name="area" onChange={handleChange} onBlur={modifyValue} defaultValue={newCustomer.area} isInvalid={formerrors?.area} />
-                                </Col>
-                                {formerrors?.area && <p className="text-danger small" style={{ marginBottom: 0 }}>{formerrors?.area}</p>}
-                            </Form.Group>
-                        </Row>
-
-                        <Row >
-                            <Form.Group as={Col} className="xs-3" controlId="formCustomerPobox">
-                                <Form.Label>
-                                    POBOX
-                                </Form.Label>
-                                <Col >
-                                    <Form.Control size="sm" type="text" name="pobox" onChange={handleChange} onBlur={modifyValue} defaultValue={newCustomer.pobox} isInvalid={formerrors?.pobox} />
-                                </Col>
-                                {formerrors?.pobox && <p className="text-danger small" style={{ marginBottom: 0 }}>{formerrors?.pobox}</p>}
-                            </Form.Group>
-                            <Form.Group as={Col} className="xs-3" controlId="formCustomerCountry">
-                                <Form.Label >
-                                    Country
-                                </Form.Label>
-                                <Col >
-                                    <Form.Control size="sm" type="text" name="country" onChange={handleChange} onBlur={modifyValue} defaultValue={newCustomer.country} isInvalid={formerrors?.country} />
-                                </Col>
-                                {formerrors?.country && <p className="text-danger small" style={{ marginBottom: 0 }}>{formerrors?.country}</p>}
-                            </Form.Group>
-                            <Form.Group as={Col} xs={6} className="mb-3" controlId="formCustomerEmail">
-                                <Form.Label >
-                                    Email
-                                </Form.Label>
-                                <Col>
-                                    <Form.Control size="sm" type="text" name="email" onChange={handleChange} defaultValue={newCustomer.email} isInvalid={formerrors?.email} />
-                                </Col>
-                                {formerrors?.email && <p className="text-danger small" style={{ marginBottom: 0 }}>{formerrors?.email}</p>}
-                            </Form.Group>
-                        </Row>
-
-                        <Row className="mb-2">
-                            <Form.Group as={Col} controlId="formCustomerPhone">
-                                <Form.Label >
-                                    Landline Phone
-                                </Form.Label>
-                                <Col >
-                                    <Form.Control size="sm" type="text" name="phone" onChange={handleChange} defaultValue={newCustomer.phone} isInvalid={formerrors?.phone} />
-                                </Col>
-                                {formerrors?.phone && <p className="text-danger small" style={{ marginBottom: 0 }}>{formerrors?.phone}</p>}
-                            </Form.Group>
-                            <Form.Group as={Col} controlId="formCustomerMobile">
-                                <Form.Label >
-                                    Mobile Phone
-                                </Form.Label>
-                                <Col >
-                                    <Form.Control size="sm" type="text" name="mobilephone" onChange={handleChange} defaultValue={newCustomer.mobilephone} isInvalid={formerrors?.mobilephone} />
-                                </Col>
-                                {formerrors?.mobilephone && <p className="text-danger small" style={{ marginBottom: 0 }}>{formerrors?.mobilephone}</p>}
-                            </Form.Group>
-                        </Row>
-
-                        <Form.Group as={Row} className="mb-3" controlId="formCustomerNote1">
-                            <Form.Label >
-                                Note1
-                            </Form.Label>
-                            <Col >
-                                <Form.Control size="sm" as="textarea" rows={3} name="note1" onChange={handleChange} defaultValue={newCustomer.note1} isInvalid={formerrors?.note1} />
-                            </Col>
-                            {formerrors?.note1 && <p className="text-danger small" style={{ marginBottom: 0 }}>{formerrors?.note1}</p>}
-                        </Form.Group>
-                        <Form.Group as={Row} className="mb-3" controlId="formCustomerNote2">
-                            <Form.Label >
-                                Note2
-                            </Form.Label>
-                            <Col >
-                                <Form.Control size="sm" as="textarea" rows={3} name="note2" onChange={handleChange} defaultValue={newCustomer.note2} isInvalid={formerrors?.note2} />
-                            </Col>
-                            {formerrors?.note2 && <p className="text-danger small" style={{ marginBottom: 0 }}>{formerrors?.note2}</p>}
-                        </Form.Group>
-                        <Form.Group as={Row} className="mb-3" controlId="formCustomerNote3">
-                            <Form.Label >
-                                Note3
-                            </Form.Label>
-                            <Col >
-                                <Form.Control size="sm" as="textarea" rows={3} name="note3" onChange={handleChange} defaultValue={newCustomer.note3} isInvalid={formerrors?.note3} />
-                            </Col>
-                            {formerrors?.note3 && <p className="text-danger small" style={{ marginBottom: 0 }}>{formerrors?.note3}</p>}
-                        </Form.Group>
-                    </Col>
-                    <Col xs={2}></Col>
-                </Row>
-                <Row>
-                    <Col xs={2}></Col>
-                    <Col xs={8} className="d-flex justify-content-end" >
-                        {!customerId && <Button variant="primary" type="submit" >
-                            Create
-                        </Button>}
-                        {customerId && <Button variant="primary" type="submit" >
-                            Update
-                        </Button>}
-
-                    </Col>
-                    <Col xs={2}></Col>
-                </Row>
-            </Form> */}
         </>
     );
 }
